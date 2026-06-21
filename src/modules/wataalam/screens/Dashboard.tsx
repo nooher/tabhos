@@ -1,14 +1,26 @@
-import { useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { JEWEL, RADII, TYPE, hexToRgba } from '../../../lib/glass'
 import { Card, H1 } from '../components/Card'
-import { loadAppointments, loadOutcomes, loadSupervision } from '../lib/storage'
+import type { Appointment, OutcomeEntry, SupervisionCase } from '../lib/storage'
+import {
+  loadAppointments, loadAppointmentsAsync,
+  loadOutcomes, loadOutcomesAsync,
+  loadSupervision,
+} from '../lib/storage'
 import { ArchitectureBadge } from '../../../components/ArchitectureBadge'
 
 export default function Dashboard() {
-  const appts = useMemo(loadAppointments, [])
-  const outcomes = useMemo(loadOutcomes, [])
-  const supervision = useMemo(loadSupervision, [])
+  const [appts, setAppts] = useState<Appointment[]>(() => loadAppointments())
+  const [outcomes, setOutcomes] = useState<OutcomeEntry[]>(() => loadOutcomes())
+  const [supervision] = useState<SupervisionCase[]>(() => loadSupervision())
+
+  useEffect(() => {
+    let mounted = true
+    void loadAppointmentsAsync().then((rows) => { if (mounted) setAppts(rows) })
+    void loadOutcomesAsync().then((rows) => { if (mounted) setOutcomes(rows) })
+    return () => { mounted = false }
+  }, [])
 
   const today = new Date().toDateString()
   const todays = appts.filter((a) => new Date(a.startISO).toDateString() === today)
