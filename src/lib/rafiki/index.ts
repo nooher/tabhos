@@ -92,3 +92,5 @@ export { TUMAINI_FAQ, findFaqAnswer, askFaq } from './kb/tumaini_faq';
 export type { FaqEntry } from './kb/tumaini_faq';
 export { TZ_MH_ACT_2008, findActAnswer, askMHAct2008 } from './kb/tz_mental_health_act_2008';
 export type { ActEntry } from './kb/tz_mental_health_act_2008';
+export { WHO_MHGAP, findMhgapAnswer, askMhgap } from './kb/who_mhgap';
+export type { MhgapEntry } from './kb/who_mhgap';

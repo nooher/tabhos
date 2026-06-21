@@ -22,6 +22,7 @@
 import { askAkili, type AkiliAnswer } from '../akili';
 import { askMHRegulation } from './kb/mh_regulations_2016';
 import { askMHAct2008 } from './kb/tz_mental_health_act_2008';
+import { askMhgap } from './kb/who_mhgap';
 import { askFaq } from './kb/tumaini_faq';
 
 export interface FederatedContext {
@@ -105,6 +106,17 @@ export async function askFederated(
       next_step: act.next_step,
       source: act.citation,
       domain: act.domain,
+      confidence: 'high',
+    };
+  }
+  const mhgap = askMhgap(query);
+  if (mhgap) {
+    return {
+      ack: 'Nakusikia.',
+      respond: mhgap.respond,
+      next_step: mhgap.next_step,
+      source: mhgap.citation,
+      domain: mhgap.domain,
       confidence: 'high',
     };
   }
