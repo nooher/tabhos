@@ -86,3 +86,5 @@ export { DISTORTIONS } from './experts/cbtReframe';
 export type { Distortion } from './experts/cbtReframe';
 export { CSSRS_ITEMS, SAFETY_PLAN_STEPS_SW, SAFETY_PLAN_STEPS_EN } from './experts/crisis';
 export { PHQ9, GAD7, AUDIT, CSSRS_URGENT_FROM } from './experts/triage';
+export { MH_REG_2016, findRegulationAnswer, askMHRegulation } from './kb/mh_regulations_2016';
+export type { MHRegEntry } from './kb/mh_regulations_2016';
