@@ -6,6 +6,10 @@ import { JEWEL, RADII, TEXT } from '../../lib/glass'
 import { useLang } from '../../lib/i18n/Provider'
 import { hasBackend, supabase } from '../../lib/supabase'
 import { audit } from '../../lib/db'
+import {
+  WHO_MHGAP, TZ_STG_MH_2021, WHO_SH_PLUS, WHO_ATLAS_2024,
+  ICD_MENTAL_CODES, MH_REG_2016, TZ_MH_ACT_2008, TUMAINI_FAQ,
+} from '../../lib/rafiki'
 import CrisisMonitor from './screens/Crisis'
 import FounderConsole from './screens/Founder'
 import Providers from './screens/Providers'
@@ -253,15 +257,182 @@ function IrbLib(): React.JSX.Element {
   )
 }
 
+interface LiveAuditRow {
+  id: string
+  ts: string
+  actor: string
+  action: string
+  entity: string
+  entity_id?: string | null
+  source: 'db' | 'seed'
+}
+
 function AuditView(): React.JSX.Element {
   const { t } = useLang()
+  const [rows, setRows] = useState<LiveAuditRow[]>([])
+  const [loading, setLoading] = useState(true)
+  const [actionFilter, setActionFilter] = useState('')
+  const [source, setSource] = useState<'db' | 'seed'>('seed')
+
+  useEffect(() => {
+    let on = true
+    void (async () => {
+      if (!hasBackend || !supabase) {
+        if (on) {
+          setRows(AUDIT_LOG.map((r, i) => ({
+            id: `seed-${i}`, ts: r.ts, actor: r.actor, action: r.action,
+            entity: r.entity, source: 'seed',
+          })))
+          setLoading(false)
+        }
+        return
+      }
+      const { data, error } = await supabase
+        .from('tr_audit_log')
+        .select('id, created_at, actor_id, action, entity, entity_id, tr_users:actor_id(display_name)')
+        .order('created_at', { ascending: false })
+        .limit(200)
+      if (!on) return
+      if (error || !data || data.length === 0) {
+        setRows(AUDIT_LOG.map((r, i) => ({
+          id: `seed-${i}`, ts: r.ts, actor: r.actor, action: r.action,
+          entity: r.entity, source: 'seed',
+        })))
+        setSource('seed')
+      } else {
+        setRows((data as unknown as Array<{
+          id: string; created_at: string; actor_id?: string | null;
+          action: string; entity: string; entity_id?: string | null;
+          tr_users?: { display_name?: string | null } | null;
+        }>).map((r) => ({
+          id: r.id,
+          ts: r.created_at.slice(0, 19).replace('T', ' '),
+          actor: r.tr_users?.display_name ?? r.actor_id?.slice(0, 8) ?? 'system',
+          action: r.action,
+          entity: r.entity,
+          entity_id: r.entity_id,
+          source: 'db' as const,
+        })))
+        setSource('db')
+      }
+      setLoading(false)
+    })()
+    return () => { on = false }
+  }, [])
+
+  const filtered = actionFilter
+    ? rows.filter((r) => r.action.toLowerCase().includes(actionFilter.toLowerCase()))
+    : rows
+
   return (
     <Card title={t('ndani.audit.title', 'Audit log')}>
-      <Table headers={[t('ndani.audit.col.time', 'Wakati'), t('ndani.audit.col.actor', 'Mhusika'), t('ndani.audit.col.action', 'Hatua'), t('ndani.audit.col.entity', 'Entity')]}>
-        {AUDIT_LOG.map((r, i) => (
-          <tr key={i}><Td>{r.ts}</Td><Td>{r.actor}</Td><Td>{r.action}</Td><Td><code>{r.entity}</code></Td></tr>
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 12, flexWrap: 'wrap' }}>
+        <input
+          value={actionFilter}
+          onChange={(e) => setActionFilter(e.target.value)}
+          placeholder={t('ndani.audit.filter', 'Chuja kwa hatua (e.g. provider.verified)')}
+          style={{
+            flex: 1, minWidth: 220, padding: '8px 12px', borderRadius: 8,
+            border: '1px solid rgba(11,9,8,0.18)', background: '#FAF5E5', fontSize: 13,
+          }}
+        />
+        <span style={{ fontSize: 12, color: TEXT.muted }}>
+          {loading ? t('ndani.audit.loading', 'Inapakia…') : `${filtered.length} ${t('ndani.audit.entries', 'kumbukumbu')}`}
+        </span>
+        {source === 'seed' && !loading && (
+          <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 999, background: 'rgba(0,0,0,0.05)' }}>
+            {t('ndani.audit.demo_data', 'data ya mfano')}
+          </span>
+        )}
+      </div>
+      <Table headers={[t('ndani.audit.col.time', 'Wakati'), t('ndani.audit.col.actor', 'Mhusika'), t('ndani.audit.col.action', 'Hatua'), t('ndani.audit.col.entity', 'Entity'), t('ndani.audit.col.entity_id', 'Ref')]}>
+        {filtered.map((r) => (
+          <tr key={r.id}>
+            <Td>{r.ts}</Td>
+            <Td>{r.actor}</Td>
+            <Td><code style={{ fontSize: 11 }}>{r.action}</code></Td>
+            <Td><code style={{ fontSize: 11 }}>{r.entity}</code></Td>
+            <Td><code style={{ fontSize: 11, color: TEXT.muted }}>{r.entity_id?.slice(0, 8) ?? '—'}</code></Td>
+          </tr>
         ))}
       </Table>
+    </Card>
+  )
+}
+
+function KbView(): React.JSX.Element {
+  const { t } = useLang()
+  const [src, setSrc] = useState<'all' | 'mhgap' | 'tzstg' | 'shplus' | 'atlas' | 'icd' | 'mhreg' | 'mhact' | 'faq'>('all')
+
+  // Static aggregate over the in-memory KB modules — they're code-resident so
+  // we can introspect counts and module/section distribution without a DB.
+  const counts: Record<string, number> = {
+    mhgap:  WHO_MHGAP.length,
+    tzstg:  TZ_STG_MH_2021.length,
+    shplus: WHO_SH_PLUS.length,
+    atlas:  WHO_ATLAS_2024.length,
+    icd:    ICD_MENTAL_CODES.length,
+    mhreg:  MH_REG_2016.length,
+    mhact:  TZ_MH_ACT_2008.length,
+    faq:    TUMAINI_FAQ.length,
+  }
+  const total = Object.values(counts).reduce((s, n) => s + n, 0)
+
+  const entries: Array<{ id: string; src: string; title: string; key?: string; cite?: string }> = []
+  if (src === 'all' || src === 'mhgap')  WHO_MHGAP.forEach((e)        => entries.push({ id: e.id, src: 'WHO mhGAP IG v2.0', title: e.summary_sw.slice(0, 140), key: `${e.module} ${e.section}`, cite: e.citation }))
+  if (src === 'all' || src === 'tzstg')  TZ_STG_MH_2021.forEach((e)   => entries.push({ id: e.id, src: 'TZ STG-NEMLIT 2021', title: e.summary_sw.slice(0, 140), key: e.section, cite: e.citation }))
+  if (src === 'all' || src === 'shplus') WHO_SH_PLUS.forEach((e)      => entries.push({ id: e.id, src: 'WHO SH+ v1.0',       title: e.summary_sw.slice(0, 140), key: e.topic, cite: e.citation }))
+  if (src === 'all' || src === 'atlas')  WHO_ATLAS_2024.forEach((e)   => entries.push({ id: e.id, src: 'WHO MH Atlas 2024',  title: e.summary_sw.slice(0, 140), key: e.topic, cite: e.citation }))
+  if (src === 'all' || src === 'icd')    ICD_MENTAL_CODES.forEach((e) => entries.push({ id: e.id, src: 'ICD-10/11 codes',    title: `${e.title_sw} — ${e.definition_sw.slice(0, 100)}`, key: `${e.icd10}/${e.icd11}` }))
+  if (src === 'all' || src === 'mhreg')  MH_REG_2016.forEach((e)      => entries.push({ id: e.id, src: 'MH Regulations 2016', title: e.summary_sw.slice(0, 140), cite: e.citation }))
+  if (src === 'all' || src === 'mhact')  TZ_MH_ACT_2008.forEach((e)   => entries.push({ id: e.id, src: 'MH Act 2008',         title: e.summary_sw.slice(0, 140), cite: e.citation }))
+  if (src === 'all' || src === 'faq')    TUMAINI_FAQ.forEach((e)      => entries.push({ id: e.id, src: 'TABHOS FAQ',          title: e.summary_sw.slice(0, 140) }))
+
+  return (
+    <Card title={t('ndani.kb.title', 'Maktaba ya Rafiki — KB')}>
+      <p style={{ marginTop: 0, color: TEXT.muted, fontSize: 13 }}>
+        {t('ndani.kb.lede', 'Rafiki KB inakaa katika code (src/lib/rafiki/kb). Hapa unaweza kuvinjari. Hariri kwa sasa zinahitajika kuwa code commits.')}
+      </p>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
+        {([
+          ['all',    `${t('ndani.kb.all', 'Vyote')} (${total})`],
+          ['mhgap',  `mhGAP (${counts.mhgap})`],
+          ['tzstg',  `TZ STG (${counts.tzstg})`],
+          ['shplus', `SH+ (${counts.shplus})`],
+          ['atlas',  `Atlas (${counts.atlas})`],
+          ['icd',    `ICD (${counts.icd})`],
+          ['mhreg',  `MH Reg (${counts.mhreg})`],
+          ['mhact',  `MH Act (${counts.mhact})`],
+          ['faq',    `FAQ (${counts.faq})`],
+        ] as const).map(([k, label]) => (
+          <button
+            key={k}
+            onClick={() => setSrc(k)}
+            aria-pressed={src === k}
+            style={{
+              padding: '6px 12px', borderRadius: 999, fontSize: 12, fontWeight: 600,
+              border: src === k ? `1px solid ${JEWEL.tealMwenza}` : '1px solid rgba(11,9,8,0.18)',
+              background: src === k ? JEWEL.tealMwenza : 'transparent',
+              color: src === k ? '#FAF5E5' : TEXT.body, cursor: 'pointer',
+            }}
+          >{label}</button>
+        ))}
+      </div>
+      <Table headers={[t('ndani.kb.col.src', 'Chanzo'), t('ndani.kb.col.key', 'Ufunguo'), t('ndani.kb.col.summary', 'Muhtasari'), t('ndani.kb.col.cite', 'Citation')]}>
+        {entries.slice(0, 300).map((e) => (
+          <tr key={`${e.src}-${e.id}`}>
+            <Td><span style={{ fontSize: 11, color: TEXT.muted }}>{e.src}</span></Td>
+            <Td><code style={{ fontSize: 11 }}>{e.key ?? '—'}</code></Td>
+            <Td style={{ fontSize: 13, color: TEXT.body }}>{e.title}…</Td>
+            <Td><span style={{ fontSize: 11, color: TEXT.muted }}>{e.cite ?? '—'}</span></Td>
+          </tr>
+        ))}
+      </Table>
+      {entries.length > 300 && (
+        <p style={{ marginTop: 10, fontSize: 12, color: TEXT.muted }}>
+          {t('ndani.kb.truncated', `Inaonyesha 300 ya kwanza kati ya ${entries.length}. Tumia kichungi.`)}
+        </p>
+      )}
     </Card>
   )
 }
@@ -277,6 +448,7 @@ const SUBS: SubNav[] = [
   { to: 'equity', label: 'Equity' },
   { to: 'irb', label: 'IRB library' },
   { to: 'audit', label: 'Audit log' },
+  { to: 'kb', label: 'Maktaba ya Rafiki' },
   { to: 'mipangilio', label: 'Mipangilio' },
   { to: 'mwanzilishi', label: 'Mwanzilishi' },
 ]
@@ -295,6 +467,7 @@ export default function Ndani(): React.JSX.Element {
         <Route path="equity" element={<Equity />} />
         <Route path="irb" element={<IrbLib />} />
         <Route path="audit" element={<AuditView />} />
+        <Route path="kb" element={<KbView />} />
         <Route path="mipangilio" element={<Config />} />
         <Route path="mwanzilishi" element={<FounderConsole />} />
       </Routes>

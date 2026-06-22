@@ -40,6 +40,7 @@ export interface ProviderProfileDraft {
   diplomaUploaded: boolean
   bioSw: string
   bioEn: string
+  photoUrl?: string
 }
 
 export const EMPTY_PROFILE: ProviderProfileDraft = {

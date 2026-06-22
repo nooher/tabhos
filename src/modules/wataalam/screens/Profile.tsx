@@ -4,6 +4,7 @@ import { Card, H1, buttonStyle, FieldLabel, fieldStyle } from '../components/Car
 import { loadProfile, saveProfile, type ProviderProfileDraft } from '../lib/storage'
 import { initialsOf } from '../../Gundua/data/providers'
 import { useLang } from '../../../lib/i18n/Provider'
+import { AvatarUploader } from '../../../components/AvatarUploader'
 
 export default function Profile() {
   const { t } = useLang()
@@ -38,24 +39,35 @@ export default function Profile() {
       {preview ? (
         <Card>
           <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
-            <div
-              aria-hidden
-              style={{
-                width: 84,
-                height: 84,
-                borderRadius: 999,
-                background: hexToRgba(JEWEL.tealRoho, 0.45),
-                border: `1px solid ${hexToRgba(JEWEL.goldSoft, 0.5)}`,
-                display: 'grid',
-                placeItems: 'center',
-                fontFamily: TYPE.serif,
-                fontSize: 28,
-                fontWeight: 600,
-                color: TEXT.onJewel,
-              }}
-            >
-              {initialsOf(p.fullName || 'Mtaalamu')}
-            </div>
+            {p.photoUrl ? (
+              <img
+                src={p.photoUrl}
+                alt=""
+                style={{
+                  width: 84, height: 84, borderRadius: 999, objectFit: 'cover',
+                  border: `1px solid ${hexToRgba(JEWEL.goldSoft, 0.5)}`,
+                }}
+              />
+            ) : (
+              <div
+                aria-hidden
+                style={{
+                  width: 84,
+                  height: 84,
+                  borderRadius: 999,
+                  background: hexToRgba(JEWEL.tealRoho, 0.45),
+                  border: `1px solid ${hexToRgba(JEWEL.goldSoft, 0.5)}`,
+                  display: 'grid',
+                  placeItems: 'center',
+                  fontFamily: TYPE.serif,
+                  fontSize: 28,
+                  fontWeight: 600,
+                  color: TEXT.onJewel,
+                }}
+              >
+                {initialsOf(p.fullName || 'Mtaalamu')}
+              </div>
+            )}
             <div style={{ flex: 1 }}>
               <h2 style={{ fontFamily: TYPE.serif, margin: 0, fontSize: 22 }}>
                 {p.honorific} {p.fullName || '—'}
@@ -73,6 +85,14 @@ export default function Profile() {
         </Card>
       ) : (
         <Card title={t('wataalam.profile.edit_card', 'Hariri')}>
+          <div style={{ marginBottom: 16 }}>
+            <FieldLabel>{t('wataalam.profile.photo', 'Picha ya wasifu')}</FieldLabel>
+            <AvatarUploader
+              initialUrl={p.photoUrl}
+              initials={initialsOf(p.fullName || 'Mtaalamu')}
+              onUploaded={(url) => update('photoUrl', url)}
+            />
+          </div>
           <FieldLabel>{t('wataalam.profile.full_name', 'Jina kamili')}</FieldLabel>
           <input
             style={fieldStyle()}

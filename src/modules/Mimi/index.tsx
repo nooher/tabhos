@@ -16,6 +16,7 @@ import Notifications from './Notifications'
 import MimiMessages from './messages'
 import MimiBook from './scheduling/Book'
 import MyCalendar from './scheduling/MyCalendar'
+import NotesTimeline from './screens/NotesTimeline'
 
 /**
  * MIMI — patient-facing module of TBHOS.
@@ -42,6 +43,7 @@ export default function Mimi() {
       <Route path="mazungumzo" element={<MimiMessages />} />
       <Route path="ratiba" element={<MyCalendar />} />
       <Route path="ratiba/weka" element={<MimiBook />} />
+      <Route path="muhtasari" element={<NotesTimeline />} />
     </Routes>
   )
 }
