@@ -8,7 +8,7 @@
 // Deploy:
 //   supabase functions deploy notify-provider-decision
 //   supabase secrets set TABHOS_RESEND_API_KEY=<resend api key> \
-//                        TABHOS_FROM_EMAIL="TABHOS <noreply@laetoli.africa>"
+//                        TABHOS_FROM_EMAIL="TABHOS <noreply@laetoli.tz>"
 //
 // Frontend:
 //   await supabase.functions.invoke('notify-provider-decision', {
@@ -45,7 +45,7 @@ function bodySw(displayName: string, decision: 'verified' | 'rejected', reason?:
       'Karibu sana kwenye familia ya wataalam wa TABHOS.',
       '',
       '— Laetoli (T) Ltd',
-      'tibaroho.vercel.app',
+      'laetoli.tz',
     ].join('\n')
   }
   return [
@@ -54,7 +54,7 @@ function bodySw(displayName: string, decision: 'verified' | 'rejected', reason?:
     'Tunashukuru kwa maombi yako ya kujisajili kama mtoa-huduma kwenye TABHOS.',
     'Kwa sasa, maombi yako hayajakubaliwa.',
     reason ? `\nSababu: ${reason}\n` : '',
-    'Unaweza kuwasiliana nasi kwa noreply@laetoli.africa kwa maelezo zaidi au kutuma maombi mapya.',
+    'Unaweza kuwasiliana nasi kwa noreply@laetoli.tz kwa maelezo zaidi au kutuma maombi mapya.',
     '',
     '— Laetoli (T) Ltd',
   ].join('\n')
@@ -71,7 +71,7 @@ function bodyEn(displayName: string, decision: 'verified' | 'rejected', reason?:
       'Welcome to the TABHOS provider community.',
       '',
       '— Laetoli (T) Ltd',
-      'tibaroho.vercel.app',
+      'laetoli.tz',
     ].join('\n')
   }
   return [
@@ -80,7 +80,7 @@ function bodyEn(displayName: string, decision: 'verified' | 'rejected', reason?:
     'Thank you for applying as a TABHOS provider.',
     'At this time your application has not been approved.',
     reason ? `\nReason: ${reason}\n` : '',
-    'You can reach us at noreply@laetoli.africa for more information or to submit a fresh application.',
+    'You can reach us at noreply@laetoli.tz for more information or to submit a fresh application.',
     '',
     '— Laetoli (T) Ltd',
   ].join('\n')
@@ -141,7 +141,7 @@ Deno.serve(async (req: Request) => {
 
   // If Resend isn't configured, log + skip gracefully.
   const resendKey = Deno.env.get('TABHOS_RESEND_API_KEY')
-  const fromAddr = Deno.env.get('TABHOS_FROM_EMAIL') ?? 'TABHOS <noreply@laetoli.africa>'
+  const fromAddr = Deno.env.get('TABHOS_FROM_EMAIL') ?? 'TABHOS <noreply@laetoli.tz>'
   if (!resendKey) {
     return new Response(JSON.stringify({ status: 'skipped', reason: 'resend_not_configured', to: toEmail }), {
       status: 200, headers: { ...CORS, 'Content-Type': 'application/json' },
