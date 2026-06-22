@@ -9,6 +9,7 @@
     "preview": "vite preview --port 5203"
   },
   "dependencies": {
+    "@laetoli/admin": "github:nooher/laetoli-admin",
     "@supabase/supabase-js": "^2.45.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

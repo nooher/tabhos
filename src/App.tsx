@@ -39,6 +39,7 @@ const Personas     = lazy(() => import('./modules/personas'))
 const Press        = lazy(() => import('./modules/welcome/screens/Press'))
 const Investor     = lazy(() => import('./modules/welcome/screens/Investor'))
 const NotFound     = lazy(() => import('./modules/NotFound'))
+const AdminV2      = lazy(() => import('./modules/AdminV2'))
 
 function PageFallback() {
   const { t } = useLang()
@@ -90,6 +91,7 @@ export default function App() {
         <Suspense fallback={<PageFallback />}>
           <Routes>
             <Route path="/" element={<WelcomeHome />} />
+            <Route path="/admin/v2" element={<AdminV2 />} />
             <Route path="/dashibodi" element={<Landing />} />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/chagua-akaunti" element={<WelcomeHome />} />
