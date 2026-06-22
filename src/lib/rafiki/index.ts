@@ -98,3 +98,5 @@ export { WHO_SH_PLUS, findShPlusAnswer, askShPlus } from './kb/who_sh_plus';
 export type { ShPlusEntry } from './kb/who_sh_plus';
 export { WHO_ATLAS_2024, findAtlasAnswer, askAtlas } from './kb/who_atlas_2024';
 export type { AtlasEntry } from './kb/who_atlas_2024';
+export { TZ_STG_MH_2021, findTzStgMhAnswer, askTzStgMh } from './kb/tz_stg_mh_2021';
+export type { TzStgMhEntry } from './kb/tz_stg_mh_2021';

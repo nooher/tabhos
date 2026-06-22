@@ -22,6 +22,7 @@
 import { askAkili, type AkiliAnswer } from '../akili';
 import { askMHRegulation } from './kb/mh_regulations_2016';
 import { askMHAct2008 } from './kb/tz_mental_health_act_2008';
+import { askTzStgMh } from './kb/tz_stg_mh_2021';
 import { askMhgap } from './kb/who_mhgap';
 import { askShPlus } from './kb/who_sh_plus';
 import { askAtlas } from './kb/who_atlas_2024';
@@ -108,6 +109,17 @@ export async function askFederated(
       next_step: act.next_step,
       source: act.citation,
       domain: act.domain,
+      confidence: 'high',
+    };
+  }
+  const tzstg = askTzStgMh(query);
+  if (tzstg) {
+    return {
+      ack: 'Nakusikia.',
+      respond: tzstg.respond,
+      next_step: tzstg.next_step,
+      source: tzstg.citation,
+      domain: tzstg.domain,
       confidence: 'high',
     };
   }
