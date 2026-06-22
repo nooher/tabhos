@@ -5,6 +5,22 @@
 import { JEWEL } from './glass'
 import type { LifecycleStageId } from './lifecycle'
 
+export type DisplayLang = 'sw' | 'en' | 'ar' | 'ru' | 'zh'
+
+/**
+ * Return the user-facing module label in the active language. Routes are
+ * URL identifiers and never translate; only the displayed name does.
+ * SW is the canonical name; EN uses the descriptive english helper.
+ * AR/RU/ZH fall back to EN unless a module-specific catalog key exists.
+ */
+export function moduleLabel(m: { name: string; english: string }, lang: DisplayLang): string {
+  if (lang === 'sw') return m.name
+  // The .english field can be a longer phrase (e.g. "Patient — Me"); take the
+  // shortest scannable token before the em-dash / slash for nav display.
+  const short = m.english.split(/—|\//)[0]?.trim() || m.english
+  return short
+}
+
 export interface ModuleDef {
   slug: string
   name: string         // Swahili name (display)

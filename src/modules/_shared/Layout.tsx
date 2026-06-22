@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { BRAND, CREAM, NEUTRAL, RADII, TEXT, TYPE, hexToRgba } from '../../lib/glass'
 import { useLang } from '../../lib/i18n/Provider'
-import { MODULES } from '../../lib/modules'
+import { MODULES, moduleLabel, type DisplayLang } from '../../lib/modules'
 import { ArchitectureBadge } from '../../components/ArchitectureBadge'
 
 /**
@@ -23,7 +23,7 @@ export function ModuleShell({
   children: ReactNode
   showArchitecture?: boolean
 }): React.JSX.Element {
-  const { t } = useLang()
+  const { t, lang } = useLang()
   const m = MODULES.find((x) => x.slug === slug)
   if (!m) return <main className="container">{t('shell.not-found', 'Moduli haipatikani.')}</main>
   const chipInk = m.accent === BRAND.yellow ? NEUTRAL.ink : TEXT.onJewel
@@ -50,7 +50,7 @@ export function ModuleShell({
               fontWeight: 800,
             }}
           >
-            {m.name}
+            {moduleLabel(m, lang as DisplayLang)}
           </h1>
           <span
             style={{
@@ -73,7 +73,7 @@ export function ModuleShell({
       {subs && subs.length > 0 ? (
         <nav
           className="container"
-          aria-label={m.name}
+          aria-label={moduleLabel(m, lang as DisplayLang)}
           style={{
             display: 'flex', flexWrap: 'wrap', gap: 8, padding: 8,
             marginTop: 8, marginBottom: 16,

@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom'
 import { JEWEL, hexToRgba, RADII } from '../lib/glass'
 import { useLang } from '../lib/i18n/Provider'
-import type { ModuleDef } from '../lib/modules'
+import { moduleLabel, type ModuleDef, type DisplayLang } from '../lib/modules'
 
 /**
  * Shared stub layout used by all 12 module pages until the
  * respective module agents implement their full content.
  */
 export default function ModulePage({ module }: { module: ModuleDef }) {
-  const { t } = useLang()
+  const { t, lang } = useLang()
+  const displayName = moduleLabel(module, lang as DisplayLang)
   return (
     <main className="fade-in" style={{ paddingTop: 40, paddingBottom: 120 }}>
       <section className="container" style={{ padding: '32px 24px 24px' }}>
@@ -55,7 +56,7 @@ export default function ModulePage({ module }: { module: ModuleDef }) {
             lineHeight: 1.04,
           }}
         >
-          {module.name}
+          {displayName}
         </h1>
         <p
           style={{
@@ -82,7 +83,7 @@ export default function ModulePage({ module }: { module: ModuleDef }) {
 
       <section
         className="container"
-        aria-label={`${t('module.features-of', 'Vipengele vya')} ${module.name}`}
+        aria-label={`${t('module.features-of', 'Vipengele vya')} ${displayName}`}
         style={{ marginTop: 36 }}
       >
         <h2

@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import type { CSSProperties } from 'react'
 import { BRAND, CREAM, NEUTRAL, RADII, TEXT, TYPE, hexToRgba } from '../lib/glass'
-import type { ModuleDef } from '../lib/modules'
+import { moduleLabel, type ModuleDef, type DisplayLang } from '../lib/modules'
 import { useLang } from '../lib/i18n/Provider'
 
 export function ModuleCard({ module }: { module: ModuleDef }) {
-  const { t } = useLang()
+  const { t, lang } = useLang()
+  const displayName = moduleLabel(module, lang as DisplayLang)
   // Yellow accent needs ink glyph for contrast; others sit on dark+cream.
   const glyphInk = module.accent === BRAND.yellow ? NEUTRAL.ink : TEXT.onJewel
 
@@ -27,7 +28,7 @@ export function ModuleCard({ module }: { module: ModuleDef }) {
   return (
     <Link
       to={`/${module.slug}`}
-      aria-label={`${t('modcard.open', 'Fungua')} ${module.name} — ${module.english}`}
+      aria-label={`${t('modcard.open', 'Fungua')} ${displayName} — ${module.english}`}
       style={{ textDecoration: 'none', color: 'inherit' }}
       onMouseEnter={(e) => {
         const el = e.currentTarget.firstElementChild as HTMLElement | null
@@ -90,7 +91,7 @@ export function ModuleCard({ module }: { module: ModuleDef }) {
               lineHeight: 1.15,
             }}
           >
-            {module.name}
+            {displayName}
           </h3>
           <div
             style={{

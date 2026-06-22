@@ -43,7 +43,7 @@ function fuzzy(needle: string, haystack: string): number {
  */
 export function CommandPalette() {
   const nav = useNavigate()
-  const [, setLangState] = useLang()
+  const [lang, setLangState] = useLang()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
@@ -63,9 +63,9 @@ export function CommandPalette() {
     for (const m of MODULES) {
       out.push({
         id: `go:${m.slug}`,
-        label: `Nenda ${m.name}`,
+        label: lang === 'sw' ? `Nenda ${m.name}` : `Go to ${m.english.split(/—|\//)[0]?.trim() || m.english}`,
         english: `Go to ${m.english}`,
-        group: 'Nenda',
+        group: lang === 'sw' ? 'Nenda' : 'Navigate',
         run: () => nav(`/${m.slug}`),
       })
     }
