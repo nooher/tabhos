@@ -65,7 +65,7 @@ export function CommandPalette() {
         id: `go:${m.slug}`,
         label: lang === 'sw' ? `Nenda ${m.name}` : `Go to ${m.english.split(/—|\//)[0]?.trim() || m.english}`,
         english: `Go to ${m.english}`,
-        group: lang === 'sw' ? 'Nenda' : 'Navigate',
+        group: 'Nenda',
         run: () => nav(`/${m.slug}`),
       })
     }
