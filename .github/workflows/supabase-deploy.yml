@@ -1,0 +1,104 @@
+name: Supabase deploy
+
+# Auto-applies migrations + deploys edge functions + sets secrets every time
+# supabase/** changes land on main. Removes the "open dashboard, click, paste"
+# loop — the only manual step is the one-time secret setup in this repo's
+# GitHub settings.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/**'
+      - 'supabase/functions/**'
+      - '.github/workflows/supabase-deploy.yml'
+  workflow_dispatch:    # also runnable from Actions tab on demand
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_PROJECT_REF:  ${{ secrets.SUPABASE_PROJECT_REF }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Sanity check
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ] || [ -z "$SUPABASE_PROJECT_REF" ]; then
+            echo "::error::Repo secrets SUPABASE_ACCESS_TOKEN and SUPABASE_PROJECT_REF must be set in this repository's GitHub settings."
+            exit 1
+          fi
+
+      - name: Link Supabase project
+        run: supabase link --project-ref "$SUPABASE_PROJECT_REF"
+
+      - name: Apply migrations
+        run: supabase db push --include-all
+
+      - name: Deploy edge functions
+        run: |
+          if [ -d supabase/functions ]; then
+            for fn in supabase/functions/*/; do
+              name="$(basename "$fn")"
+              # skip the shared/_helpers folders Supabase reserves
+              case "$name" in _*) continue ;; esac
+              echo "→ deploying $name"
+              supabase functions deploy "$name" --no-verify-jwt
+            done
+          fi
+
+      - name: Set edge-function secrets
+        env:
+          TUMAINI_JITSI_DOMAIN:    ${{ secrets.TUMAINI_JITSI_DOMAIN }}
+          TUMAINI_JITSI_SECRET:    ${{ secrets.TUMAINI_JITSI_SECRET }}
+          TUMAINI_JITSI_APP_ID:    ${{ secrets.TUMAINI_JITSI_APP_ID }}
+          TABHOS_RESEND_API_KEY:   ${{ secrets.TABHOS_RESEND_API_KEY }}
+          TABHOS_FROM_EMAIL:       ${{ secrets.TABHOS_FROM_EMAIL }}
+          TABHOS_SMS_API_KEY:      ${{ secrets.TABHOS_SMS_API_KEY }}
+          TABHOS_SMS_SECRET:       ${{ secrets.TABHOS_SMS_SECRET }}
+          TABHOS_SMS_SENDER:       ${{ secrets.TABHOS_SMS_SENDER }}
+          TABHOS_MPESA_BASE_URL:   ${{ secrets.TABHOS_MPESA_BASE_URL }}
+          TABHOS_MPESA_API_KEY:    ${{ secrets.TABHOS_MPESA_API_KEY }}
+          TABHOS_MPESA_API_SECRET: ${{ secrets.TABHOS_MPESA_API_SECRET }}
+          TABHOS_MPESA_SHORTCODE:  ${{ secrets.TABHOS_MPESA_SHORTCODE }}
+          TABHOS_MPESA_RAIL:       ${{ secrets.TABHOS_MPESA_RAIL }}
+        run: |
+          # Default sane value for Jitsi if nothing set yet — public meet.jit.si
+          # gives working telehealth out of the box.
+          : "${TUMAINI_JITSI_DOMAIN:=meet.jit.si}"
+
+          declare -a args=()
+          for k in \
+            TUMAINI_JITSI_DOMAIN TUMAINI_JITSI_SECRET TUMAINI_JITSI_APP_ID \
+            TABHOS_RESEND_API_KEY TABHOS_FROM_EMAIL \
+            TABHOS_SMS_API_KEY TABHOS_SMS_SECRET TABHOS_SMS_SENDER \
+            TABHOS_MPESA_BASE_URL TABHOS_MPESA_API_KEY TABHOS_MPESA_API_SECRET \
+            TABHOS_MPESA_SHORTCODE TABHOS_MPESA_RAIL
+          do
+            v="${!k}"
+            if [ -n "$v" ]; then
+              args+=("$k=$v")
+            fi
+          done
+
+          if [ ${#args[@]} -gt 0 ]; then
+            echo "Setting ${#args[@]} secrets…"
+            supabase secrets set "${args[@]}"
+          else
+            echo "No secrets to set."
+          fi
+
+      - name: Done
+        run: |
+          echo ""
+          echo "✅ Supabase deploy complete for $SUPABASE_PROJECT_REF"
+          echo "    - migrations applied"
+          echo "    - edge functions redeployed"
+          echo "    - secrets reconciled with repo settings"
