@@ -94,3 +94,7 @@ export { TZ_MH_ACT_2008, findActAnswer, askMHAct2008 } from './kb/tz_mental_heal
 export type { ActEntry } from './kb/tz_mental_health_act_2008';
 export { WHO_MHGAP, findMhgapAnswer, askMhgap } from './kb/who_mhgap';
 export type { MhgapEntry } from './kb/who_mhgap';
+export { WHO_SH_PLUS, findShPlusAnswer, askShPlus } from './kb/who_sh_plus';
+export type { ShPlusEntry } from './kb/who_sh_plus';
+export { WHO_ATLAS_2024, findAtlasAnswer, askAtlas } from './kb/who_atlas_2024';
+export type { AtlasEntry } from './kb/who_atlas_2024';

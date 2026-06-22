@@ -23,6 +23,8 @@ import { askAkili, type AkiliAnswer } from '../akili';
 import { askMHRegulation } from './kb/mh_regulations_2016';
 import { askMHAct2008 } from './kb/tz_mental_health_act_2008';
 import { askMhgap } from './kb/who_mhgap';
+import { askShPlus } from './kb/who_sh_plus';
+import { askAtlas } from './kb/who_atlas_2024';
 import { askFaq } from './kb/tumaini_faq';
 
 export interface FederatedContext {
@@ -118,6 +120,28 @@ export async function askFederated(
       source: mhgap.citation,
       domain: mhgap.domain,
       confidence: 'high',
+    };
+  }
+  const shplus = askShPlus(query);
+  if (shplus) {
+    return {
+      ack: 'Nakusikia.',
+      respond: shplus.respond,
+      next_step: shplus.next_step,
+      source: shplus.citation,
+      domain: shplus.domain,
+      confidence: 'medium',
+    };
+  }
+  const atlas = askAtlas(query);
+  if (atlas) {
+    return {
+      ack: 'Nakusikia.',
+      respond: atlas.respond,
+      next_step: atlas.next_step,
+      source: atlas.citation,
+      domain: atlas.domain,
+      confidence: 'medium',
     };
   }
   const faq = askFaq(query);
