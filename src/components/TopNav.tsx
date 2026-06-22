@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { JEWEL, CREAM, NEUTRAL, BRAND, TEXT, hexToRgba } from '../lib/glass'
 import { MODULES } from '../lib/modules'
+import { useAudience, primaryModulesFor } from '../lib/audience'
 import { useLang } from '../lib/i18n/Provider'
 import { hasBackend } from '../lib/supabase'
 import { LanguageSwitch } from './LanguageSwitch'
@@ -12,6 +13,11 @@ export function TopNav() {
   const [isNarrow, setIsNarrow] = useState(false)
   const [isSmall, setIsSmall] = useState(false)
   const { t } = useLang()
+  const audience = useAudience()
+  const primarySlugs = primaryModulesFor(audience)
+  const primaryModules = primarySlugs
+    .map((slug) => MODULES.find((m) => m.slug === slug))
+    .filter((m): m is (typeof MODULES)[number] => Boolean(m))
 
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -126,7 +132,7 @@ export function TopNav() {
               flex: 1,
             }}
           >
-            {MODULES.map((m) => (
+            {primaryModules.map((m) => (
               <NavLink key={m.slug} to={`/${m.slug}`} style={navLinkStyle}>
                 {m.name}
               </NavLink>
@@ -224,7 +230,7 @@ export function TopNav() {
             paddingBottom: 6,
           }}
         >
-          {MODULES.map((m) => (
+          {primaryModules.map((m) => (
             <NavLink
               key={m.slug}
               to={`/${m.slug}`}
