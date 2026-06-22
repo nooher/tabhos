@@ -87,21 +87,20 @@ const adapter: AdminAdapter = {
   },
 
   audit: {
-    list: async ({ action, limit } = {}) => {
+    list: async ({ action, limit } = {}): Promise<AuditEntry[]> => {
       if (!supabase) return base.audit.list({ limit })
       let query = supabase.from('tr_audit_log').select('id, actor_id, action, entity, entity_id, meta, at').order('at', { ascending: false }).limit(limit ?? 200)
       if (action) query = query.ilike('action', `%${action}%`)
       const { data, error } = await query
       if (error) { console.error('audit.list', error); return [] }
-      return ((data as Record<string, unknown>[] | null) || []).map((a) => ({ id: a.id, at: a.at, actorId: a.actor_id || '—', actorName: a.actor_id || 'system', action: a.action, resourceType: a.entity, resourceId: a.entity_id || '—', meta: a.meta || undefined, outcome: a.action.includes('reject') ? 'denied' : 'success' }))
+      return ((data as Record<string, unknown>[] | null) || []).map((a: Record<string, unknown>): AuditEntry => ({ id: String(a.id), at: String(a.at), actorId: a.actor_id ? String(a.actor_id) : '—', actorName: a.actor_id ? String(a.actor_id) : 'system', action: String(a.action), resourceType: String(a.entity), resourceId: a.entity_id ? String(a.entity_id) : '—', meta: (a.meta as Record<string, unknown> | null) || undefined, outcome: String(a.action).includes('reject') ? 'denied' : 'success' }))
     },
     export: async () => {
       if (!supabase) return base.audit.export()
-      const list = await (adapter.audit.list as (o: { limit?: number }) => Promise<unknown[]>)({ limit: 50_000 })
-      const csv = ['id,at,actor,action,resource', ...list.map((a) => {
-        const x = a as Record<string, unknown>
-        return [x.id, x.at, JSON.stringify(x.actorName), JSON.stringify(x.action), `${x.resourceType}:${x.resourceId}`].join(',')
-      })].join('\n')
+      const list = await adapter.audit.list({ limit: 50_000 })
+      const csv = ['id,at,actor,action,resource', ...list.map((a) => (
+        [a.id, a.at, JSON.stringify(a.actorName), JSON.stringify(a.action), `${a.resourceType}:${a.resourceId}`].join(',')
+      ))].join('\n')
       return { url: 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv) }
     },
   },
