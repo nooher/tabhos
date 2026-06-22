@@ -23,6 +23,7 @@ import { askAkili, type AkiliAnswer } from '../akili';
 import { askMHRegulation } from './kb/mh_regulations_2016';
 import { askMHAct2008 } from './kb/tz_mental_health_act_2008';
 import { askTzStgMh } from './kb/tz_stg_mh_2021';
+import { askIcd } from './kb/icd_mental_codes';
 import { askMhgap } from './kb/who_mhgap';
 import { askShPlus } from './kb/who_sh_plus';
 import { askAtlas } from './kb/who_atlas_2024';
@@ -109,6 +110,17 @@ export async function askFederated(
       next_step: act.next_step,
       source: act.citation,
       domain: act.domain,
+      confidence: 'high',
+    };
+  }
+  const icd = askIcd(query);
+  if (icd) {
+    return {
+      ack: 'Nakusikia.',
+      respond: icd.respond,
+      next_step: icd.next_step,
+      source: icd.citation,
+      domain: icd.domain,
       confidence: 'high',
     };
   }
