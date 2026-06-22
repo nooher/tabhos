@@ -1,12 +1,14 @@
 import { useLocation } from 'react-router-dom'
 import { BRAND, CREAM, NEUTRAL, TEXT, hexToRgba } from '../lib/glass'
 import { clearPersona, usePersona } from '../lib/personas'
+import { useLang } from '../lib/i18n/Provider'
 
 /**
  * Slim demo-mode banner — sits between the flag bar and the app content.
  * Hidden on /welcome and /chagua-akaunti so marketing surfaces stay clean.
  */
 export function PersonaBanner() {
+  const { t } = useLang()
   const persona = usePersona()
   const loc = useLocation()
 
@@ -19,7 +21,7 @@ export function PersonaBanner() {
     <div
       role="status"
       aria-live="polite"
-      aria-label={`Demo mode — Karibu kama ${persona.name}`}
+      aria-label={`Demo mode — ${t('persona.welcome-as', 'Karibu kama')} ${persona.name}`}
       style={{
         position: 'sticky',
         top: 64,
@@ -59,7 +61,7 @@ export function PersonaBanner() {
           {persona.initials}
         </span>
         <span>
-          Demo mode &middot; Karibu kama{' '}
+          Demo mode &middot; {t('persona.welcome-as', 'Karibu kama')}{' '}
           <strong style={{ color: BRAND.green }}>{persona.name}</strong>
           <span
             style={{
@@ -75,7 +77,7 @@ export function PersonaBanner() {
         <button
           type="button"
           onClick={() => clearPersona()}
-          aria-label="Toka kwenye demo mode"
+          aria-label={t('persona.exit-aria', 'Toka kwenye demo mode')}
           style={{
             background: 'transparent',
             border: `1px solid ${hexToRgba(NEUTRAL.ink, 0.25)}`,
@@ -87,7 +89,7 @@ export function PersonaBanner() {
             cursor: 'pointer',
           }}
         >
-          Toka
+          {t('persona.exit', 'Toka')}
         </button>
       </div>
     </div>

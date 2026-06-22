@@ -1,5 +1,6 @@
 import { Card } from '../../_shared/Layout'
 import { JEWEL, CREAM, NEUTRAL, TEXT, hexToRgba } from '../../../lib/glass'
+import { useLang } from '../../../lib/i18n/Provider'
 import { NATIONAL } from '../data'
 
 const ROWS: { label_sw: string; label_en: string; value: string; trend: 'up' | 'down' | 'flat'; band: 'good' | 'warn' | 'bad' }[] = [
@@ -22,12 +23,12 @@ const BAND_COLOR: Record<'good' | 'warn' | 'bad', string> = {
 const TREND_GLYPH: Record<'up' | 'down' | 'flat', string> = { up: '▲', down: '▼', flat: '–' }
 
 export default function SeraParliament() {
+  const { t } = useLang()
   return (
     <>
-      <Card title="Ubao wa Wazi — Wizara na Bunge" accent={JEWEL.indigoWisdom}>
+      <Card title={t('sera.parl.title', 'Ubao wa Wazi — Wizara na Bunge')} accent={JEWEL.indigoWisdom}>
         <p style={{ fontSize: 13, color: TEXT.muted, margin: '0 0 16px' }}>
-          Mtazamo wa kusoma-tu, umeundwa kuonekana kwenye dashibodi za wizara
-          na vyumba vya kamati. Vipimo nane vya kitaifa.
+          {t('sera.parl.subtitle', 'Mtazamo wa kusoma-tu, umeundwa kuonekana kwenye dashibodi za wizara na vyumba vya kamati. Vipimo nane vya kitaifa.')}
         </p>
         <div style={{
           display: 'grid', gridTemplateColumns: '1fr', gap: 0,
@@ -61,7 +62,7 @@ export default function SeraParliament() {
               <div style={{
                 fontSize: 16, fontWeight: 700,
                 color: BAND_COLOR[r.band], textAlign: 'center',
-              }} aria-label={`Mwelekeo: ${r.trend}`}>
+              }} aria-label={`${t('sera.parl.trend', 'Mwelekeo')}: ${r.trend}`}>
                 {TREND_GLYPH[r.trend]}
               </div>
             </div>

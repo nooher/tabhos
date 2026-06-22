@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import { BRAND, CREAM, NEUTRAL, RADII, TEXT, TYPE, hexToRgba, glass } from '../../../lib/glass'
+import { useLang } from '../../../lib/i18n/Provider'
 
 export default function Press() {
+  const { t } = useLang()
   return (
     <main
       className="fade-in"
@@ -12,7 +14,7 @@ export default function Press() {
           to="/welcome"
           style={{ color: BRAND.green, fontSize: 13, textDecoration: 'none' }}
         >
-          &larr; Rudi kwa Welcome
+          &larr; {t('press.back', 'Rudi kwa Welcome')}
         </Link>
         <h1
           style={{
@@ -26,8 +28,7 @@ export default function Press() {
           Press kit
         </h1>
         <p style={{ fontSize: 16, lineHeight: TYPE.bodyLeading, color: TEXT.body }}>
-          Logos, screenshots, na bio za mwanzilishi kwa wandishi wa habari na
-          watayarishi wa hadithi. Pakua faili zilizo tayari hapa chini.
+          {t('press.intro', 'Logos, screenshots, na bio za mwanzilishi kwa wandishi wa habari na watayarishi wa hadithi. Pakua faili zilizo tayari hapa chini.')}
         </p>
 
         <div style={{ display: 'grid', gap: 14, marginTop: 28 }}>
@@ -43,7 +44,7 @@ export default function Press() {
             }}
           >
             <strong style={{ fontFamily: TYPE.serif, fontSize: 18 }}>
-              Pakua Press Kit (.zip)
+              {t('press.kit-title', 'Pakua Press Kit (.zip)')}
             </strong>
             <div style={{ fontSize: 13, color: TEXT.muted }}>
               Logos PNG/SVG, screenshots, fonts &middot; ~12&nbsp;MB
@@ -61,10 +62,10 @@ export default function Press() {
             }}
           >
             <strong style={{ fontFamily: TYPE.serif, fontSize: 18 }}>
-              Bio ya Mwanzilishi (PDF)
+              {t('press.bio-title', 'Bio ya Mwanzilishi (PDF)')}
             </strong>
             <div style={{ fontSize: 13, color: TEXT.muted }}>
-              Dr. Ally A. Nooher &middot; ukurasa 2
+              Dr. Ally A. Nooher &middot; {t('press.bio-pages', 'ukurasa 2')}
             </div>
           </a>
         </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useLang } from '../lib/i18n/Provider'
 
 /**
  * TumainiCompass — Tanzania at the centre, four flag-coloured discs
@@ -10,6 +11,7 @@ import { useEffect, useState } from 'react'
  * 11/14/12/16 s so the four discs never visually lock.
  */
 export default function TumainiCompass({ size = 480 }: { size?: number }) {
+  const { t } = useLang()
   const [reduced, setReduced] = useState(false)
   useEffect(() => {
     if (typeof window === 'undefined') return
@@ -47,7 +49,7 @@ export default function TumainiCompass({ size = 480 }: { size?: number }) {
       width={size}
       height={heightPx}
       role="img"
-      aria-label="Tumaini — Tanzania na mizunguko minne ya rangi za bendera"
+      aria-label={t('compass.aria', 'Tumaini — Tanzania na mizunguko minne ya rangi za bendera')}
       style={{ display: 'block', overflow: 'visible', width: '100%', maxWidth: size, height: 'auto', marginInline: 'auto' }}
     >
       <style>{`

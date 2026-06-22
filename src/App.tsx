@@ -9,6 +9,7 @@ import { PersonaBanner } from './components/PersonaBanner'
 import ToastHost from './components/ToastHost'
 import { JEWEL } from './lib/glass'
 import { SIGNATURE } from './lib/_signature'
+import { useLang } from './lib/i18n/Provider'
 
 /** Routes where global chrome is hidden — the product entrance feels like
  * a product, not a website. Nav appears only after you sign in. */
@@ -39,6 +40,7 @@ const Investor     = lazy(() => import('./modules/welcome/screens/Investor'))
 const NotFound     = lazy(() => import('./modules/NotFound'))
 
 function PageFallback() {
+  const { t } = useLang()
   return (
     <div
       style={{
@@ -51,7 +53,7 @@ function PageFallback() {
         opacity: 0.7,
       }}
     >
-      Inapakia…
+      {t('app.loading', 'Inapakia…')}
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { BRAND, CREAM, NEUTRAL, RADII, TEXT, TYPE, hexToRgba } from '../lib/glass'
 import { getArchitecture, getSharedTechStack } from '../lib/architectureMeta'
 import { MODULES } from '../lib/modules'
+import { useLang } from '../lib/i18n/Provider'
 
 interface Props {
   moduleSlug: string
@@ -20,6 +21,7 @@ const PREFERS_REDUCED_MOTION =
  * snippets (SQL · FHIR · Rafiki routing).
  */
 export function ArchitectureBadge({ moduleSlug }: Props): React.JSX.Element | null {
+  const { t } = useLang()
   const meta = getArchitecture(moduleSlug)
   const mod = MODULES.find((m) => m.slug === moduleSlug)
   const [open, setOpen] = useState(false)
@@ -42,7 +44,7 @@ export function ArchitectureBadge({ moduleSlug }: Props): React.JSX.Element | nu
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Fungua arkitekti ya moduli — Open module architecture"
+        aria-label={t('archbadge.open-aria', 'Fungua arkitekti ya moduli — Open module architecture')}
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -71,7 +73,7 @@ export function ArchitectureBadge({ moduleSlug }: Props): React.JSX.Element | nu
             display: 'inline-block',
           }}
         />
-        Arkitekti
+        {t('archbadge.label', 'Arkitekti')}
         <span aria-hidden style={{ opacity: 0.6 }}>ⓘ</span>
       </button>
 
@@ -79,7 +81,7 @@ export function ArchitectureBadge({ moduleSlug }: Props): React.JSX.Element | nu
         <div
           role="dialog"
           aria-modal="true"
-          aria-label={`Arkitekti ya ${mod?.name ?? moduleSlug}`}
+          aria-label={`${t('archbadge.dialog-aria', 'Arkitekti ya')} ${mod?.name ?? moduleSlug}`}
           style={{
             position: 'fixed',
             inset: 0,
@@ -132,7 +134,7 @@ export function ArchitectureBadge({ moduleSlug }: Props): React.JSX.Element | nu
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                aria-label="Funga — Close"
+                aria-label={t('archbadge.close-aria', 'Funga — Close')}
                 style={{
                   background: 'transparent',
                   border: `1px solid ${hexToRgba(BRAND.ink, 0.2)}`,
@@ -146,7 +148,7 @@ export function ArchitectureBadge({ moduleSlug }: Props): React.JSX.Element | nu
               </button>
             </div>
 
-            <Section title="Injini ndogo · Sub-engines">
+            <Section title={t('archbadge.sec.engines', 'Injini ndogo · Sub-engines')}>
               <ul style={listStyle}>
                 {meta.engines.map((e) => (
                   <li key={e} style={liStyle}>
@@ -156,7 +158,7 @@ export function ArchitectureBadge({ moduleSlug }: Props): React.JSX.Element | nu
               </ul>
             </Section>
 
-            <Section title="Marejeleo ya EBM · Citations">
+            <Section title={t('archbadge.sec.citations', 'Marejeleo ya EBM · Citations')}>
               <ul style={{ ...listStyle, gap: 10 }}>
                 {meta.citations.map((c) => (
                   <li key={c.label} style={{ ...liStyle, alignItems: 'flex-start' }}>
@@ -167,7 +169,7 @@ export function ArchitectureBadge({ moduleSlug }: Props): React.JSX.Element | nu
                         {c.source}{c.year ? ` · ${c.year}` : ''}
                         {' · '}
                         <span style={{ color: c.verified ? BRAND.green : BRAND.yellow }}>
-                          {c.verified ? 'imethibitishwa' : 'haijathibitishwa'}
+                          {c.verified ? t('archbadge.verified', 'imethibitishwa') : t('archbadge.unverified', 'haijathibitishwa')}
                         </span>
                       </span>
                     </span>
@@ -176,7 +178,7 @@ export function ArchitectureBadge({ moduleSlug }: Props): React.JSX.Element | nu
               </ul>
             </Section>
 
-            <Section title="Mfumo wa Teknolojia · Tech stack">
+            <Section title={t('archbadge.sec.tech', 'Mfumo wa Teknolojia · Tech stack')}>
               <ul style={listStyle}>
                 {getSharedTechStack().map((t) => (
                   <li key={t} style={liStyle}>
@@ -201,7 +203,7 @@ export function ArchitectureBadge({ moduleSlug }: Props): React.JSX.Element | nu
                 cursor: 'pointer',
               }}
             >
-              {showSource ? '⌃ Ficha chanzo · Hide source' : '⌄ Onyesha chanzo · View source'}
+              {showSource ? t('archbadge.hide-src', '⌃ Ficha chanzo · Hide source') : t('archbadge.show-src', '⌄ Onyesha chanzo · View source')}
             </button>
 
             {showSource && (
@@ -213,7 +215,7 @@ export function ArchitectureBadge({ moduleSlug }: Props): React.JSX.Element | nu
             )}
 
             <p style={{ marginTop: 28, fontSize: 11, opacity: 0.6, lineHeight: 1.6 }}>
-              Sehemu hizi ni vielelezo vya muundo — sio data ya mgonjwa halisi.
+              {t('archbadge.disclaimer', 'Sehemu hizi ni vielelezo vya muundo — sio data ya mgonjwa halisi.')}
               {' '}These are illustrative samples — not real patient data.
             </p>
           </aside>

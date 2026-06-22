@@ -1,11 +1,13 @@
 import { useMemo, useState } from 'react'
 import { Card, Filter, Table, Td } from '../../_shared/Layout'
 import { JEWEL, NEUTRAL, TEXT, hexToRgba } from '../../../lib/glass'
+import { useLang } from '../../../lib/i18n/Provider'
 import { REGIONS, phq9Color } from '../data'
 
 type SortKey = 'name' | 'phq9Mean' | 'screeningReach' | 'treatmentEngagement' | 'remission12wk' | 'suicideRate' | 'providerDensity'
 
 export default function SeraRegions() {
+  const { t } = useLang()
   const [q, setQ] = useState('')
   const [sort, setSort] = useState<SortKey>('phq9Mean')
   const [desc, setDesc] = useState(true)
@@ -26,19 +28,19 @@ export default function SeraRegions() {
   }
 
   const cols: { key: SortKey; label: string }[] = [
-    { key: 'name', label: 'Mkoa' },
-    { key: 'phq9Mean', label: 'PHQ-9' },
-    { key: 'screeningReach', label: 'Tathmini %' },
-    { key: 'treatmentEngagement', label: 'Tiba %' },
-    { key: 'remission12wk', label: 'Remission 12wk %' },
-    { key: 'suicideRate', label: 'Kujidhuru /100k' },
-    { key: 'providerDensity', label: 'Wataalam /100k' },
+    { key: 'name', label: t('sera.regions.c.name', 'Mkoa') },
+    { key: 'phq9Mean', label: t('sera.regions.c.phq9', 'PHQ-9') },
+    { key: 'screeningReach', label: t('sera.regions.c.screening', 'Tathmini %') },
+    { key: 'treatmentEngagement', label: t('sera.regions.c.treatment', 'Tiba %') },
+    { key: 'remission12wk', label: t('sera.regions.c.remission', 'Remission 12wk %') },
+    { key: 'suicideRate', label: t('sera.regions.c.suicide', 'Kujidhuru /100k') },
+    { key: 'providerDensity', label: t('sera.regions.c.density', 'Wataalam /100k') },
   ]
 
   return (
     <>
-      <Filter value={q} onChange={setQ} placeholder="Tafuta mkoa…" />
-      <Card title={`Mlinganisho wa Mikoa (${rows.length})`} accent={JEWEL.indigoWisdom}>
+      <Filter value={q} onChange={setQ} placeholder={t('sera.regions.search', 'Tafuta mkoa…')} />
+      <Card title={`${t('sera.regions.compare', 'Mlinganisho wa Mikoa')} (${rows.length})`} accent={JEWEL.indigoWisdom}>
         <Table headers={cols.map((c) => c.label)}>
           {rows.map((r) => (
             <tr key={r.id}>
@@ -73,7 +75,7 @@ export default function SeraRegions() {
                 cursor: 'pointer',
               }}
             >
-              Panga: {c.label}{sort === c.key ? (desc ? ' ↓' : ' ↑') : ''}
+              {t('sera.regions.sort', 'Panga')}: {c.label}{sort === c.key ? (desc ? ' ↓' : ' ↑') : ''}
             </button>
           ))}
         </div>

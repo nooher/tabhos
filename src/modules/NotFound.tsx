@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import { JEWEL } from '../lib/glass'
+import { useLang } from '../lib/i18n/Provider'
 
 export default function NotFound() {
+  const { t } = useLang()
   return (
     <main className="container fade-in" style={{ padding: '120px 24px', textAlign: 'center' }}>
       <h1
@@ -13,10 +15,10 @@ export default function NotFound() {
           margin: 0,
         }}
       >
-        Hatuipati
+        {t('notfound.title', 'Hatuipati')}
       </h1>
       <p style={{ marginTop: 12, color: 'rgba(244,234,201,0.75)' }}>
-        Ukurasa huu haupo. Rudi nyumbani uendelee.
+        {t('notfound.body', 'Ukurasa huu haupo. Rudi nyumbani uendelee.')}
       </p>
       <Link
         to="/"
@@ -30,7 +32,7 @@ export default function NotFound() {
           fontWeight: 700,
         }}
       >
-        Nyumbani
+        {t('notfound.home', 'Nyumbani')}
       </Link>
     </main>
   )

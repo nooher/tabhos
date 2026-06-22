@@ -2,6 +2,7 @@ import type React from 'react'
 import type { ReactNode } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { BRAND, CREAM, NEUTRAL, RADII, TEXT, TYPE, hexToRgba } from '../../lib/glass'
+import { useLang } from '../../lib/i18n/Provider'
 import { MODULES } from '../../lib/modules'
 import { ArchitectureBadge } from '../../components/ArchitectureBadge'
 
@@ -22,8 +23,9 @@ export function ModuleShell({
   children: ReactNode
   showArchitecture?: boolean
 }): React.JSX.Element {
+  const { t } = useLang()
   const m = MODULES.find((x) => x.slug === slug)
-  if (!m) return <main className="container">Moduli haipatikani.</main>
+  if (!m) return <main className="container">{t('shell.not-found', 'Moduli haipatikani.')}</main>
   const chipInk = m.accent === BRAND.yellow ? NEUTRAL.ink : TEXT.onJewel
   return (
     <main style={{ paddingTop: 24, paddingBottom: 120, background: CREAM.milk, minHeight: '100vh' }}>
@@ -37,7 +39,7 @@ export function ModuleShell({
             textDecoration: 'none', marginBottom: 18,
           }}
         >
-          <span aria-hidden>←</span> Toka
+          <span aria-hidden>←</span> {t('shell.exit', 'Toka')}
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
           <h1

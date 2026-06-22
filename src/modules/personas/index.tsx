@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { BRAND, CREAM, NEUTRAL, RADII, TEXT, TYPE, hexToRgba, glass } from '../../lib/glass'
 import { PERSONAS, setPersona, type Persona } from '../../lib/personas'
+import { useLang } from '../../lib/i18n/Provider'
 
 /**
  * /chagua-akaunti — CargoLink-style persona selector.
@@ -10,6 +11,7 @@ import { PERSONAS, setPersona, type Persona } from '../../lib/personas'
  */
 export default function Personas() {
   const nav = useNavigate()
+  const { t } = useLang()
 
   function choose(p: Persona) {
     const result = setPersona(p.id)
@@ -43,7 +45,7 @@ export default function Personas() {
               marginBottom: 18,
             }}
           >
-            Demo &middot; Chagua akaunti
+            {t('personas.demo-badge', 'Demo · Chagua akaunti')}
           </div>
           <h1
             style={{
@@ -56,7 +58,7 @@ export default function Personas() {
               lineHeight: TYPE.headLeading,
             }}
           >
-            Karibu kwenye Tumaini
+            {t('personas.welcome', 'Karibu kwenye Tumaini')}
           </h1>
           <p
             style={{
@@ -67,14 +69,13 @@ export default function Personas() {
               color: TEXT.muted,
             }}
           >
-            Chagua persona ya demo ili kuona Tumaini kupitia macho ya mtumiaji
-            halisi &mdash; mgonjwa, daktari, mshauri, mwajiri, au wizara.
+            {t('personas.subtitle', 'Chagua persona ya demo ili kuona Tumaini kupitia macho ya mtumiaji halisi — mgonjwa, daktari, mshauri, mwajiri, au wizara.')}
           </p>
         </header>
 
         <div
           role="list"
-          aria-label="Personas tisa za demo"
+          aria-label={t('personas.list-aria', 'Personas tisa za demo')}
           style={{
             display: 'grid',
             gap: 18,
@@ -152,7 +153,7 @@ export default function Personas() {
               <button
                 type="button"
                 onClick={() => choose(p)}
-                aria-label={`Karibu kama ${p.name} (${p.english})`}
+                aria-label={`${t('personas.welcome-as', 'Karibu kama')} ${p.name} (${p.english})`}
                 style={{
                   marginTop: 4,
                   background: p.accent,
@@ -170,7 +171,7 @@ export default function Personas() {
                 onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
               >
-                Karibu kama {p.name.split(' ')[0]}
+                {t('personas.welcome-as', 'Karibu kama')} {p.name.split(' ')[0]}
               </button>
             </article>
           ))}
@@ -184,8 +185,7 @@ export default function Personas() {
             color: TEXT.hint,
           }}
         >
-          Personas zote ni demo. Data zote ni mfano &mdash; hakuna jina la
-          mgonjwa halisi.
+          {t('personas.disclaimer', 'Personas zote ni demo. Data zote ni mfano — hakuna jina la mgonjwa halisi.')}
         </p>
       </section>
     </main>

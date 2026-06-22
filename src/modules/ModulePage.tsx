@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { JEWEL, hexToRgba, RADII } from '../lib/glass'
+import { useLang } from '../lib/i18n/Provider'
 import type { ModuleDef } from '../lib/modules'
 
 /**
@@ -7,6 +8,7 @@ import type { ModuleDef } from '../lib/modules'
  * respective module agents implement their full content.
  */
 export default function ModulePage({ module }: { module: ModuleDef }) {
+  const { t } = useLang()
   return (
     <main className="fade-in" style={{ paddingTop: 40, paddingBottom: 120 }}>
       <section className="container" style={{ padding: '32px 24px 24px' }}>
@@ -22,7 +24,7 @@ export default function ModulePage({ module }: { module: ModuleDef }) {
             marginBottom: 24,
           }}
         >
-          <span aria-hidden>←</span> Rudi nyumbani
+          <span aria-hidden>←</span> {t('module.back-home', 'Rudi nyumbani')}
         </Link>
 
         <div
@@ -80,7 +82,7 @@ export default function ModulePage({ module }: { module: ModuleDef }) {
 
       <section
         className="container"
-        aria-label={`Vipengele vya ${module.name}`}
+        aria-label={`${t('module.features-of', 'Vipengele vya')} ${module.name}`}
         style={{ marginTop: 36 }}
       >
         <h2
@@ -92,7 +94,7 @@ export default function ModulePage({ module }: { module: ModuleDef }) {
             color: JEWEL.cream,
           }}
         >
-          Vipengele vya msingi
+          {t('module.core-features', 'Vipengele vya msingi')}
         </h2>
         <div
           style={{
@@ -127,7 +129,7 @@ export default function ModulePage({ module }: { module: ModuleDef }) {
                   fontWeight: 700,
                 }}
               >
-                Hai
+                {t('module.live', 'Hai')}
               </span>
               <div
                 style={{

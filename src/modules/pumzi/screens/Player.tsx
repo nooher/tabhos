@@ -4,6 +4,7 @@ import { CREAM, JEWEL, NEUTRAL, TEXT, hexToRgba, focusRing } from '../../../lib/
 import { speak, stopSpeaking, voiceSupported } from '../../../lib/rafiki/voice'
 import { BreathRing } from '../components/BreathRing'
 import { getSessionById, PUMZI_SESSIONS, type PumziPhase } from '../data/sessions'
+import { useLang } from '../../../lib/i18n/Provider'
 
 const PHASE_CUE_SW: Record<PumziPhase, string> = {
   inhale: 'Vuta pumzi',
@@ -12,6 +13,7 @@ const PHASE_CUE_SW: Record<PumziPhase, string> = {
 }
 
 export default function Player() {
+  const { t } = useLang()
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const session = (id && getSessionById(id)) || PUMZI_SESSIONS[0]
@@ -56,7 +58,7 @@ export default function Player() {
         <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <button
             onClick={() => navigate('/pumzi')}
-            aria-label="Rudi kwenye orodha ya Pumzi"
+            aria-label={t('pumzi.player.back-aria', 'Rudi kwenye orodha ya Pumzi')}
             style={{
               background: CREAM.milk,
               color: JEWEL.tealMwenza,
@@ -71,7 +73,7 @@ export default function Player() {
             onFocus={(e) => Object.assign(e.currentTarget.style, focusRing(JEWEL.tealMwenza))}
             onBlur={(e) => { e.currentTarget.style.outline = 'none' }}
           >
-            ← Rudi
+            ← {t('pumzi.player.back', 'Rudi')}
           </button>
 
           <button
@@ -82,7 +84,7 @@ export default function Player() {
               })
             }}
             aria-pressed={voiceOn}
-            aria-label={voiceOn ? 'Zima sauti ya muongozaji' : 'Washa sauti ya muongozaji'}
+            aria-label={voiceOn ? t('pumzi.player.voice-off-aria', 'Zima sauti ya muongozaji') : t('pumzi.player.voice-on-aria', 'Washa sauti ya muongozaji')}
             disabled={!supported.speak}
             style={{
               background: voiceOn ? JEWEL.tealMwenza : CREAM.milk,
@@ -97,7 +99,7 @@ export default function Player() {
               opacity: supported.speak ? 1 : 0.5,
             }}
           >
-            {voiceOn ? 'Sauti: Imewashwa' : 'Sauti: Imezimwa'}
+            {voiceOn ? t('pumzi.player.voice-on', 'Sauti: Imewashwa') : t('pumzi.player.voice-off', 'Sauti: Imezimwa')}
           </button>
         </div>
 
@@ -161,7 +163,7 @@ export default function Player() {
             fontStyle: 'normal',
           }}
         >
-          Mzunguko {round} / {session.pattern.rounds}
+          {t('pumzi.player.round', 'Mzunguko')} {round} / {session.pattern.rounds}
         </div>
 
         {done && (
@@ -175,8 +177,8 @@ export default function Player() {
               fontStyle: 'normal',
             }}
           >
-            <strong style={{ color: JEWEL.tealDeep }}>Umemaliza.</strong>{' '}
-            Pumua kawaida sasa. Hongera kwa kujitunza.
+            <strong style={{ color: JEWEL.tealDeep }}>{t('pumzi.player.done', 'Umemaliza.')}</strong>{' '}
+            {t('pumzi.player.done-msg', 'Pumua kawaida sasa. Hongera kwa kujitunza.')}
             <div style={{ marginTop: 12 }}>
               <button
                 onClick={() => {
@@ -196,7 +198,7 @@ export default function Player() {
                   cursor: 'pointer',
                 }}
               >
-                Rudia
+                {t('pumzi.player.repeat', 'Rudia')}
               </button>
             </div>
           </div>

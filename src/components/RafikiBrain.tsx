@@ -4,6 +4,7 @@ import { CREAM, JEWEL, NEUTRAL, TZ_FLAG, hexToRgba } from '../lib/glass'
 import { ask as rafikiAsk } from '../lib/rafiki'
 import { db, hasBackend } from '../lib/db'
 import { getMeId } from '../lib/me'
+import { useLang } from '../lib/i18n/Provider'
 
 /**
  * RafikiBrain — the signature presence of TBHOS.
@@ -127,6 +128,7 @@ function BrainSVG({ size }: { size: number }) {
 }
 
 export function RafikiBrain() {
+  const { t } = useLang()
   const [isSmall, setIsSmall] = useState<boolean>(() =>
     typeof window !== 'undefined' && window.innerWidth < SMALL_BREAKPOINT_PX,
   )
@@ -280,7 +282,7 @@ export function RafikiBrain() {
       <div
         role="button"
         tabIndex={0}
-        aria-label="Mwenza — mwenza wako wa kiakili. Bonyeza kufungua."
+        aria-label={t('rafiki.brain.aria_open', 'Mwenza — mwenza wako wa kiakili. Bonyeza kufungua.')}
         style={containerStyle}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -487,6 +489,7 @@ async function persistTurn(turn: ChatTurn, mode = 'mwenza'): Promise<void> {
 }
 
 function RafikiChatModal({ onClose }: { onClose: () => void }) {
+  const { t } = useLang()
   const [turns, setTurns] = useState<ChatTurn[]>([])
   const [draft, setDraft] = useState('')
   const [thinking, setThinking] = useState(false)
@@ -524,7 +527,7 @@ function RafikiChatModal({ onClose }: { onClose: () => void }) {
       setTurns((t) => [...t, aiTurn])
       void persistTurn(aiTurn)
     } catch {
-      const aiTurn: ChatTurn = { id: `a_${Date.now()}`, who: 'rafiki', text: 'Niko nawe. Niambie tena polepole.', ts: Date.now() }
+      const aiTurn: ChatTurn = { id: `a_${Date.now()}`, who: 'rafiki', text: t('rafiki.chat.error_reply', 'Niko nawe. Niambie tena polepole.'), ts: Date.now() }
       setTurns((t) => [...t, aiTurn])
       void persistTurn(aiTurn)
     } finally {
@@ -561,13 +564,13 @@ function RafikiChatModal({ onClose }: { onClose: () => void }) {
       >
         <div style={{ padding: '20px 24px 12px', borderBottom: `1px solid ${hexToRgba(NEUTRAL.ink, 0.08)}` }}>
           <div style={{ fontFamily: "'Georgia', serif", fontSize: 28, fontWeight: 800, color: JEWEL.tealMwenza, letterSpacing: '-0.4px' }}>Rafiki</div>
-          <div style={{ fontSize: 12, color: hexToRgba(NEUTRAL.ink, 0.65), marginTop: 2 }}>Rafiki wako wa polepole. Bonyeza Esc kufunga.</div>
+          <div style={{ fontSize: 12, color: hexToRgba(NEUTRAL.ink, 0.65), marginTop: 2 }}>{t('rafiki.chat.subtitle', 'Rafiki wako wa polepole. Bonyeza Esc kufunga.')}</div>
         </div>
 
         <div ref={scrollerRef} style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
           {turns.length === 0 && !thinking && (
             <div style={{ fontSize: 14, color: hexToRgba(NEUTRAL.ink, 0.6), textAlign: 'center', padding: '40px 8px' }}>
-              Niko hapa. Andika lolote — sina haraka.
+              {t('rafiki.chat.empty', 'Niko hapa. Andika lolote — sina haraka.')}
             </div>
           )}
           {turns.map((t) => (
@@ -585,7 +588,7 @@ function RafikiChatModal({ onClose }: { onClose: () => void }) {
             </div>
           ))}
           {thinking && (
-            <div style={{ alignSelf: 'flex-start', fontSize: 13, color: hexToRgba(NEUTRAL.ink, 0.5), fontStyle: 'normal' }}>Rafiki anasikiliza…</div>
+            <div style={{ alignSelf: 'flex-start', fontSize: 13, color: hexToRgba(NEUTRAL.ink, 0.5), fontStyle: 'normal' }}>{t('rafiki.chat.listening', 'Rafiki anasikiliza…')}</div>
           )}
         </div>
 
@@ -596,7 +599,7 @@ function RafikiChatModal({ onClose }: { onClose: () => void }) {
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void send() }
             }}
-            placeholder="Andika kwa Kiswahili au Kiingereza…"
+            placeholder={t('rafiki.chat.placeholder', 'Andika kwa Kiswahili au Kiingereza…')}
             rows={2}
             style={{
               flex: 1, resize: 'none', borderRadius: 14,
@@ -604,7 +607,7 @@ function RafikiChatModal({ onClose }: { onClose: () => void }) {
               border: `1px solid ${hexToRgba(NEUTRAL.ink, 0.15)}`,
               background: '#FAF5E5', color: NEUTRAL.ink,
             }}
-            aria-label="Ujumbe kwa Rafiki"
+            aria-label={t('rafiki.chat.aria_input', 'Ujumbe kwa Rafiki')}
           />
           <button
             onClick={() => void send()}

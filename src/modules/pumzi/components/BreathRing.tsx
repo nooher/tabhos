@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { CREAM, JEWEL, TEXT, hexToRgba } from '../../../lib/glass'
 import type { PumziSession, PumziPhase } from '../data/sessions'
+import { useLang } from '../../../lib/i18n/Provider'
 
 const PHASE_SW: Record<PumziPhase, string> = {
   inhale: 'Vuta',
@@ -24,6 +25,7 @@ interface RingState {
 }
 
 export function BreathRing({ session, running, onPhaseChange, onComplete, size = 280 }: Props) {
+  const { t } = useLang()
   const [reduced, setReduced] = useState(false)
   const [state, setState] = useState<RingState>({
     phaseIndex: 0,
@@ -120,7 +122,7 @@ export function BreathRing({ session, running, onPhaseChange, onComplete, size =
   return (
     <div
       role="img"
-      aria-label={`Pumzi: ${label}, sekunde ${state.remainingS}, mzunguko ${state.round}`}
+      aria-label={`${t('pumzi.ring.aria-prefix', 'Pumzi')}: ${label}, ${t('pumzi.ring.seconds', 'sekunde')} ${state.remainingS}, ${t('pumzi.ring.round', 'mzunguko')} ${state.round}`}
       style={{ width: size, height: size, position: 'relative', display: 'grid', placeItems: 'center' }}
     >
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} aria-hidden>

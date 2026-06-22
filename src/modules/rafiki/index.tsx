@@ -2,6 +2,7 @@ import type React from 'react'
 import { Link, Routes, Route } from 'react-router-dom'
 import { JEWEL, BRAND, CREAM, TZ_FLAG, NEUTRAL, TEXT, hexToRgba, RADII } from '../../lib/glass'
 import Chat from './Chat'
+import { useLang } from '../../lib/i18n/Provider'
 
 /**
  * Rafiki module — Tumaini's sovereign AI companion.
@@ -28,6 +29,7 @@ const SOURCES = [
 ]
 
 function RafikiHome(): React.JSX.Element {
+  const { t } = useLang()
   return (
     <main className="fade-in" style={{ paddingTop: 40, paddingBottom: 120 }}>
       <section className="container" style={{ padding: '32px 24px 24px' }}>
@@ -35,7 +37,7 @@ function RafikiHome(): React.JSX.Element {
           display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13,
           color: TEXT.muted, textDecoration: 'none', marginBottom: 24,
         }}>
-          <span aria-hidden>←</span> Rudi nyumbani
+          <span aria-hidden>←</span> {t('rafiki.home.back', 'Rudi nyumbani')}
         </Link>
 
         <div style={{
@@ -58,33 +60,30 @@ function RafikiHome(): React.JSX.Element {
           marginTop: 12, fontFamily: "'Georgia', serif",
           fontSize: 'clamp(18px, 2vw, 22px)', color: JEWEL.tealMwenza,
         }}>
-          Rafiki wako wa polepole — bila LLM ya nje.
+          {t('rafiki.home.tagline', 'Rafiki wako wa polepole — bila LLM ya nje.')}
         </p>
         <p style={{
           marginTop: 16, maxWidth: 680, fontSize: 'clamp(15px, 1.4vw, 17px)',
           lineHeight: 1.6, color: TEXT.muted,
         }}>
-          Rafiki ni AI ya Tumaini — yenyewe, ya nyumbani, inayozungumza Kiswahili kabla ya kila
-          lugha nyingine. Inakaa pamoja nawe kwenye kila ukurasa, inakumbuka unayoyataka
-          kukumbukwa, na haisemi neno la kitaalam bila chanzo. Hairuhusiwi kutoa utambuzi wala
-          dawa — hiyo ni kazi ya mhudumu wako.
+          {t('rafiki.home.intro', 'Rafiki ni AI ya Tumaini — yenyewe, ya nyumbani, inayozungumza Kiswahili kabla ya kila lugha nyingine. Inakaa pamoja nawe kwenye kila ukurasa, inakumbuka unayoyataka kukumbukwa, na haisemi neno la kitaalam bila chanzo. Hairuhusiwi kutoa utambuzi wala dawa — hiyo ni kazi ya mhudumu wako.')}
         </p>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 22 }}>
-          <Link to="chat" aria-label="Anza mazungumzo na Rafiki" style={{
+          <Link to="chat" aria-label={t('rafiki.home.chat-aria', 'Anza mazungumzo na Rafiki')} style={{
             padding: '12px 20px', borderRadius: RADII.chip,
             background: BRAND.green, color: CREAM.cream,
             fontSize: 14, fontWeight: 700, textDecoration: 'none',
           }}>
-            Anza mazungumzo
+            {t('rafiki.home.chat-cta', 'Anza mazungumzo')}
           </Link>
-          <Link to="/pumzi" aria-label="Pumzi — mafunzo ya kupumua" style={{
+          <Link to="/pumzi" aria-label={t('rafiki.home.pumzi-aria', 'Pumzi — mafunzo ya kupumua')} style={{
             padding: '12px 20px', borderRadius: RADII.chip,
             background: CREAM.ivory, color: JEWEL.tealMwenza,
             border: `1px solid ${hexToRgba(NEUTRAL.ink, 0.18)}`,
             fontSize: 14, fontWeight: 700, textDecoration: 'none',
           }}>
-            Pumzi (kupumua)
+            {t('rafiki.home.pumzi-cta', 'Pumzi (kupumua)')}
           </Link>
         </div>
       </section>
@@ -94,7 +93,7 @@ function RafikiHome(): React.JSX.Element {
           margin: '0 0 14px', fontFamily: "'Georgia', serif",
           fontSize: 22, letterSpacing: '-0.3px', color: JEWEL.tealDeep,
         }}>
-          Hali sita za Rafiki
+          {t('rafiki.home.modes-title', 'Hali sita za Rafiki')}
         </h2>
         <div style={{ display: 'grid', gap: 14, gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))' }}>
           {MODES.map((m) => (
@@ -125,7 +124,7 @@ function RafikiHome(): React.JSX.Element {
           margin: '0 0 14px', fontFamily: "'Georgia', serif",
           fontSize: 22, letterSpacing: '-0.3px', color: JEWEL.tealDeep,
         }}>
-          Chanzo cha maarifa
+          {t('rafiki.home.sources-title', 'Chanzo cha maarifa')}
         </h2>
         <div style={{ display: 'grid', gap: 10 }}>
           {SOURCES.map((s) => (
@@ -141,7 +140,7 @@ function RafikiHome(): React.JSX.Element {
           ))}
         </div>
         <p style={{ marginTop: 14, fontSize: 12, color: TEXT.hint }}>
-          Maelezo ya kitabibu yanafuata mwongozo wa DSM-5-TR, ICD-11, WHO mhGAP 2.0, na NICE.
+          {t('rafiki.home.disclaimer', 'Maelezo ya kitabibu yanafuata mwongozo wa DSM-5-TR, ICD-11, WHO mhGAP 2.0, na NICE.')}
         </p>
       </section>
     </main>

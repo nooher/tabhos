@@ -4,6 +4,7 @@ import { JEWEL, TEXT, TYPE, hexToRgba } from '../../lib/glass'
 import { createRafiki, createRafikiSession, type RafikiSession } from '../../lib/rafiki/router'
 import { allExperts } from '../../lib/rafiki/experts'
 import type { RafikiAnswer } from '../../lib/rafiki/types'
+import { useLang } from '../../lib/i18n/Provider'
 
 interface Turn {
   who: 'me' | 'mwenza'
@@ -12,6 +13,7 @@ interface Turn {
 }
 
 export default function RafikiChat() {
+  const { t } = useLang()
   const session = useMemo<RafikiSession>(() => createRafikiSession(createRafiki(allExperts)), [])
   const [turns, setTurns] = useState<Turn[]>([])
   const [draft, setDraft] = useState('')
@@ -19,7 +21,8 @@ export default function RafikiChat() {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    setTurns([{ who: 'mwenza', text: 'Karibu. Niko hapa. Tuongee polepole — uniambie unahisije leo.', ts: Date.now() }])
+    setTurns([{ who: 'mwenza', text: t('rafiki.chat_page.greeting', 'Karibu. Niko hapa. Tuongee polepole — uniambie unahisije leo.'), ts: Date.now() }])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -45,9 +48,9 @@ export default function RafikiChat() {
       <header style={{ padding: '18px 22px', borderBottom: `1px solid ${hexToRgba('#000', 0.08)}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <Link to="/rafiki" style={{ color: JEWEL.tealMwenza, textDecoration: 'none', fontSize: 14 }}>← Mwenza</Link>
-          <h1 style={{ margin: '6px 0 0', fontFamily: TYPE.serif, fontWeight: 800, color: JEWEL.tealDeep }}>Ongea na Rafiki</h1>
+          <h1 style={{ margin: '6px 0 0', fontFamily: TYPE.serif, fontWeight: 800, color: JEWEL.tealDeep }}>{t('rafiki.chat_page.title', 'Ongea na Rafiki')}</h1>
         </div>
-        <Link to="/mimi/dharura" style={{ color: JEWEL.maroonCrisis, fontWeight: 700, textDecoration: 'none' }}>Dharura</Link>
+        <Link to="/mimi/dharura" style={{ color: JEWEL.maroonCrisis, fontWeight: 700, textDecoration: 'none' }}>{t('common.dharura', 'Dharura')}</Link>
       </header>
 
       <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 720, margin: '0 auto', width: '100%' }}>
@@ -64,7 +67,7 @@ export default function RafikiChat() {
             }}>{t.text}</div>
           </div>
         ))}
-        {thinking && <div style={{ alignSelf: 'flex-start', color: TEXT.muted }}>Rafiki anaandika…</div>}
+        {thinking && <div style={{ alignSelf: 'flex-start', color: TEXT.muted }}>{t('rafiki.chat_page.typing', 'Rafiki anaandika…')}</div>}
       </div>
 
       <div style={{ borderTop: `1px solid ${hexToRgba('#000', 0.08)}`, padding: '14px 22px', display: 'flex', gap: 10, maxWidth: 720, margin: '0 auto', width: '100%' }}>
@@ -72,8 +75,8 @@ export default function RafikiChat() {
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') void send() }}
-          placeholder="Andika unayohisi…"
-          aria-label="Andika ujumbe kwa Rafiki"
+          placeholder={t('rafiki.chat_page.placeholder', 'Andika unayohisi…')}
+          aria-label={t('rafiki.chat_page.aria_input', 'Andika ujumbe kwa Rafiki')}
           style={{ flex: 1, padding: 12, borderRadius: 999, border: `1px solid ${hexToRgba('#000', 0.12)}`, background: '#FAF5E5', fontFamily: TYPE.sans }}
         />
         <button
@@ -89,7 +92,7 @@ export default function RafikiChat() {
             cursor: thinking ? 'not-allowed' : 'pointer',
             opacity: thinking ? 0.6 : 1,
           }}
-        >Tuma</button>
+        >{t('common.tuma', 'Tuma')}</button>
       </div>
     </main>
   )

@@ -3,6 +3,7 @@ import { BRAND, CREAM, NEUTRAL, RADII, TEXT, TYPE, hexToRgba, glass } from '../.
 import { MODULES } from '../../lib/modules'
 import TumainiCompass from '../../components/TumainiCompass'
 import ResearchNotice from '../../components/ResearchNotice'
+import { useLang } from '../../lib/i18n/Provider'
 
 interface Quote {
   name: string
@@ -179,6 +180,7 @@ function QuoteRail({
 }
 
 export default function Welcome() {
+  const { t } = useLang()
   return (
     <main
       className="fade-in"
@@ -237,8 +239,7 @@ export default function Welcome() {
             color: TEXT.body,
           }}
         >
-          Mfumo wa kwanza wa afya ya akili wa Kiswahili kwanza &mdash;
-          uliojengwa kwa wagonjwa, wataalam, na taasisi za Tanzania.
+          {t('welcome.hero.subtitle', 'Mfumo wa kwanza wa afya ya akili wa Kiswahili kwanza — uliojengwa kwa wagonjwa, wataalam, na taasisi za Tanzania.')}
         </p>
         <div
           style={{
@@ -261,7 +262,7 @@ export default function Welcome() {
               border: `1px solid ${hexToRgba(NEUTRAL.ink, 0.18)}`,
             }}
           >
-            Karibu Demo
+            {t('welcome.hero.demo', 'Karibu Demo')}
           </Link>
           <Link
             to="/karibu"
@@ -276,7 +277,7 @@ export default function Welcome() {
               border: `1px solid ${hexToRgba(NEUTRAL.ink, 0.25)}`,
             }}
           >
-            Karibu Wizard
+            {t('welcome.hero.wizard', 'Karibu Wizard')}
           </Link>
         </div>
       </section>
@@ -284,19 +285,19 @@ export default function Welcome() {
       {/* Social proof */}
       <div className="container" style={{ maxWidth: 1080 }}>
         <QuoteRail
-          title="Wagonjwa"
+          title={t('welcome.rail.patients', 'Wagonjwa')}
           english="Patients"
           accent={BRAND.green}
           quotes={QUOTES_PATIENTS}
         />
         <QuoteRail
-          title="Wataalam"
+          title={t('welcome.rail.providers', 'Wataalam')}
           english="Providers"
           accent={BRAND.blue}
           quotes={QUOTES_PROVIDERS}
         />
         <QuoteRail
-          title="Taasisi"
+          title={t('welcome.rail.institutions', 'Taasisi')}
           english="Institutions"
           accent={BRAND.yellow}
           quotes={QUOTES_INSTITUTIONS}
@@ -306,7 +307,7 @@ export default function Welcome() {
       {/* Module grid */}
       <section className="container" style={{ maxWidth: 1080, marginTop: 24 }}>
         <header style={{ textAlign: 'center', marginBottom: 24 }}>
-          <Pill>Moduli 12</Pill>
+          <Pill>{t('welcome.modules.pill', 'Moduli 12')}</Pill>
           <h2
             style={{
               fontFamily: TYPE.serif,
@@ -317,7 +318,7 @@ export default function Welcome() {
               letterSpacing: TYPE.tightTrack,
             }}
           >
-            Mfumo mzima, sehemu moja
+            {t('welcome.modules.title', 'Mfumo mzima, sehemu moja')}
           </h2>
           <p
             style={{
@@ -327,8 +328,7 @@ export default function Welcome() {
               margin: '0 auto',
             }}
           >
-            Kutoka kwa mgonjwa mmoja hadi wizara &mdash; Tumaini inazungumza
-            Kiswahili katika kila hatua.
+            {t('welcome.modules.subtitle', 'Kutoka kwa mgonjwa mmoja hadi wizara — Tumaini inazungumza Kiswahili katika kila hatua.')}
           </p>
         </header>
         <div
@@ -427,7 +427,7 @@ export default function Welcome() {
             Investor brief
           </strong>
           <span style={{ fontSize: 13, color: TEXT.body }}>
-            Pakua deck na barua ya mwanzilishi
+            {t('welcome.investor.cta-sub', 'Pakua deck na barua ya mwanzilishi')}
           </span>
         </Link>
       </section>

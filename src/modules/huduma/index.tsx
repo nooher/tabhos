@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom'
 import { Card, Filter, ModuleShell, Table, Td, type SubNav } from '../_shared/Layout'
 import { JEWEL, TEXT, hexToRgba } from '../../lib/glass'
 import { PROGRAMS } from '../miradi/data/programs'
+import { useLang } from '../../lib/i18n/Provider'
 
 /* ─────────────────────────── catalogue data ─────────────────────────────── */
 
@@ -70,16 +71,18 @@ const REFERRAL_PATHS = [
 /* ─────────────────────────── sub-screens ────────────────────────────────── */
 
 function Overview(): React.JSX.Element {
+  const { t } = useLang()
   return (
-    <Card title="Huduma ya TBHOS">
-      Huduma ndipo unapata kila kitu kinachopatikana — tathmini ({ASSESSMENTS.length}),
-      mipango ya tiba ({PROGRAMS.length}), mifano ya care plan ({CARE_PLANS.length}),
-      ICD-11, bima zinazohusika, na njia za rufaa. Tumia kichupo kuongoza utafiti wako.
+    <Card title={t('huduma.overview.title', 'Huduma ya TBHOS')}>
+      {t('huduma.overview.body', 'Huduma ndipo unapata kila kitu kinachopatikana — tathmini')} ({ASSESSMENTS.length}),
+      {' '}{t('huduma.overview.body2', 'mipango ya tiba')} ({PROGRAMS.length}), {t('huduma.overview.body3', 'mifano ya care plan')} ({CARE_PLANS.length}),
+      {' '}{t('huduma.overview.body4', 'ICD-11, bima zinazohusika, na njia za rufaa. Tumia kichupo kuongoza utafiti wako.')}
     </Card>
   )
 }
 
 function Assessments(): React.JSX.Element {
+  const { t } = useLang()
   const [q, setQ] = useState('')
   const filtered = useMemo(() =>
     ASSESSMENTS.filter((a) => `${a.name_sw} ${a.name_en} ${a.domain}`.toLowerCase().includes(q.toLowerCase())),
@@ -87,9 +90,9 @@ function Assessments(): React.JSX.Element {
   )
   return (
     <>
-      <Filter value={q} onChange={setQ} placeholder="Tafuta tathmini…" />
-      <Card title={`Tathmini (${filtered.length})`}>
-        <Table headers={['Jina', 'Maelezo', 'Maswali', 'Eneo', 'Umri']}>
+      <Filter value={q} onChange={setQ} placeholder={t('huduma.assess.search', 'Tafuta tathmini…')} />
+      <Card title={`${t('huduma.assess.title', 'Tathmini')} (${filtered.length})`}>
+        <Table headers={[t('huduma.assess.h.name', 'Jina'), t('huduma.assess.h.desc', 'Maelezo'), t('huduma.assess.h.qs', 'Maswali'), t('huduma.assess.h.area', 'Eneo'), t('huduma.assess.h.age', 'Umri')]}>
           {filtered.map((a) => (
             <tr key={a.slug}>
               <Td><strong>{a.name_sw}</strong></Td>
@@ -106,16 +109,17 @@ function Assessments(): React.JSX.Element {
 }
 
 function ProgramsTable(): React.JSX.Element {
+  const { t } = useLang()
   return (
-    <Card title={`Mipango ya tiba (${PROGRAMS.length})`}>
-      <Table headers={['Jina', 'Vikao', 'Kwa nani', 'Modaliti', 'Gharama']}>
+    <Card title={`${t('huduma.programs.title', 'Mipango ya tiba')} (${PROGRAMS.length})`}>
+      <Table headers={[t('huduma.programs.h.name', 'Jina'), t('huduma.programs.h.sessions', 'Vikao'), t('huduma.programs.h.for', 'Kwa nani'), t('huduma.programs.h.modality', 'Modaliti'), t('huduma.programs.h.cost', 'Gharama')]}>
         {PROGRAMS.map((p) => (
           <tr key={p.id}>
             <Td><strong>{p.name_sw}</strong><br /><small style={{ color: TEXT.muted }}>{p.name_en}</small></Td>
             <Td>{p.sessions.length}</Td>
             <Td>{p.audience}</Td>
             <Td>{p.modality}</Td>
-            <Td>BURE</Td>
+            <Td>{t('huduma.programs.free', 'BURE')}</Td>
           </tr>
         ))}
       </Table>
@@ -124,12 +128,13 @@ function ProgramsTable(): React.JSX.Element {
 }
 
 function CarePlans(): React.JSX.Element {
+  const { t } = useLang()
   return (
-    <Card title="Mifano ya Care Plan">
+    <Card title={t('huduma.careplans.title', 'Mifano ya Care Plan')}>
       {CARE_PLANS.map((c) => (
         <div key={c.slug} style={{ borderTop: `1px solid rgba(11,9,8,0.10)`, padding: '14px 0' }}>
           <div className="serif" style={{ fontSize: 18, color: TEXT.heading }}>{c.name_sw}</div>
-          <div style={{ fontSize: 12, color: TEXT.muted, marginBottom: 6 }}>Kigezo: {c.for_}</div>
+          <div style={{ fontSize: 12, color: TEXT.muted, marginBottom: 6 }}>{t('huduma.careplans.criteria', 'Kigezo')}: {c.for_}</div>
           <ol style={{ margin: '0 0 0 18px' }}>{c.steps.map((s) => <li key={s} style={{ fontSize: 14 }}>{s}</li>)}</ol>
         </div>
       ))}
@@ -138,24 +143,26 @@ function CarePlans(): React.JSX.Element {
 }
 
 function Icd(): React.JSX.Element {
+  const { t } = useLang()
   return (
-    <Card title="ICD-11 — Sura ya 6 (Afya ya Akili)">
-      <Table headers={['Code', 'Kiswahili', 'English']}>
+    <Card title={t('huduma.icd.title', 'ICD-11 — Sura ya 6 (Afya ya Akili)')}>
+      <Table headers={['Code', t('huduma.icd.h.sw', 'Kiswahili'), t('huduma.icd.h.en', 'English')]}>
         {ICD11_CHAPTER6.map((r) => (
           <tr key={r.code}><Td><code>{r.code}</code></Td><Td>{r.label_sw}</Td><Td>{r.label_en}</Td></tr>
         ))}
       </Table>
       <p style={{ marginTop: 12, fontSize: 12, color: TEXT.muted }}>
-        Marejeo kamili: <a href="https://icd.who.int/" target="_blank" rel="noreferrer" style={{ color: TEXT.link }}>icd.who.int</a>
+        {t('huduma.icd.refs', 'Marejeo kamili')}: <a href="https://icd.who.int/" target="_blank" rel="noreferrer" style={{ color: TEXT.link }}>icd.who.int</a>
       </p>
     </Card>
   )
 }
 
 function Insurance(): React.JSX.Element {
+  const { t } = useLang()
   return (
-    <Card title="Bima — Afya ya Akili">
-      <Table headers={['Bima', 'Inafidia nini', 'Maelezo']}>
+    <Card title={t('huduma.insurance.title', 'Bima — Afya ya Akili')}>
+      <Table headers={[t('huduma.insurance.h.insurer', 'Bima'), t('huduma.insurance.h.covers', 'Inafidia nini'), t('huduma.insurance.h.notes', 'Maelezo')]}>
         {INSURERS.map((i) => (
           <tr key={i.name}><Td><strong>{i.name}</strong></Td><Td>{i.covers_mh}</Td><Td>{i.notes_sw}</Td></tr>
         ))}
@@ -165,9 +172,10 @@ function Insurance(): React.JSX.Element {
 }
 
 function Referrals(): React.JSX.Element {
+  const { t } = useLang()
   return (
-    <Card title="Njia za Rufaa">
-      <Table headers={['Kutoka', 'Kwenda', 'Lini']}>
+    <Card title={t('huduma.referrals.title', 'Njia za Rufaa')}>
+      <Table headers={[t('huduma.referrals.h.from', 'Kutoka'), t('huduma.referrals.h.to', 'Kwenda'), t('huduma.referrals.h.when', 'Lini')]}>
         {REFERRAL_PATHS.map((r, idx) => (
           <tr key={idx}><Td>{r.from}</Td><Td><strong>{r.to}</strong></Td><Td>{r.when_sw}</Td></tr>
         ))}
@@ -176,17 +184,17 @@ function Referrals(): React.JSX.Element {
   )
 }
 
-const SUBS: SubNav[] = [
-  { to: '.', label: 'Mwongozo' },
-  { to: 'tathmini', label: 'Tathmini' },
-  { to: 'mipango', label: 'Mipango' },
-  { to: 'care-plan', label: 'Care Plans' },
-  { to: 'icd11', label: 'ICD-11' },
-  { to: 'bima', label: 'Bima' },
-  { to: 'rufaa', label: 'Rufaa' },
-]
-
 export default function Huduma(): React.JSX.Element {
+  const { t } = useLang()
+  const SUBS: SubNav[] = [
+    { to: '.', label: t('huduma.sub.guide', 'Mwongozo') },
+    { to: 'tathmini', label: t('huduma.sub.assess', 'Tathmini') },
+    { to: 'mipango', label: t('huduma.sub.programs', 'Mipango') },
+    { to: 'care-plan', label: t('huduma.sub.careplan', 'Care Plans') },
+    { to: 'icd11', label: 'ICD-11' },
+    { to: 'bima', label: t('huduma.sub.insurance', 'Bima') },
+    { to: 'rufaa', label: t('huduma.sub.referrals', 'Rufaa') },
+  ]
   return (
     <ModuleShell slug="huduma" subs={SUBS}>
       <Routes>

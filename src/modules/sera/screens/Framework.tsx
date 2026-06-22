@@ -1,5 +1,6 @@
 import { Card, Table, Td } from '../../_shared/Layout'
 import { JEWEL, CREAM, NEUTRAL, TEXT, hexToRgba } from '../../../lib/glass'
+import { useLang } from '../../../lib/i18n/Provider'
 import { REGIONS, FRAMEWORK_LABEL } from '../data'
 
 const MILESTONES: { id: string; name_sw: string; status: 'done' | 'active' | 'planned' }[] = [
@@ -29,19 +30,20 @@ const STATUS_COLOR = {
 } as const
 
 export default function SeraFramework() {
+  const { t } = useLang()
   const signed = REGIONS.filter((r) => r.framework === 'signed').length
   const inProgress = REGIONS.filter((r) => r.framework === 'inProgress').length
   const pending = REGIONS.filter((r) => r.framework === 'pending').length
 
   return (
     <>
-      <Card title="Hali ya Makubaliano — kwa Mkoa" accent={JEWEL.indigoWisdom}>
+      <Card title={t('sera.fw.status-title', 'Hali ya Makubaliano — kwa Mkoa')} accent={JEWEL.indigoWisdom}>
         <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginBottom: 16 }}>
-          <Pill label="Imesainiwa" count={signed} color={FRAMEWORK_LABEL.signed.color} />
-          <Pill label="Inaendelea" count={inProgress} color={FRAMEWORK_LABEL.inProgress.color} />
-          <Pill label="Inasubiri" count={pending} color={FRAMEWORK_LABEL.pending.color} />
+          <Pill label={t('sera.fw.signed', 'Imesainiwa')} count={signed} color={FRAMEWORK_LABEL.signed.color} />
+          <Pill label={t('sera.fw.inprogress', 'Inaendelea')} count={inProgress} color={FRAMEWORK_LABEL.inProgress.color} />
+          <Pill label={t('sera.fw.pending', 'Inasubiri')} count={pending} color={FRAMEWORK_LABEL.pending.color} />
         </div>
-        <Table headers={['Mkoa', 'Hali']}>
+        <Table headers={[t('sera.fw.h.region', 'Mkoa'), t('sera.fw.h.status', 'Hali')]}>
           {REGIONS.map((r) => (
             <tr key={r.id}>
               <Td><strong style={{ color: JEWEL.tealDeep }}>{r.name}</strong></Td>
@@ -59,7 +61,7 @@ export default function SeraFramework() {
         </Table>
       </Card>
 
-      <Card title="Hatua za Utekelezaji" accent={JEWEL.goldHope}>
+      <Card title={t('sera.fw.milestones-title', 'Hatua za Utekelezaji')} accent={JEWEL.goldHope}>
         <ol style={{ margin: 0, padding: 0, listStyle: 'none' }}>
           {MILESTONES.map((m, i) => (
             <li
@@ -84,15 +86,15 @@ export default function SeraFramework() {
                 fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 700,
                 color: STATUS_COLOR[m.status],
               }}>
-                {m.status === 'done' ? 'Imekamilika' : m.status === 'active' ? 'Inaendelea' : 'Imepangwa'}
+                {m.status === 'done' ? t('sera.fw.s.done', 'Imekamilika') : m.status === 'active' ? t('sera.fw.s.active', 'Inaendelea') : t('sera.fw.s.planned', 'Imepangwa')}
               </span>
             </li>
           ))}
         </ol>
       </Card>
 
-      <Card title="Mfumo wa Kazi — Wizara ya Afya" accent={JEWEL.tealMwenza}>
-        <Table headers={['Hatua', 'Mhusika', 'Muda']}>
+      <Card title={t('sera.fw.workflow-title', 'Mfumo wa Kazi — Wizara ya Afya')} accent={JEWEL.tealMwenza}>
+        <Table headers={[t('sera.fw.h.stage', 'Hatua'), t('sera.fw.h.owner', 'Mhusika'), t('sera.fw.h.eta', 'Muda')]}>
           {WORKFLOW.map((w, i) => (
             <tr key={i}>
               <Td><strong>{w.stage}</strong></Td>

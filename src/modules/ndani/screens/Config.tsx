@@ -119,39 +119,39 @@ export default function Config(): React.JSX.Element {
 
       <Card title={t('ndani.config.sms_title', 'Gateway ya SMS')}>
         <div style={{ display: 'grid', gap: 10, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
-          <ConfigField label="Provider" value="Africa's Talking" />
-          <ConfigField label="Sender ID" value="TUMAINI" />
-          <ConfigField label="Throughput" value="120 msg/sek" />
-          <ConfigField label="Failover" value="Beem Africa" />
+          <ConfigField label={t('ndani.config.sms.provider', 'Provider')} value="Africa's Talking" />
+          <ConfigField label={t('ndani.config.sms.sender_id', 'Sender ID')} value="TUMAINI" />
+          <ConfigField label={t('ndani.config.sms.throughput', 'Throughput')} value="120 msg/sek" />
+          <ConfigField label={t('ndani.config.sms.failover', 'Failover')} value="Beem Africa" />
         </div>
       </Card>
 
       <Card title={t('ndani.config.email_title', 'Vielelezo vya barua pepe')}>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
-          {templates.map((t) => (
-            <button key={t.id} onClick={() => setTplSel(t.id)}
-              aria-label={`Chagua kielelezo ${t.label}`}
+          {templates.map((tp) => (
+            <button key={tp.id} onClick={() => setTplSel(tp.id)}
+              aria-label={`${t('ndani.config.email.pick_aria', 'Chagua kielelezo')} ${tp.label}`}
               style={chipBtn(
-                tplSel === t.id ? BRAND.green : 'transparent',
-                tplSel === t.id ? TEXT.onJewel : TEXT.body,
+                tplSel === tp.id ? BRAND.green : 'transparent',
+                tplSel === tp.id ? TEXT.onJewel : TEXT.body,
               )}>
-              {t.label}
+              {tp.label}
             </button>
           ))}
         </div>
         {tpl ? (
           <div style={{ display: 'grid', gap: 10 }}>
             <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              <span style={lbl}>Mada</span>
+              <span style={lbl}>{t('ndani.config.email.subject', 'Mada')}</span>
               <input value={tpl.subject}
-                aria-label="Mada ya kielelezo"
+                aria-label={t('ndani.config.email.subject_aria', 'Mada ya kielelezo')}
                 onChange={(e) => setTemplates((ts) => ts.map((x) => x.id === tpl.id ? { ...x, subject: e.target.value } : x))}
                 style={inputCream} />
             </label>
             <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              <span style={lbl}>Maandishi</span>
+              <span style={lbl}>{t('ndani.config.email.body', 'Maandishi')}</span>
               <textarea rows={6} value={tpl.body}
-                aria-label="Maandishi ya kielelezo"
+                aria-label={t('ndani.config.email.body_aria', 'Maandishi ya kielelezo')}
                 onChange={(e) => setTemplates((ts) => ts.map((x) => x.id === tpl.id ? { ...x, body: e.target.value } : x))}
                 style={{ ...inputCream, resize: 'vertical' as const, fontFamily: 'inherit' }} />
             </label>
@@ -162,23 +162,22 @@ export default function Config(): React.JSX.Element {
       <Card title={t('ndani.config.policy_title', 'Toleo la sera')}>
         <div style={{ display: 'grid', gap: 10, gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
           <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={lbl}>Sera ya faragha</span>
+            <span style={lbl}>{t('ndani.config.policy.privacy', 'Sera ya faragha')}</span>
             <input value={policyVer.privacy}
-              aria-label="Toleo la sera ya faragha"
+              aria-label={t('ndani.config.policy.privacy_aria', 'Toleo la sera ya faragha')}
               onChange={(e) => setPolicyVer({ ...policyVer, privacy: e.target.value })}
               style={inputCream} />
           </label>
           <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={lbl}>Masharti ya matumizi</span>
+            <span style={lbl}>{t('ndani.config.policy.tos', 'Masharti ya matumizi')}</span>
             <input value={policyVer.tos}
-              aria-label="Toleo la masharti ya matumizi"
+              aria-label={t('ndani.config.policy.tos_aria', 'Toleo la masharti ya matumizi')}
               onChange={(e) => setPolicyVer({ ...policyVer, tos: e.target.value })}
               style={inputCream} />
           </label>
         </div>
         <p style={{ fontSize: 12, color: TEXT.muted, marginTop: 10 }}>
-          Kila toleo linahifadhiwa kwenye audit log. Watumiaji wa zamani wataona "sasisha" kabla ya
-          kuendelea.
+          {t('ndani.config.policy_body', 'Kila toleo linahifadhiwa kwenye audit log. Watumiaji wa zamani wataona "sasisha" kabla ya kuendelea.')}
         </p>
       </Card>
     </>
@@ -186,6 +185,7 @@ export default function Config(): React.JSX.Element {
 }
 
 function Toggle({ label, on, onChange }: { label: string; on: boolean; onChange: (v: boolean) => void }): React.JSX.Element {
+  const { t } = useLang()
   return (
     <label style={{
       display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10,
@@ -196,18 +196,19 @@ function Toggle({ label, on, onChange }: { label: string; on: boolean; onChange:
     }}>
       <span style={{ fontSize: 13, color: TEXT.body }}>{label}</span>
       <input type="checkbox" checked={on} onChange={(e) => onChange(e.target.checked)}
-        aria-label={`Wezesha ${label}`} />
+        aria-label={`${t('ndani.config.enable', 'Wezesha')} ${label}`} />
     </label>
   )
 }
 
 function IntegrationRow({ name, status }: { name: string; status: 'connected' | 'degraded' | 'not_connected' }): React.JSX.Element {
+  const { t } = useLang()
   const map = {
-    connected:     { bg: TZ_FLAG.green,  fg: '#fff',    label: 'Imeunganishwa' },
-    degraded:      { bg: TZ_FLAG.yellow, fg: BRAND.ink, label: 'Ina matatizo' },
-    not_connected: { bg: BRAND.ink,      fg: '#fff',    label: 'Haijaunganishwa' },
+    connected:     { bg: TZ_FLAG.green,  fg: '#fff',    label: t('ndani.config.status.connected', 'Imeunganishwa') },
+    degraded:      { bg: TZ_FLAG.yellow, fg: BRAND.ink, label: t('ndani.config.status.degraded', 'Ina matatizo') },
+    not_connected: { bg: BRAND.ink,      fg: '#fff',    label: t('ndani.config.status.not_connected', 'Haijaunganishwa') },
   } as const
-  const t = map[status]
+  const m = map[status]
   return (
     <div style={{
       display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -218,8 +219,8 @@ function IntegrationRow({ name, status }: { name: string; status: 'connected' | 
       <span style={{ color: TEXT.body, fontSize: 13 }}>{name}</span>
       <span style={{
         padding: '3px 10px', borderRadius: 999, fontSize: 11, fontWeight: 700,
-        background: t.bg, color: t.fg, letterSpacing: 0.4,
-      }}>{t.label}</span>
+        background: m.bg, color: m.fg, letterSpacing: 0.4,
+      }}>{m.label}</span>
     </div>
   )
 }

@@ -9,6 +9,7 @@ import { wasioajiriwaData } from './data/wasioajiriwaData'
 import { watoaHudumaData } from './data/watoaHudumaData'
 import { magonjwaSuguData } from './data/magonjwaSuguData'
 import type { TrackData } from './data/dialysisData'
+import { useLang } from '../../lib/i18n/Provider'
 
 interface Population {
   slug: string; label: string; titleSw: string; titleEn: string; overview: string
@@ -153,6 +154,7 @@ const POPULATIONS: Population[] = [
 /* -------------------------------------------------------------------------- */
 
 function TrackPage({ t }: { t: TrackData }): React.JSX.Element {
+  const { t: tr } = useLang()
   const ink = TEXT.body
   const subtle = TEXT.muted
   return (
@@ -168,11 +170,11 @@ function TrackPage({ t }: { t: TrackData }): React.JSX.Element {
         </Card>
       ))}
 
-      <Card title="Mbinu zilizothibitishwa (EBM)">
+      <Card title={tr('maalum.track.ebm', 'Mbinu zilizothibitishwa (EBM)')}>
         <p>{t.ebmIntro}</p>
       </Card>
 
-      <Card title="Mipango">
+      <Card title={tr('maalum.track.programs', 'Mipango')}>
         <div style={{ display: 'grid', gap: 14 }}>
           {t.programs.map((p) => (
             <div
@@ -193,11 +195,11 @@ function TrackPage({ t }: { t: TrackData }): React.JSX.Element {
         </div>
       </Card>
 
-      <Card title="Msaada wa rika">
+      <Card title={tr('maalum.track.peer', 'Msaada wa rika')}>
         <p>{t.peerSupport}</p>
       </Card>
 
-      <Card title="Simu za Dharura" accent={JEWEL.maroonCrisis}>
+      <Card title={tr('maalum.track.hotlines', 'Simu za Dharura')} accent={JEWEL.maroonCrisis}>
         {t.hotlines.map((h) => (
           <div
             key={h.number}
@@ -217,7 +219,7 @@ function TrackPage({ t }: { t: TrackData }): React.JSX.Element {
                   borderRadius: 4, background: hexToRgba(JEWEL.goldHope, 0.18),
                   color: TEXT.heading, letterSpacing: 0.4,
                 }}>
-                  HAIJATHIBITISHWA
+                  {tr('maalum.unverified', 'HAIJATHIBITISHWA')}
                 </span>
               ) : null}
               {h.note ? <div style={{ fontSize: 12, color: subtle }}>{h.note}</div> : null}
@@ -227,11 +229,11 @@ function TrackPage({ t }: { t: TrackData }): React.JSX.Element {
         ))}
       </Card>
 
-      <Card title="Rufaa za wahudumu">
+      <Card title={tr('maalum.track.referral', 'Rufaa za wahudumu')}>
         <p>{t.providerReferral}</p>
       </Card>
 
-      <Card title="Mwenza anavyokusaidia">
+      <Card title={tr('maalum.track.mwenza-help', 'Mwenza anavyokusaidia')}>
         <div
           style={{
             display: 'inline-block', padding: '8px 16px', borderRadius: RADII.chip,
@@ -252,6 +254,7 @@ function TrackPage({ t }: { t: TrackData }): React.JSX.Element {
 /* -------------------------------------------------------------------------- */
 
 function PopPage({ p }: { p: Population }): React.JSX.Element {
+  const { t } = useLang()
   const ink = TEXT.body
   const subtle = TEXT.muted
   return (
@@ -287,12 +290,12 @@ function PopPage({ p }: { p: Population }): React.JSX.Element {
         </Card>
       ))}
 
-      <Card title="Tathmini Zilizopendekezwa"><ul>{p.assessments.map((a) => <li key={a}>{a}</li>)}</ul></Card>
-      <Card title="Mipango Iliyochaguliwa"><ul>{p.programs.map((x) => <li key={x}>{x}</li>)}</ul></Card>
-      <Card title="Wahudumu"><p>{p.providers}</p></Card>
+      <Card title={t('maalum.pop.assessments', 'Tathmini Zilizopendekezwa')}><ul>{p.assessments.map((a) => <li key={a}>{a}</li>)}</ul></Card>
+      <Card title={t('maalum.pop.programs', 'Mipango Iliyochaguliwa')}><ul>{p.programs.map((x) => <li key={x}>{x}</li>)}</ul></Card>
+      <Card title={t('maalum.pop.providers', 'Wahudumu')}><p>{p.providers}</p></Card>
 
       {p.network ? (
-        <Card title="Mtandao wa Methadone">
+        <Card title={t('maalum.pop.methadone', 'Mtandao wa Methadone')}>
           <div style={{ display: 'grid', gap: 10 }}>
             {p.network.map((n) => (
               <div key={n.center} style={{
@@ -310,7 +313,7 @@ function PopPage({ p }: { p: Population }): React.JSX.Element {
                     background: hexToRgba(JEWEL.goldHope, 0.18),
                     color: TEXT.heading, letterSpacing: 0.4,
                   }}>
-                    HAIJATHIBITISHWA
+                    {t('maalum.unverified', 'HAIJATHIBITISHWA')}
                   </span>
                 ) : null}
               </div>
@@ -325,15 +328,15 @@ function PopPage({ p }: { p: Population }): React.JSX.Element {
         </Card>
       ))}
 
-      <Card title="Mwenza — Mode iliyopangwa">
+      <Card title={t('maalum.pop.mwenza-mode', 'Mwenza — Mode iliyopangwa')}>
         <div style={{ display: 'inline-block', padding: '8px 16px', borderRadius: RADII.chip, background: JEWEL.tealRoho, color: TEXT.onJewel, letterSpacing: TYPE.tightTrack, fontFamily: TYPE.serif }}>
           {p.rohoMode}
         </div>
         <p style={{ marginTop: 12, fontSize: 13, color: subtle }}>
-          Mwenza atajibu kwa mtindo huu wakati unapata huduma hii.
+          {t('maalum.pop.mwenza-note', 'Mwenza atajibu kwa mtindo huu wakati unapata huduma hii.')}
         </p>
       </Card>
-      <Card title="Simu za Dharura" accent={JEWEL.maroonCrisis}>
+      <Card title={t('maalum.pop.hotlines', 'Simu za Dharura')} accent={JEWEL.maroonCrisis}>
         {p.hotlines.map((h) => (
           <div key={h.number} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: `1px solid rgba(11,9,8,0.10)` }}>
             <span>{h.name}</span>
@@ -350,12 +353,12 @@ function PopPage({ p }: { p: Population }): React.JSX.Element {
 /* -------------------------------------------------------------------------- */
 
 function Overview(): React.JSX.Element {
+  const { t } = useLang()
   const ink = TEXT.body
   return (
-    <Card title="Makundi maalum">
+    <Card title={t('maalum.overview.title', 'Makundi maalum')}>
       <p style={{ marginBottom: 18 }}>
-        Tunatambua kuwa baadhi ya hali za maisha zinahitaji huduma iliyofanyiwa kazi maalum —
-        sio kanuni moja kwa wote. Chagua kundi ulilo nalo au unalitumikia.
+        {t('maalum.overview.body', 'Tunatambua kuwa baadhi ya hali za maisha zinahitaji huduma iliyofanyiwa kazi maalum — sio kanuni moja kwa wote. Chagua kundi ulilo nalo au unalitumikia.')}
       </p>
       <div
         style={{
@@ -418,23 +421,23 @@ function Overview(): React.JSX.Element {
           aria-hidden
           style={{ display: 'inline-block', width: 8, height: 8, borderRadius: 999, background: TZ_FLAG.green }}
         />
-        Rangi za bendera ya Tanzania zinaongoza msisitizo wa kila kundi.
+        {t('maalum.overview.flag-note', 'Rangi za bendera ya Tanzania zinaongoza msisitizo wa kila kundi.')}
       </div>
     </Card>
   )
 }
 
-const SUBS: SubNav[] = [
-  { to: '.', label: 'Mwongozo' },
-  ...POPULATIONS.map((p) => ({ to: p.slug, label: p.label })),
-  { to: 'dialysis', label: 'Kuoshwa Damu' },
-  { to: 'wanajeshi', label: 'Wanajeshi' },
-  { to: 'wasioajiriwa', label: 'Watafutaji Kazi' },
-  { to: 'watoa-huduma', label: 'Watoa Huduma' },
-  { to: 'magonjwa-sugu', label: 'Magonjwa Sugu' },
-]
-
 export default function Maalum(): React.JSX.Element {
+  const { t } = useLang()
+  const SUBS: SubNav[] = [
+    { to: '.', label: t('maalum.sub.guide', 'Mwongozo') },
+    ...POPULATIONS.map((p) => ({ to: p.slug, label: p.label })),
+    { to: 'dialysis', label: t('maalum.sub.dialysis', 'Kuoshwa Damu') },
+    { to: 'wanajeshi', label: t('maalum.sub.wanajeshi', 'Wanajeshi') },
+    { to: 'wasioajiriwa', label: t('maalum.sub.wasioajiriwa', 'Watafutaji Kazi') },
+    { to: 'watoa-huduma', label: t('maalum.sub.watoa-huduma', 'Watoa Huduma') },
+    { to: 'magonjwa-sugu', label: t('maalum.sub.magonjwa-sugu', 'Magonjwa Sugu') },
+  ]
   return (
     <ModuleShell slug="maalum" subs={SUBS}>
       <Routes>

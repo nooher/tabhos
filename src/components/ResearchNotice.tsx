@@ -1,5 +1,6 @@
 import type React from 'react'
 import { BRAND, CREAM, TEXT } from '../lib/glass'
+import { useLang } from '../lib/i18n/Provider'
 
 /**
  * Public research notice — short, dignified, no founder name.
@@ -14,19 +15,16 @@ export interface ResearchNoticeProps {
   variant?: 'welcome' | 'karibu' | 'footer'
 }
 
-const TITLE = 'Tumaini · faragha na utafiti'
-const BODY =
-  'Tumaini ni jukwaa la kitaifa la afya ya tabia — bure milele. ' +
-  'Data isiyojulikana inaweza kuchangia utafiti wa kitaifa chini ya idhini ya bodi za maadili (IRB). ' +
-  'Data yako haitauzwi kamwe, na hutaweza kutambuliwa.'
-const BULLETS = [
-  'Bure milele — kwa wote.',
-  'De-identified — siri yako inalindwa.',
-  'IRB-gated — utafiti wowote unahitaji idhini.',
-  'Hauziwi kamwe.',
-]
-
 export default function ResearchNotice({ variant = 'welcome' }: ResearchNoticeProps): React.JSX.Element {
+  const { t } = useLang()
+  const TITLE = t('research.title', 'Tumaini · faragha na utafiti')
+  const BODY = t('research.body', 'Tumaini ni jukwaa la kitaifa la afya ya tabia — bure milele. Data isiyojulikana inaweza kuchangia utafiti wa kitaifa chini ya idhini ya bodi za maadili (IRB). Data yako haitauzwi kamwe, na hutaweza kutambuliwa.')
+  const BULLETS = [
+    t('research.bullet1', 'Bure milele — kwa wote.'),
+    t('research.bullet2', 'De-identified — siri yako inalindwa.'),
+    t('research.bullet3', 'IRB-gated — utafiti wowote unahitaji idhini.'),
+    t('research.bullet4', 'Hauziwi kamwe.'),
+  ]
   if (variant === 'footer') {
     return (
       <p
@@ -38,7 +36,7 @@ export default function ResearchNotice({ variant = 'welcome' }: ResearchNoticePr
           textAlign: 'center',
         }}
       >
-        Bure milele. Data isiyojulikana inaweza kuchangia utafiti wa kitaifa chini ya IRB. Hauziwi.
+        {t('research.footer', 'Bure milele. Data isiyojulikana inaweza kuchangia utafiti wa kitaifa chini ya IRB. Hauziwi.')}
       </p>
     )
   }

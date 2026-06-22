@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import { BRAND, CREAM, NEUTRAL, RADII, TEXT, TYPE, hexToRgba, glass } from '../../../lib/glass'
+import { useLang } from '../../../lib/i18n/Provider'
 
 export default function Investor() {
+  const { t } = useLang()
   return (
     <main
       className="fade-in"
@@ -12,7 +14,7 @@ export default function Investor() {
           to="/welcome"
           style={{ color: BRAND.green, fontSize: 13, textDecoration: 'none' }}
         >
-          &larr; Rudi kwa Welcome
+          &larr; {t('investor.back', 'Rudi kwa Welcome')}
         </Link>
         <h1
           style={{
@@ -26,9 +28,7 @@ export default function Investor() {
           Investor brief
         </h1>
         <p style={{ fontSize: 16, lineHeight: TYPE.bodyLeading, color: TEXT.body }}>
-          Tumaini ni bidhaa namba 23 ya Laetoli (T) Ltd &mdash; mfumo wa
-          kitaifa wa afya ya akili kwa Tanzania. Pakua deck na barua ya
-          mwanzilishi kupata maelezo kamili.
+          {t('investor.intro', 'Tumaini ni bidhaa namba 23 ya Laetoli (T) Ltd — mfumo wa kitaifa wa afya ya akili kwa Tanzania. Pakua deck na barua ya mwanzilishi kupata maelezo kamili.')}
         </p>
 
         <div style={{ display: 'grid', gap: 14, marginTop: 28 }}>
@@ -44,10 +44,10 @@ export default function Investor() {
             }}
           >
             <strong style={{ fontFamily: TYPE.serif, fontSize: 18 }}>
-              Pakua Deck ya Wawekezaji (PDF)
+              {t('investor.deck-title', 'Pakua Deck ya Wawekezaji (PDF)')}
             </strong>
             <div style={{ fontSize: 13, color: TEXT.muted }}>
-              kurasa 22 &middot; soko, bidhaa, timu, mipango
+              {t('investor.deck-sub', 'kurasa 22 · soko, bidhaa, timu, mipango')}
             </div>
           </a>
           <a
@@ -62,10 +62,10 @@ export default function Investor() {
             }}
           >
             <strong style={{ fontFamily: TYPE.serif, fontSize: 18 }}>
-              Barua ya Mwanzilishi (PDF)
+              {t('investor.letter-title', 'Barua ya Mwanzilishi (PDF)')}
             </strong>
             <div style={{ fontSize: 13, color: TEXT.muted }}>
-              Dr. Ally A. Nooher &middot; ukurasa 4
+              Dr. Ally A. Nooher &middot; {t('investor.letter-pages', 'ukurasa 4')}
             </div>
           </a>
         </div>

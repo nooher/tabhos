@@ -1,24 +1,25 @@
 import { useState } from 'react'
 import { Card } from '../../_shared/Layout'
 import { JEWEL, CREAM, NEUTRAL, TEXT, hexToRgba } from '../../../lib/glass'
+import { useLang } from '../../../lib/i18n/Provider'
 import { REGIONS, phq9Color, FRAMEWORK_LABEL, type RegionMetric } from '../data'
 
 export default function SeraDashboard() {
+  const { t } = useLang()
   const [selected, setSelected] = useState<RegionMetric | null>(null)
 
   return (
     <>
-      <Card title="Ramani ya Kitaifa — PHQ-9 wastani kwa mkoa" accent={JEWEL.indigoWisdom}>
+      <Card title={t('sera.dash.title', 'Ramani ya Kitaifa — PHQ-9 wastani kwa mkoa')} accent={JEWEL.indigoWisdom}>
         <p style={{ fontSize: 13, color: TEXT.muted, margin: '0 0 14px' }}>
-          Bonyeza mkoa wowote kuona vipimo vya msingi. Data hapa ni ya mfano — itaungwa
-          na backend ya wizara mara tu mikataba itakapokamilika.
+          {t('sera.dash.subtitle', 'Bonyeza mkoa wowote kuona vipimo vya msingi. Data hapa ni ya mfano — itaungwa na backend ya wizara mara tu mikataba itakapokamilika.')}
         </p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(320px, 1.4fr) minmax(260px, 1fr)', gap: 18 }}>
           <svg
             viewBox="0 0 600 600"
             role="img"
-            aria-label="Ramani ya mikoa ya Tanzania"
+            aria-label={t('sera.dash.map-aria', 'Ramani ya mikoa ya Tanzania')}
             style={{
               width: '100%',
               height: 'auto',
@@ -54,7 +55,7 @@ export default function SeraDashboard() {
                     strokeWidth={isSelected ? 2.5 : 1.5}
                     opacity={0.92}
                   >
-                    <title>{`${r.name} — PHQ-9 wastani ${r.phq9Mean.toFixed(1)}`}</title>
+                    <title>{`${r.name} — ${t('sera.dash.phq9-mean', 'PHQ-9 wastani')} ${r.phq9Mean.toFixed(1)}`}</title>
                   </circle>
                   <text
                     x={r.cx}
@@ -73,7 +74,7 @@ export default function SeraDashboard() {
 
             {/* Legend */}
             <g transform="translate(20,530)">
-              <text x={0} y={0} fontSize={10} fontWeight={700} fill={TEXT.heading} letterSpacing="0.06em">PHQ-9 WASTANI</text>
+              <text x={0} y={0} fontSize={10} fontWeight={700} fill={TEXT.heading} letterSpacing="0.06em">{t('sera.dash.legend', 'PHQ-9 WASTANI')}</text>
               {[
                 { label: '<8',  color: '#2E5E64' },
                 { label: '8-9', color: '#3F6B70' },
@@ -120,12 +121,12 @@ export default function SeraDashboard() {
                   </span>
                 </div>
                 <dl style={{ margin: '18px 0 0', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                  <Metric label="PHQ-9 wastani" value={selected.phq9Mean.toFixed(1)} />
-                  <Metric label="Ufikiaji wa tathmini" value={`${selected.screeningReach}%`} />
-                  <Metric label="Wanaopata tiba" value={`${selected.treatmentEngagement}%`} />
-                  <Metric label="Remission wiki 12" value={`${selected.remission12wk}%`} />
-                  <Metric label="Kujidhuru /100k" value={selected.suicideRate.toFixed(1)} />
-                  <Metric label="Wataalam /100k" value={selected.providerDensity.toFixed(1)} />
+                  <Metric label={t('sera.dash.m.phq9', 'PHQ-9 wastani')} value={selected.phq9Mean.toFixed(1)} />
+                  <Metric label={t('sera.dash.m.screening', 'Ufikiaji wa tathmini')} value={`${selected.screeningReach}%`} />
+                  <Metric label={t('sera.dash.m.treatment', 'Wanaopata tiba')} value={`${selected.treatmentEngagement}%`} />
+                  <Metric label={t('sera.dash.m.remission', 'Remission wiki 12')} value={`${selected.remission12wk}%`} />
+                  <Metric label={t('sera.dash.m.suicide', 'Kujidhuru /100k')} value={selected.suicideRate.toFixed(1)} />
+                  <Metric label={t('sera.dash.m.density', 'Wataalam /100k')} value={selected.providerDensity.toFixed(1)} />
                 </dl>
               </>
             ) : (
@@ -133,7 +134,7 @@ export default function SeraDashboard() {
                 display: 'grid', placeItems: 'center', minHeight: 320,
                 color: TEXT.hint, fontSize: 14, textAlign: 'center', padding: 12,
               }}>
-                Bonyeza mkoa kwenye ramani kuona vipimo.
+                {t('sera.dash.hint', 'Bonyeza mkoa kwenye ramani kuona vipimo.')}
               </div>
             )}
           </div>

@@ -3,10 +3,12 @@ import { Link, Route, Routes } from 'react-router-dom'
 import { CREAM, JEWEL, NEUTRAL, TEXT, hexToRgba, glass } from '../../lib/glass'
 import { PUMZI_SESSIONS } from './data/sessions'
 import { ArchitectureBadge } from '../../components/ArchitectureBadge'
+import { useLang } from '../../lib/i18n/Provider'
 
 const Player = lazy(() => import('./screens/Player'))
 
 function Landing() {
+  const { t } = useLang()
   return (
     <div className="container" style={{ paddingTop: 24, paddingBottom: 48 }}>
       <header style={{ marginBottom: 24 }}>
@@ -32,7 +34,7 @@ function Landing() {
             fontStyle: 'normal',
           }}
         >
-          Pumzi yako, utulivu wako. Mafunzo manane yaliyothibitishwa kisayansi.
+          {t('pumzi.landing.subtitle', 'Pumzi yako, utulivu wako. Mafunzo manane yaliyothibitishwa kisayansi.')}
         </p>
         <div style={{ marginTop: 12 }}>
           <ArchitectureBadge moduleSlug="pumzi" />
@@ -107,7 +109,7 @@ function Landing() {
                   {summary}
                 </span>
                 <span style={{ color: TEXT.hint }}>
-                  {Math.round(s.duration_s / 60) || 1} dakika · mizunguko {s.pattern.rounds}
+                  {Math.round(s.duration_s / 60) || 1} {t('pumzi.landing.minutes', 'dakika')} · {t('pumzi.landing.rounds-label', 'mizunguko')} {s.pattern.rounds}
                 </span>
               </div>
               <div
@@ -130,23 +132,26 @@ function Landing() {
   )
 }
 
+function PumziLoading() {
+  const { t } = useLang()
+  return (
+    <div
+      style={{
+        minHeight: '40vh',
+        display: 'grid',
+        placeItems: 'center',
+        color: JEWEL.tealMwenza,
+        fontStyle: 'normal',
+      }}
+    >
+      {t('pumzi.landing.loading', 'Inapakia…')}
+    </div>
+  )
+}
+
 export default function Pumzi() {
   return (
-    <Suspense
-      fallback={
-        <div
-          style={{
-            minHeight: '40vh',
-            display: 'grid',
-            placeItems: 'center',
-            color: JEWEL.tealMwenza,
-            fontStyle: 'normal',
-          }}
-        >
-          Inapakia…
-        </div>
-      }
-    >
+    <Suspense fallback={<PumziLoading />}>
       <Routes>
         <Route index element={<Landing />} />
         <Route path=":id" element={<Player />} />
