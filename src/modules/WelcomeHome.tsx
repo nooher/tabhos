@@ -428,6 +428,8 @@ export default function WelcomeHome() {
               <img src="/brand/laetoli.jpg" alt="" width={15} height={15} style={{ borderRadius: 4, objectFit: 'cover' }} />
               Laetoli (T) Ltd
             </a>
+            <span style={{ margin: '0 6px' }}>·</span>
+            <a href="https://thos-laetoli.vercel.app/ecosystem" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>Part of the THOS network →</a>
           </footer>
         </section>
       </div>
