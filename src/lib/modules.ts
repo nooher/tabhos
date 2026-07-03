@@ -273,4 +273,21 @@ export const MODULES: ModuleDef[] = [
     glyph: 'Nd',
     stages: 'all',
   },
+  {
+    slug: 'maisha',
+    name: 'Maisha',
+    english: 'Recovery + Livelihood',
+    tagline: 'Kupona hadi kujitegemea.',
+    description: 'Programu za ushahidi · masomo ya ujuzi · beji · vitendeakazi.',
+    features: [
+      'Programu za kupona (SMART, WRAP, BA, CBT, MBSR, Hatua 12)',
+      'Masomo ya kilimo, ufugaji, biashara + majaribio',
+      'Utulivu wa kila siku + tafakari',
+      'Beji 4 zinazofungua fursa za kipato',
+      'Kuku, mbuzi, bustani — kuanzia mradi',
+    ],
+    accent: JEWEL.goldHope,
+    glyph: 'Ma',
+    stages: ['upyaji', 'uendelevu', 'tiba'],
+  },
 ]

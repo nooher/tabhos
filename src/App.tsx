@@ -34,6 +34,7 @@ const Utafiti      = lazy(() => import('./modules/utafiti'))
 const Ndani        = lazy(() => import('./modules/ndani'))
 const Sera         = lazy(() => import('./modules/sera'))
 const Pumzi        = lazy(() => import('./modules/pumzi'))
+const Maisha       = lazy(() => import('./modules/maisha'))
 const Welcome      = lazy(() => import('./modules/welcome'))
 const Personas     = lazy(() => import('./modules/personas'))
 const Press        = lazy(() => import('./modules/welcome/screens/Press'))
@@ -114,6 +115,7 @@ export default function App() {
             <Route path="/ndani/*" element={<Ndani />} />
             <Route path="/sera/*" element={<Sera />} />
             <Route path="/pumzi/*" element={<Pumzi />} />
+            <Route path="/maisha/*" element={<Maisha />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
