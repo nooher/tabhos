@@ -20,7 +20,7 @@ export function TanzaniaFlagBar({ position }: { position: 'top' | 'bottom' }) {
     return () => mq.removeEventListener('change', onChange)
   }, [])
 
-  const h = isMobile ? 4 : 6
+  const h = isMobile ? 2 : 3
 
   const style: CSSProperties = {
     position: 'fixed',
@@ -30,7 +30,8 @@ export function TanzaniaFlagBar({ position }: { position: 'top' | 'bottom' }) {
     zIndex: 1000,
     pointerEvents: 'none',
     [position]: 0,
-    // Flag color split — green / yellow seam / black / yellow seam / blue
+    // Flag color split — green / yellow seam / black / yellow seam / blue.
+    // A thin, refined ribbon (the one sanctioned colour exception).
     background:
       'linear-gradient(90deg,' +
       ' var(--flag-green) 0 36%,' +
@@ -38,10 +39,6 @@ export function TanzaniaFlagBar({ position }: { position: 'top' | 'bottom' }) {
       ' var(--flag-black) 39% 61%,' +
       ' var(--flag-yellow) 61% 64%,' +
       ' var(--flag-blue) 64% 100%)',
-    boxShadow:
-      position === 'top'
-        ? '0 1px 0 rgba(0,0,0,0.35)'
-        : '0 -1px 0 rgba(0,0,0,0.35)',
   }
 
   return <div aria-hidden style={style} />

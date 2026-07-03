@@ -45,14 +45,11 @@ function detectLang(): Lang {
       if (isLang(q)) return q
     } catch { /* noop */ }
   }
-  // 3. navigator.language
-  if (typeof navigator !== 'undefined' && navigator.language) {
-    const code = navigator.language.toLowerCase().split('-')[0]
-    if (code === 'sw' || code === 'en' || code === 'ar' || code === 'ru') return code
-    if (code === 'zh') return 'zh'
-  }
-  // 4. default
-  return 'sw'
+  // 3. default — English-primary across the whole THOS family; Swahili and the
+  //    other languages remain one tap away via the switch (persisted above).
+  //    We intentionally do NOT auto-switch on navigator locale so the product
+  //    reads English first for every visitor, consistent with THOS.
+  return 'en'
 }
 
 function applySideEffects(l: Lang): void {

@@ -39,11 +39,13 @@ interface OrbitSpec {
 
 // Atom-electron orbits — tight around the brain, fast, coprime periods
 // so the four balls never lock into a visible pattern.
+// Deep, muted flag tones — refined, premium; not neon (keeps Rafiki's identity
+// while reading elite alongside the rest of the family).
 const ORBITS: OrbitSpec[] = [
-  { color: TZ_FLAG.green,  radius: 40, durationS: 5, startDeg: 0,   label: 'green' },
-  { color: TZ_FLAG.yellow, radius: 50, durationS: 7, startDeg: 90,  reverse: true, label: 'yellow' },
-  { color: TZ_FLAG.black,  radius: 58, durationS: 6, startDeg: 200, label: 'black' },
-  { color: TZ_FLAG.blue,   radius: 68, durationS: 8, startDeg: 310, reverse: true, label: 'blue' },
+  { color: '#0F4D1F', radius: 40, durationS: 5, startDeg: 0,   label: 'green' },
+  { color: '#C99700', radius: 50, durationS: 7, startDeg: 90,  reverse: true, label: 'yellow' },
+  { color: '#1A1410', radius: 58, durationS: 6, startDeg: 200, label: 'black' },
+  { color: '#1E5B8A', radius: 68, durationS: 8, startDeg: 310, reverse: true, label: 'blue' },
 ]
 
 interface Pos { x: number; y: number }

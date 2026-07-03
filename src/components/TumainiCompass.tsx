@@ -27,17 +27,19 @@ export default function TumainiCompass({ size = 480 }: { size?: number }) {
   const cx = 350
   const cy = 280
 
+  // Deep, muted flag tones — the sanctioned colours, restrained to read
+  // premium (no neon). Small discs, so the country reads as the quiet centre.
   const INK    = '#1A3E44'
-  const YELLOW = '#FCD116'
-  const GREEN  = '#1EB53A'
-  const BLUE   = '#00A3DD'
-  const BLACK  = '#000000'
+  const YELLOW = '#C99700'
+  const GREEN  = '#0F4D1F'
+  const BLUE   = '#1E5B8A'
+  const BLACK  = '#1A1410'
 
   const DISCS = [
-    { id: 'yellow', x: cx,       y: cy - 240, r: 22, period: 11, dir:  1, fill: YELLOW },
-    { id: 'green',  x: cx + 256, y: cy,       r: 24, period: 14, dir: -1, fill: GREEN  },
-    { id: 'blue',   x: cx,       y: cy + 240, r: 22, period: 12, dir:  1, fill: BLUE   },
-    { id: 'black',  x: cx - 248, y: cy,       r: 24, period: 16, dir: -1, fill: BLACK  },
+    { id: 'yellow', x: cx,       y: cy - 244, r: 13, period: 11, dir:  1, fill: YELLOW },
+    { id: 'green',  x: cx + 258, y: cy,       r: 14, period: 14, dir: -1, fill: GREEN  },
+    { id: 'blue',   x: cx,       y: cy + 244, r: 13, period: 12, dir:  1, fill: BLUE   },
+    { id: 'black',  x: cx - 250, y: cy,       r: 14, period: 16, dir: -1, fill: BLACK  },
   ] as const
 
   const heightPx = Math.round((size * VBH) / VBW)
@@ -75,6 +77,10 @@ export default function TumainiCompass({ size = 480 }: { size?: number }) {
           <feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
           <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
+        {/* Mute the map: desaturate the neon yellow toward a refined, quiet tone */}
+        <filter id="tc-map-mute">
+          <feColorMatrix type="saturate" values="0.42"/>
+        </filter>
       </defs>
 
       {/* Faint orbital rings */}
@@ -87,12 +93,13 @@ export default function TumainiCompass({ size = 480 }: { size?: number }) {
       <g className="tumaini-pulse">
         <image
           href="/brand/tanzania.png"
-          x={cx - 160}
-          y={cy - 160}
-          width={320}
-          height={320}
+          x={cx - 150}
+          y={cy - 150}
+          width={300}
+          height={300}
           preserveAspectRatio="xMidYMid meet"
-          opacity={0.95}
+          opacity={0.5}
+          filter="url(#tc-map-mute)"
         />
       </g>
 
