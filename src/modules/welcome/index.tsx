@@ -455,7 +455,10 @@ export default function Welcome() {
         }}
       >
         <div>
-          <strong style={{ color: BRAND.green }}>Laetoli (T) Ltd</strong> &middot; Dar es Salaam
+          <a href="https://laetoli.tz" target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: BRAND.green, textDecoration: 'none', fontWeight: 700 }}>
+            <img src="/brand/laetoli.jpg" alt="" width={16} height={16} style={{ borderRadius: 4, objectFit: 'cover' }} />
+            Laetoli (T) Ltd
+          </a> &middot; Dar es Salaam
         </div>
         <nav
           aria-label="Laetoli ecosystem"

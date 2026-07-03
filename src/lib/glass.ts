@@ -150,8 +150,10 @@ export function glass(jewel: string, alpha = 0.06): CSSProperties {
       ? `color-mix(in srgb, ${jewel} ${Math.round(alpha * 100)}%, ${CREAM.milk})`
       : CREAM.milk,
     border: `1px solid ${hexToRgba(NEUTRAL.ink, 0.08)}`,
+    // Liquid-glass finish: solid warm fill under clear glass — a crisp specular
+    // top edge + a hairline glass rim + a soft warm ambient float. No blur.
     boxShadow:
-      'inset 0 1px 0 rgba(255,255,255,0.7), 0 1px 0 rgba(11,9,8,0.04), 0 14px 32px rgba(11,9,8,0.08)',
+      'inset 0 1px 0 rgba(255,255,255,0.88), inset 0 0 0 0.5px rgba(255,252,244,0.5), 0 16px 38px -20px rgba(60,44,28,0.20), 0 4px 10px -4px rgba(60,44,28,0.10)',
     borderRadius: RADII.card,
   }
 }

@@ -141,14 +141,12 @@ export default function WelcomeHome() {
           <EntranceBrain size={260} />
         </section>
 
-        {/* Right — glass-on-water sign-in panel */}
+        {/* Right — liquid-glass sign-in panel (solid warm fill, no blur) */}
         <section
           aria-labelledby="welcome-sign-title"
           style={{
-            background: 'rgba(255,253,243,0.62)',
-            backdropFilter: 'blur(28px) saturate(160%)',
-            WebkitBackdropFilter: 'blur(28px) saturate(160%)',
-            border: '1px solid rgba(255,255,255,0.6)',
+            background: '#FDFBF3',
+            border: '1px solid rgba(255,255,255,0.7)',
             borderRadius: 28,
             padding: '32px 30px',
             boxShadow:
@@ -426,7 +424,10 @@ export default function WelcomeHome() {
               textAlign: 'center',
             }}
           >
-            Laetoli (T) Ltd
+            <a href="https://laetoli.tz" target="_blank" rel="noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'inherit', textDecoration: 'none' }}>
+              <img src="/brand/laetoli.jpg" alt="" width={15} height={15} style={{ borderRadius: 4, objectFit: 'cover' }} />
+              Laetoli (T) Ltd
+            </a>
           </footer>
         </section>
       </div>

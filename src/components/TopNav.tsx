@@ -60,10 +60,8 @@ export function TopNav() {
         zIndex: 800,
         marginTop: 8,
         padding: '14px 0',
-        background: hexToRgba(NEUTRAL.paper, 0.92),
-        backdropFilter: 'blur(20px) saturate(140%)',
-        WebkitBackdropFilter: 'blur(20px) saturate(140%)',
-        borderBottom: `1px solid ${hexToRgba(NEUTRAL.ink, 0.08)}`,
+        background: NEUTRAL.paper,
+        boxShadow: `0 1px 0 ${hexToRgba(NEUTRAL.ink, 0.06)}, 0 10px 24px -18px rgba(60,44,28,0.30)`,
       }}
     >
       <div
