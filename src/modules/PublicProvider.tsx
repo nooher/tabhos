@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { BRAND, CREAM, NEUTRAL, RADII, TEXT, TYPE, hexToRgba } from '../lib/glass'
 import { findProvider } from '../lib/providers'
 
@@ -37,7 +37,9 @@ function Heading({ children }: { children: React.ReactNode }) {
 
 export default function PublicProvider() {
   const { slug } = useParams<{ slug: string }>()
+  const nav = useNavigate()
   const p = findProvider(slug)
+  const book = () => nav(`/book/${p.slug}`)
   const initials = p.name.split(' ').filter(Boolean).slice(0, 2).map((x) => x[0]).join('')
 
   const btn = (bg: string, color: string): React.CSSProperties => ({
@@ -71,7 +73,7 @@ export default function PublicProvider() {
         </header>
 
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 18 }}>
-          <a href="#book" style={btn(GREEN, CREAM.cream)}>Book appointment</a>
+          <button onClick={book} style={btn(GREEN, CREAM.cream)}>Book appointment</button>
           <a href="#book" style={btn('transparent', INK)}>Message</a>
           <a href="#book" style={btn('transparent', INK)}>Follow</a>
           <button onClick={() => alert('Use your browser menu → “Add to Home Screen” to save this practice.')} style={btn(hexToRgba(ORANGE, 0.16), '#9A5B24')}>Save to home</button>
@@ -105,7 +107,7 @@ export default function PublicProvider() {
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
                       <div style={{ fontFamily: TYPE.serif, fontWeight: 800, color: INK, fontSize: 15 }}>{tzs(s.price)}</div>
-                      <button style={{ ...btn(GREEN, CREAM.cream), padding: '8px 14px', fontSize: 13 }}>Book</button>
+                      <button onClick={book} style={{ ...btn(GREEN, CREAM.cream), padding: '8px 14px', fontSize: 13 }}>Book</button>
                     </div>
                   </div>
                 ))}

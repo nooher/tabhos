@@ -42,6 +42,7 @@ const NotFound     = lazy(() => import('./modules/NotFound'))
 const AdminV2      = lazy(() => import('./modules/AdminV2'))
 const PublicProvider = lazy(() => import('./modules/PublicProvider'))
 const FindCare       = lazy(() => import('./modules/FindCare'))
+const BookProvider   = lazy(() => import('./modules/BookProvider'))
 
 function PageFallback() {
   const { t } = useLang()
@@ -74,7 +75,7 @@ function KaribuGate() {
 
 export default function App() {
   const loc = useLocation()
-  const chromeless = CHROMELESS_PATHS.has(loc.pathname) || loc.pathname.startsWith('/p/') || loc.pathname === '/find'
+  const chromeless = CHROMELESS_PATHS.has(loc.pathname) || loc.pathname.startsWith('/p/') || loc.pathname.startsWith('/book/') || loc.pathname === '/find'
   return (
     <>
       <div style={{ minHeight: '100vh' }}>
@@ -87,6 +88,7 @@ export default function App() {
             <Route path="/admin/v2" element={<AdminV2 />} />
             <Route path="/p/:slug" element={<PublicProvider />} />
             <Route path="/find" element={<FindCare />} />
+            <Route path="/book/:slug" element={<BookProvider />} />
             <Route path="/dashibodi" element={<Landing />} />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/chagua-akaunti" element={<WelcomeHome />} />
