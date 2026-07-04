@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
 import { JEWEL, RADII, TYPE, hexToRgba } from '../../../lib/glass'
 import { Card, H1 } from '../components/Card'
@@ -68,6 +68,8 @@ export default function Dashboard() {
       <div style={{ marginTop: -6, marginBottom: 16 }}>
         <ArchitectureBadge moduleSlug="wataalam" />
       </div>
+
+      <PublicPageCard />
 
       <div
         style={{
@@ -250,6 +252,32 @@ function Stat({
         {value}
       </div>
       {subtitle && <div style={{ fontSize: 11, color: '#3B3B3B', marginTop: 2 }}>{subtitle}</div>}
+    </div>
+  )
+}
+
+// The provider's own public page — the shareable link they post to reach clients.
+const MY_SLUG = 'dr-asha-mwakalinga'
+function pillBtn(bg: string, color: string): CSSProperties {
+  return { display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 16px', borderRadius: 999, background: bg, color, border: 'none', fontSize: 13, fontWeight: 700, cursor: 'pointer', textDecoration: 'none', fontFamily: TYPE.sans }
+}
+function PublicPageCard() {
+  const url = (typeof window !== 'undefined' ? window.location.origin : 'https://tabhos.tz') + '/p/' + MY_SLUG
+  const copy = () => { try { void navigator.clipboard.writeText(url); toast('Link copied', 'info') } catch { /* noop */ } }
+  const share = () => { const n = navigator as Navigator & { share?: (d: { title: string; url: string }) => Promise<void> }; if (n.share) void n.share({ title: 'Book with me on TABHOS', url }).catch(() => {}); else copy() }
+  return (
+    <div style={{ background: `linear-gradient(120deg, ${JEWEL.tealRoho} 0%, ${hexToRgba(JEWEL.tealRoho, 0.85)} 100%)`, color: '#FAF5E5', borderRadius: RADII.sheet, padding: '18px 20px', marginBottom: 18, display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
+      <div style={{ minWidth: 0 }}>
+        <div style={{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', opacity: 0.85, fontWeight: 700 }}>Your public page</div>
+        <div style={{ fontFamily: TYPE.serif, fontSize: 20, fontWeight: 800, margin: '3px 0 4px', letterSpacing: TYPE.tighterTrack }}>Share your link — clients book directly</div>
+        <div style={{ fontSize: 12.5, opacity: 0.92, maxWidth: 540 }}>Post this on Instagram, WhatsApp or your website. Clients see your services, rates and reviews, and complete intake + a screening before your first session.</div>
+        <div style={{ marginTop: 10, fontSize: 12.5, fontFamily: 'monospace', background: 'rgba(0,0,0,0.18)', padding: '7px 10px', borderRadius: 8, display: 'inline-block', wordBreak: 'break-all' }}>{url}</div>
+      </div>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <Link to={`/p/${MY_SLUG}`} style={pillBtn('#FAF5E5', JEWEL.tealRoho)}>View public page</Link>
+        <button onClick={copy} style={pillBtn('rgba(255,255,255,0.16)', '#FAF5E5')}>Copy link</button>
+        <button onClick={share} style={pillBtn('rgba(255,255,255,0.16)', '#FAF5E5')}>Share</button>
+      </div>
     </div>
   )
 }
