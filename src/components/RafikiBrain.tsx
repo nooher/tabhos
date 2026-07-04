@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react'
-import { CREAM, JEWEL, NEUTRAL, TZ_FLAG, hexToRgba } from '../lib/glass'
+import { CREAM, JEWEL, NEUTRAL, hexToRgba } from '../lib/glass'
 import { ask as rafikiAsk } from '../lib/rafiki'
 import { db, hasBackend } from '../lib/db'
 import { getMeId } from '../lib/me'
@@ -23,30 +23,8 @@ import { useLang } from '../lib/i18n/Provider'
 const STORAGE_KEY = 'tbhos.rafiki.position'
 const BRAIN_DIAMETER_DEFAULT = 64
 const BRAIN_DIAMETER_SMALL = 52
-const BALL_DIAMETER = 12
 const CLICK_THRESHOLD_PX = 5
 const SMALL_BREAKPOINT_PX = 380
-const SMALL_ORBIT_SCALE = 0.85
-
-interface OrbitSpec {
-  color: string
-  radius: number       // px
-  durationS: number    // seconds for one full revolution
-  startDeg: number     // phase offset
-  reverse?: boolean
-  label: string
-}
-
-// Atom-electron orbits — tight around the brain, fast, coprime periods
-// so the four balls never lock into a visible pattern.
-// Deep, muted flag tones — refined, premium; not neon (keeps Rafiki's identity
-// while reading elite alongside the rest of the family).
-const ORBITS: OrbitSpec[] = [
-  { color: '#0F4D1F', radius: 40, durationS: 5, startDeg: 0,   label: 'green' },
-  { color: '#C99700', radius: 50, durationS: 7, startDeg: 90,  reverse: true, label: 'yellow' },
-  { color: '#1A1410', radius: 58, durationS: 6, startDeg: 200, label: 'black' },
-  { color: '#1E5B8A', radius: 68, durationS: 8, startDeg: 310, reverse: true, label: 'blue' },
-]
 
 interface Pos { x: number; y: number }
 
@@ -137,7 +115,6 @@ export function RafikiBrain() {
   const BRAIN_DIAMETER = isSmall ? BRAIN_DIAMETER_SMALL : BRAIN_DIAMETER_DEFAULT
   const CONTAINER_W = isSmall ? CONTAINER_W_SMALL : CONTAINER_W_DEFAULT
   const CONTAINER_H = isSmall ? CONTAINER_H_SMALL : CONTAINER_H_DEFAULT
-  const orbitScale = isSmall ? SMALL_ORBIT_SCALE : 1
 
   const [pos, setPos] = useState<Pos>(() => loadInitialPos(CONTAINER_W, CONTAINER_H))
   const [dragging, setDragging] = useState(false)
@@ -246,15 +223,6 @@ export function RafikiBrain() {
     placeItems: 'center',
   }
 
-  const orbitsLayer: CSSProperties = {
-    position: 'absolute',
-    left: '50%',
-    top: '50%',
-    width: 0,
-    height: 0,
-    pointerEvents: 'none',
-  }
-
   const brainWrap: CSSProperties = {
     position: 'relative',
     width: BRAIN_DIAMETER,
@@ -270,15 +238,6 @@ export function RafikiBrain() {
       : 'rafiki-throb 2400ms ease-in-out infinite',
   }
 
-  // Concentric pulse waves in Tanzania flag colors that ripple outward from
-  // the brain — gives the throb its visible "emitting" quality.
-  const PULSE_RINGS: { color: string; delayMs: number }[] = [
-    { color: TZ_FLAG.green,  delayMs: 0 },
-    { color: TZ_FLAG.yellow, delayMs: 600 },
-    { color: TZ_FLAG.blue,   delayMs: 1200 },
-    { color: TZ_FLAG.black,  delayMs: 1800 },
-  ]
-
   return (
     <>
       <div
@@ -292,74 +251,18 @@ export function RafikiBrain() {
         onPointerCancel={onPointerUp}
         onKeyDown={onKey}
       >
-        {/* Orbiting flag balls — sit behind the brain, centered on container */}
-        <div style={orbitsLayer} aria-hidden>
-          {ORBITS.map((o, idx) => (
-            <div
-              key={idx}
-              style={{
-                position: 'absolute',
-                left: 0,
-                top: 0,
-                width: 0,
-                height: 0,
-                animation: prefersReducedMotion.current
-                  ? undefined
-                  : `mwenza-orbit-${idx} ${o.durationS}s linear infinite${o.reverse ? ' reverse' : ''}`,
-                transform: `rotate(${o.startDeg}deg)`,
-              }}
-            >
-              <div
-                style={{
-                  position: 'absolute',
-                  width: BALL_DIAMETER,
-                  height: BALL_DIAMETER,
-                  borderRadius: '50%',
-                  background: o.color,
-                  left: o.radius * orbitScale - BALL_DIAMETER / 2,
-                  top: -BALL_DIAMETER / 2,
-                  border:
-                    o.color === '#000000'
-                      ? '1px solid rgba(255,255,255,0.6)'
-                      : '1px solid rgba(11,9,8,0.18)',
-                  boxShadow: '0 2px 6px rgba(11,9,8,0.18)',
-                }}
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Pulse waves — flag-color rings emitted outward from the brain */}
-        {!prefersReducedMotion.current && (
-          <div
-            aria-hidden
-            style={{
-              position: 'absolute',
-              left: '50%',
-              top: '50%',
-              width: 0,
-              height: 0,
-              pointerEvents: 'none',
-            }}
-          >
-            {PULSE_RINGS.map((r, i) => (
-              <span
-                key={i}
-                style={{
-                  position: 'absolute',
-                  left: -BRAIN_DIAMETER / 2,
-                  top: -BRAIN_DIAMETER / 2,
-                  width: BRAIN_DIAMETER,
-                  height: BRAIN_DIAMETER,
-                  borderRadius: '50%',
-                  border: `2px solid ${r.color}`,
-                  opacity: 0,
-                  animation: `rafiki-emit 2400ms ease-out ${r.delayMs}ms infinite`,
-                }}
-              />
-            ))}
-          </div>
-        )}
+        {/* One quiet static ring — a calm frame. No orbiting balls, no pulses. */}
+        <div
+          aria-hidden
+          style={{
+            position: 'absolute',
+            width: BRAIN_DIAMETER + 20,
+            height: BRAIN_DIAMETER + 20,
+            borderRadius: '50%',
+            border: `1px solid ${hexToRgba(NEUTRAL.ink, 0.1)}`,
+            pointerEvents: 'none',
+          }}
+        />
 
         {/* Brain — free-floating, no card background */}
         <div style={brainWrap}>
@@ -388,29 +291,13 @@ export function RafikiBrain() {
 
       {open && <RafikiChatModal onClose={() => setOpen(false)} />}
 
-      {/* Keyframes */}
+      {/* Keyframes — a single soft breath, nothing more. */}
       <style>{`
-        @keyframes mwenza-breathe {
-          0%   { transform: scale(1.00); }
-          50%  { transform: scale(1.04); }
-          100% { transform: scale(1.00); }
-        }
         @keyframes rafiki-throb {
           0%   { transform: scale(1.00); }
-          50%  { transform: scale(1.06); }
+          50%  { transform: scale(1.03); }
           100% { transform: scale(1.00); }
         }
-        @keyframes rafiki-emit {
-          0%   { transform: scale(0.92); opacity: 0.55; }
-          80%  { opacity: 0; }
-          100% { transform: scale(2.20); opacity: 0; }
-        }
-        ${ORBITS.map((_, idx) => `
-          @keyframes mwenza-orbit-${idx} {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
-          }
-        `).join('\n')}
       `}</style>
     </>
   )
@@ -566,13 +453,13 @@ function RafikiChatModal({ onClose }: { onClose: () => void }) {
       >
         <div style={{ padding: '20px 24px 12px', borderBottom: `1px solid ${hexToRgba(NEUTRAL.ink, 0.08)}` }}>
           <div style={{ fontFamily: "'Georgia', serif", fontSize: 28, fontWeight: 800, color: JEWEL.tealMwenza, letterSpacing: '-0.4px' }}>Rafiki</div>
-          <div style={{ fontSize: 12, color: hexToRgba(NEUTRAL.ink, 0.65), marginTop: 2 }}>{t('rafiki.chat.subtitle', 'Rafiki wako wa polepole. Bonyeza Esc kufunga.')}</div>
+          <div style={{ fontSize: 12, color: hexToRgba(NEUTRAL.ink, 0.65), marginTop: 2 }}>{t('rafiki.chat.subtitle', 'Your unhurried companion. Press Esc to close.')}</div>
         </div>
 
         <div ref={scrollerRef} style={{ flex: 1, overflowY: 'auto', padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
           {turns.length === 0 && !thinking && (
             <div style={{ fontSize: 14, color: hexToRgba(NEUTRAL.ink, 0.6), textAlign: 'center', padding: '40px 8px' }}>
-              {t('rafiki.chat.empty', 'Niko hapa. Andika lolote — sina haraka.')}
+              {t('rafiki.chat.empty', 'I’m here. Write anything — there’s no rush.')}
             </div>
           )}
           {turns.map((t) => (
@@ -590,7 +477,7 @@ function RafikiChatModal({ onClose }: { onClose: () => void }) {
             </div>
           ))}
           {thinking && (
-            <div style={{ alignSelf: 'flex-start', fontSize: 13, color: hexToRgba(NEUTRAL.ink, 0.5), fontStyle: 'normal' }}>{t('rafiki.chat.listening', 'Rafiki anasikiliza…')}</div>
+            <div style={{ alignSelf: 'flex-start', fontSize: 13, color: hexToRgba(NEUTRAL.ink, 0.5), fontStyle: 'normal' }}>{t('rafiki.chat.listening', 'Rafiki is listening…')}</div>
           )}
         </div>
 
@@ -601,7 +488,7 @@ function RafikiChatModal({ onClose }: { onClose: () => void }) {
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void send() }
             }}
-            placeholder={t('rafiki.chat.placeholder', 'Andika kwa Kiswahili au Kiingereza…')}
+            placeholder={t('rafiki.chat.placeholder', 'Type a message…')}
             rows={2}
             style={{
               flex: 1, resize: 'none', borderRadius: 14,
@@ -622,7 +509,7 @@ function RafikiChatModal({ onClose }: { onClose: () => void }) {
               opacity: draft.trim() && !thinking ? 1 : 0.55,
             }}
           >
-            Tuma
+            Send
           </button>
         </div>
       </div>
