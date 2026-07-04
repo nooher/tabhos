@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
-import { TanzaniaFlagBar } from './components/TanzaniaFlagBar'
 import { TopNav } from './components/TopNav'
 import { RafikiBrain } from './components/RafikiBrain'
 import { AndikaFAB } from './components/AndikaFAB'
@@ -76,9 +75,7 @@ export default function App() {
   const chromeless = CHROMELESS_PATHS.has(loc.pathname)
   return (
     <>
-      {!chromeless && <TanzaniaFlagBar position="top" />}
-
-      <div style={{ minHeight: '100vh', paddingTop: chromeless ? 0 : 6, paddingBottom: chromeless ? 0 : 6 }}>
+      <div style={{ minHeight: '100vh' }}>
         {!chromeless && <TopNav />}
         {!chromeless && <PersonaBanner />}
         <KaribuGate />
@@ -118,7 +115,6 @@ export default function App() {
       {!chromeless && <AndikaFAB />}
       <CommandPalette />
       <ToastHost />
-      {!chromeless && <TanzaniaFlagBar position="bottom" />}
 
       {/* Hidden authorship watermark — DOM-only, code-side signature.
           Renders nothing visible; aria-hidden + off-screen. */}

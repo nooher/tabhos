@@ -7,7 +7,7 @@ export function PageShell({
   title,
   subtitle,
   back,
-  flagBar = true,
+  flagBar = false,
   children,
 }: {
   title: string
