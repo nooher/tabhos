@@ -126,11 +126,11 @@ const seed = (): Appointment[] => {
   const t = new Date()
   t.setHours(9, 0, 0, 0)
   return [
-    { id: 'a-001', patientPseudonym: 'Mteja A', startISO: t.toISOString(),
+    { id: 'a-001', patientPseudonym: 'Client A', startISO: t.toISOString(),
       durationMin: 45, mode: 'in_person', status: 'scheduled', reasonSw: 'Sonona — ufuatiliaji' },
-    { id: 'a-002', patientPseudonym: 'Mteja B', startISO: new Date(t.getTime() + 60 * 60 * 1000).toISOString(),
+    { id: 'a-002', patientPseudonym: 'Client B', startISO: new Date(t.getTime() + 60 * 60 * 1000).toISOString(),
       durationMin: 45, mode: 'virtual', status: 'scheduled', reasonSw: 'Tathmini ya kwanza' },
-    { id: 'a-003', patientPseudonym: 'Mteja C', startISO: new Date(t.getTime() + 2.5 * 60 * 60 * 1000).toISOString(),
+    { id: 'a-003', patientPseudonym: 'Client C', startISO: new Date(t.getTime() + 2.5 * 60 * 60 * 1000).toISOString(),
       durationMin: 30, mode: 'virtual', status: 'scheduled', reasonSw: 'CBT kipindi cha 4' },
   ]
 }
@@ -207,15 +207,15 @@ function daysAgo(n: number): string {
 }
 
 const seedOutcomes: OutcomeEntry[] = [
-  { id: 'o-1', patientPseudonym: 'Mteja A', instrument: 'PHQ-9', score: 18, dateISO: daysAgo(60) },
-  { id: 'o-2', patientPseudonym: 'Mteja A', instrument: 'PHQ-9', score: 14, dateISO: daysAgo(45) },
-  { id: 'o-3', patientPseudonym: 'Mteja A', instrument: 'PHQ-9', score: 9, dateISO: daysAgo(30) },
-  { id: 'o-4', patientPseudonym: 'Mteja A', instrument: 'PHQ-9', score: 6, dateISO: daysAgo(15) },
-  { id: 'o-5', patientPseudonym: 'Mteja B', instrument: 'GAD-7', score: 16, dateISO: daysAgo(50) },
-  { id: 'o-6', patientPseudonym: 'Mteja B', instrument: 'GAD-7', score: 11, dateISO: daysAgo(25) },
-  { id: 'o-7', patientPseudonym: 'Mteja B', instrument: 'GAD-7', score: 7, dateISO: daysAgo(10) },
-  { id: 'o-8', patientPseudonym: 'Mteja C', instrument: 'PHQ-9', score: 22, dateISO: daysAgo(40) },
-  { id: 'o-9', patientPseudonym: 'Mteja C', instrument: 'PHQ-9', score: 17, dateISO: daysAgo(20) },
+  { id: 'o-1', patientPseudonym: 'Client A', instrument: 'PHQ-9', score: 18, dateISO: daysAgo(60) },
+  { id: 'o-2', patientPseudonym: 'Client A', instrument: 'PHQ-9', score: 14, dateISO: daysAgo(45) },
+  { id: 'o-3', patientPseudonym: 'Client A', instrument: 'PHQ-9', score: 9, dateISO: daysAgo(30) },
+  { id: 'o-4', patientPseudonym: 'Client A', instrument: 'PHQ-9', score: 6, dateISO: daysAgo(15) },
+  { id: 'o-5', patientPseudonym: 'Client B', instrument: 'GAD-7', score: 16, dateISO: daysAgo(50) },
+  { id: 'o-6', patientPseudonym: 'Client B', instrument: 'GAD-7', score: 11, dateISO: daysAgo(25) },
+  { id: 'o-7', patientPseudonym: 'Client B', instrument: 'GAD-7', score: 7, dateISO: daysAgo(10) },
+  { id: 'o-8', patientPseudonym: 'Client C', instrument: 'PHQ-9', score: 22, dateISO: daysAgo(40) },
+  { id: 'o-9', patientPseudonym: 'Client C', instrument: 'PHQ-9', score: 17, dateISO: daysAgo(20) },
 ]
 
 async function fetchOutcomesFromSupabase(): Promise<OutcomeEntry[] | null> {
@@ -268,10 +268,10 @@ export interface Referral {
 }
 
 const seedReferrals: Referral[] = [
-  { id: 'r-1', direction: 'sent', patientPseudonym: 'Mteja D',
+  { id: 'r-1', direction: 'sent', patientPseudonym: 'Client D',
     counterpartyName: 'Dr. Mwakasege (Psychiatry)',
     reasonSw: 'Tathmini ya dawa — sonona kali', status: 'accepted', dateISO: daysAgo(7) },
-  { id: 'r-2', direction: 'received', patientPseudonym: 'Mteja E',
+  { id: 'r-2', direction: 'received', patientPseudonym: 'Client E',
     counterpartyName: 'Mch. Daudi Mushi',
     reasonSw: 'Huzuni baada ya msiba', status: 'pending', dateISO: daysAgo(2) },
 ]
@@ -296,10 +296,10 @@ export interface SupervisionCase {
 }
 
 const seedSup: SupervisionCase[] = [
-  { id: 'sv-1', supervisee: 'Bw. Salim Bakari', patientPseudonym: 'Mteja F',
+  { id: 'sv-1', supervisee: 'Bw. Salim Bakari', patientPseudonym: 'Client F',
     summarySw: 'Vipindi 3 vya PM+. PHQ-9 imeshuka kutoka 16 hadi 11.',
     submittedISO: daysAgo(3), status: 'pending' },
-  { id: 'sv-2', supervisee: 'Bi. Mariam Chande', patientPseudonym: 'Mteja G',
+  { id: 'sv-2', supervisee: 'Bi. Mariam Chande', patientPseudonym: 'Client G',
     summarySw: 'Kipindi cha lugha ya alama — wasiwasi mkubwa.',
     submittedISO: daysAgo(10), status: 'pending' },
 ]

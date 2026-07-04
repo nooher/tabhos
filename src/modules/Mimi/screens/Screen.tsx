@@ -61,7 +61,7 @@ export default function ScreenPage() {
     return (
       <PageShell title={t('mimi.screen.your-results', 'Matokeo yako')} subtitle={inst.name_sw} back={{ to: '/mimi/vipimo' }}>
         <Card jewel={interpret.redFlag ? JEWEL.maroonCrisis : JEWEL.tealRoho}>
-          <Pill tone={interpret.redFlag ? 'maroon' : 'teal'}>{interpret.label_sw}</Pill>
+          <Pill tone={interpret.redFlag ? 'maroon' : 'teal'}>{interpret.label_en}</Pill>
           <div style={{ fontFamily: TYPE.serif, fontSize: 56, lineHeight: 1, margin: '14px 0 4px', letterSpacing: TYPE.tighterTrack }}>
             {interpret.score}
             {interpret.redFlag && <span style={{ fontSize: 18, marginLeft: 12, color: JEWEL.goldSoft }}>· {t('mimi.screen.red-flag', 'bendera nyekundu')}</span>}

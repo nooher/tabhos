@@ -11,24 +11,24 @@ interface AssessmentResult {
 }
 
 const SEED_RESULTS: AssessmentResult[] = [
-  { instrument: 'PHQ-9', score: 14, band: 'Sonona ya wastani', dateISO: '2026-06-12' },
-  { instrument: 'GAD-7', score: 11, band: 'Wasiwasi wa wastani', dateISO: '2026-06-12' },
-  { instrument: 'C-SSRS', score: 0, band: 'Hakuna hatari ya sasa', dateISO: '2026-06-12' },
+  { instrument: 'PHQ-9', score: 14, band: 'Moderate depression', dateISO: '2026-06-12' },
+  { instrument: 'GAD-7', score: 11, band: 'Moderate anxiety', dateISO: '2026-06-12' },
+  { instrument: 'C-SSRS', score: 0, band: 'No current risk', dateISO: '2026-06-12' },
 ]
 
 const SEED_PRESENTING = [
-  'Mteja anaeleza kupoteza hamu ya kazi tangu mwezi uliopita.',
-  'Usingizi umevurugika — analala saa 9 lakini anaamka saa 3 usiku.',
-  'Hakuna matumizi ya pombe au bangi.',
+  'Reports a loss of interest in work since last month.',
+  'Sleep is disturbed — falls asleep around 9pm but wakes at 3am.',
+  'No alcohol or cannabis use.',
 ]
 
 export default function Intake() {
   const { t } = useLang()
-  const [pseudonym] = useState('Mteja A')
+  const [pseudonym] = useState('Client A')
   const [brief, setBrief] = useState(
-    'Mteja wa kike, miaka 32, mwalimu. Anatafuta msaada baada ya kutaka kujiua wiki mbili zilizopita.\n\n' +
-      'Tathmini zinasema sonona ya wastani na wasiwasi wa wastani. Hakuna hatari ya sasa ya kujiua.\n\n' +
-      'Hakuna historia ya magonjwa ya akili kabla. Hakuna dawa kwa sasa.',
+    'Female client, 32, teacher. Seeking support after suicidal thoughts two weeks ago.\n\n' +
+      'Assessments indicate moderate depression and moderate anxiety. No current suicide risk.\n\n' +
+      'No prior mental-health history. No current medication.',
   )
 
   return (

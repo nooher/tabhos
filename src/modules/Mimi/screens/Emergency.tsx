@@ -116,7 +116,7 @@ export default function EmergencyPage() {
 
       {phase === 'result' && out && (
         <section style={{ ...glass(out.redFlag ? JEWEL.maroonCrisis : JEWEL.tealRoho, 0.3), padding: 22, borderRadius: RADII.sheet }}>
-          <Pill tone={out.redFlag ? 'maroon' : 'teal'}>{out.label_sw}</Pill>
+          <Pill tone={out.redFlag ? 'maroon' : 'teal'}>{out.label_en}</Pill>
           <p style={{ fontFamily: TYPE.serif, fontSize: 20, margin: '10px 0 6px' }}>{out.guidance_sw}</p>
           <p style={{ color: TEXT.muted, fontSize: 12 }}>{out.guidance_en}</p>
           <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>

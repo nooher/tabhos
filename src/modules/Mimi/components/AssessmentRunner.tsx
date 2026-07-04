@@ -134,8 +134,8 @@ export function AssessmentRunner({ instrument, onDone, onCancel }: Props) {
                   }}
                 >
                   <span style={{ display: 'inline-block', minWidth: 28, fontFamily: TYPE.serif, color: selected ? TEXT.onJewel : TEXT.muted }}>{opt.value}</span>
-                  <span>{opt.label_sw}</span>
-                  <span style={{ float: 'right', color: selected ? TEXT.onJewel : TEXT.muted, fontSize: 12 }}>{opt.label_en}</span>
+                  <span>{opt.label_en}</span>
+                  <span style={{ float: 'right', color: selected ? TEXT.onJewel : TEXT.muted, fontSize: 12 }}>{opt.label_sw}</span>
                 </button>
               )
             })}
