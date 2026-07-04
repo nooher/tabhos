@@ -1,14 +1,11 @@
-// LanguageSwitch — chip group for Tumaini.
-// Active lanes: SW · EN · AR · RU · ZH
-// "Soon" (greyed, disabled): KI (Kirundi) · LN (Lingala) — kept as a marker
-// for the refugee-population roadmap; will be enabled when funded translation
-// work lands.
+// LanguageSwitch — chip group for TABHOS.
+// English-primary, Kiswahili as the option. No other lanes.
 
 import { BRAND, CREAM, NEUTRAL, TEXT, hexToRgba } from '../lib/glass'
 import { useLang, type Lang } from '../lib/i18n/Provider'
 
 interface Chip {
-  code: Lang | 'ki' | 'ln'
+  code: Lang
   label: string
   aria: string
   active?: boolean
@@ -16,13 +13,8 @@ interface Chip {
 }
 
 const CHIPS: Chip[] = [
-  { code: 'sw', label: 'SW', aria: 'Kiswahili', active: true },
   { code: 'en', label: 'EN', aria: 'English', active: true },
-  { code: 'ar', label: 'AR', aria: 'العربية — Arabic', active: true },
-  { code: 'ru', label: 'RU', aria: 'Русский — Russian', active: true },
-  { code: 'zh', label: 'ZH', aria: '中文 — Chinese', active: true },
-  { code: 'ki', label: 'KI', aria: 'Kirundi — coming soon', soon: true },
-  { code: 'ln', label: 'LN', aria: 'Lingala — coming soon', soon: true },
+  { code: 'sw', label: 'SW', aria: 'Kiswahili', active: true },
 ]
 
 export function LanguageSwitch() {

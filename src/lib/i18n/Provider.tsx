@@ -24,7 +24,7 @@ const LEGACY_KEY = 'tumaini.tlang'
 const QUERY_KEY = 'lang'
 
 function isLang(v: string | null | undefined): v is Lang {
-  return v === 'sw' || v === 'en' || v === 'ar' || v === 'ru' || v === 'zh'
+  return v === 'sw' || v === 'en'
 }
 
 function detectLang(): Lang {

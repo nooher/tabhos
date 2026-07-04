@@ -14,7 +14,8 @@
 
 export type Lang = 'sw' | 'en' | 'ar' | 'ru' | 'zh'
 
-export const LANGS: readonly Lang[] = ['sw', 'en', 'ar', 'ru', 'zh'] as const
+// English-primary, Kiswahili as the option. Arabic/Russian/Chinese lanes retired.
+export const LANGS: readonly Lang[] = ['en', 'sw'] as const
 
 export interface Entry {
   sw: string
