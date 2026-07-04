@@ -9,7 +9,7 @@
  *        entity_id=appointmentId, meta={template:'SOAP', fields, signed_at})
  *      - Marks the appointment `status='completed'`
  *      - Optionally captures a follow-up outcome (PHQ-9 follow-up score)
- *      - Optionally drafts a `tr_claims` row when 'Tuma kwa bima' is checked
+ *      - Optionally drafts a `tr_claims` row when 'Submit to insurance' is checked
  *   4. Navigates back to /wataalam with a toast
  *
  * Sovereign + real: writes to Supabase via the typed db.* helpers.
@@ -65,7 +65,7 @@ export default function CompleteSession() {
       try {
         const row = await db.get('tr_appointments', appointmentId)
         if (!mounted) return
-        if (!row) { setErr(t('wataalam.complete.not_found', 'Miadi hii haipatikani.')); setLoading(false); return }
+        if (!row) { setErr(t('wataalam.complete.not_found', 'This appointment is unavailable.')); setLoading(false); return }
         // Try to enrich with patient display_name (one extra fetch).
         let label: string | undefined
         try {
@@ -149,7 +149,7 @@ export default function CompleteSession() {
         }
       }
 
-      toast(t('wataalam.complete.done', 'Kipindi kimekamilika · imeandikishwa'), 'success')
+      toast(t('wataalam.complete.done', 'Session complete · recorded'), 'success')
       nav('/wataalam')
     } catch (e) {
       setErr(e instanceof Error ? e.message : String(e))
@@ -171,7 +171,7 @@ export default function CompleteSession() {
       <div>
         <H1 english="Complete session">{t('wataalam.complete.title', 'Maliza kipindi')}</H1>
         <Card title={t('wataalam.complete.err_card', 'Hitilafu')} accent={BRAND.ink}>
-          <p style={{ color: TEXT.body, margin: 0 }}>{err ?? t('wataalam.complete.not_found', 'Miadi hii haipatikani.')}</p>
+          <p style={{ color: TEXT.body, margin: 0 }}>{err ?? t('wataalam.complete.not_found', 'This appointment is unavailable.')}</p>
           <button style={{ ...buttonStyle(JEWEL.tealDeep, false), marginTop: 12 }} onClick={() => nav('/wataalam')}>
             {t('wataalam.complete.back', '← Rudi')}
           </button>
@@ -186,9 +186,9 @@ export default function CompleteSession() {
     <div>
       <H1 english="Complete session">{t('wataalam.complete.title', 'Maliza kipindi')}</H1>
 
-      <Card title={t('wataalam.complete.appt_card', 'Miadi')} accent={JEWEL.tealMwenza}>
+      <Card title={t('wataalam.complete.appt_card', 'Appointment')} accent={JEWEL.tealMwenza}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px,1fr))', gap: 10 }}>
-          <KV label={t('wataalam.complete.patient', 'Mteja')} value={appt.patient_label ?? t('wataalam.complete.anon', 'Bila jina')} />
+          <KV label={t('wataalam.complete.patient', 'Client')} value={appt.patient_label ?? t('wataalam.complete.anon', 'Unnamed')} />
           <KV label={t('wataalam.complete.when', 'Wakati')} value={when.toLocaleString('sw-TZ')} />
           <KV label={t('wataalam.complete.modality', 'Aina')} value={appt.modality === 'virtual' ? t('wataalam.common.virtual','Mtandaoni') : t('wataalam.common.in_person','Ana kwa ana')} />
           <KV label={t('wataalam.complete.status', 'Hali')} value={appt.status} />
@@ -232,7 +232,7 @@ export default function CompleteSession() {
           </div>
 
           <div>
-            <FieldLabel>{t('wataalam.complete.phq', 'PHQ-9 ya leo (hiari, 0–27)')}</FieldLabel>
+            <FieldLabel>{t('wataalam.complete.phq', 'Today’s PHQ-9 (optional, 0–27)')}</FieldLabel>
             <input
               value={phqFollowup}
               onChange={e => setPhqFollowup(e.target.value.replace(/[^\d]/g, ''))}
@@ -243,7 +243,7 @@ export default function CompleteSession() {
 
           <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 6 }}>
             <input type="checkbox" checked={submitClaim} onChange={e => setSubmitClaim(e.target.checked)} />
-            <span style={{ color: TEXT.body, fontSize: 14 }}>{t('wataalam.complete.submit_claim', 'Andaa madai ya bima (draft)')}</span>
+            <span style={{ color: TEXT.body, fontSize: 14 }}>{t('wataalam.complete.submit_claim', 'Prepare insurance claim (draft)')}</span>
           </label>
 
           {submitClaim && (
@@ -258,12 +258,12 @@ export default function CompleteSession() {
           )}
 
           <div>
-            <FieldLabel>{t('wataalam.complete.patient_summary', 'Muhtasari kwa mteja (anaweza kuusoma kwenye Mimi)')}</FieldLabel>
+            <FieldLabel>{t('wataalam.complete.patient_summary', 'Summary for the client (visible in their space)')}</FieldLabel>
             <textarea
               rows={3}
               value={patientSummary}
               onChange={e => setPatientSummary(e.target.value)}
-              placeholder={t('wataalam.complete.patient_summary_ph', 'Mfano: Tumeongelea sonona ya kati. Endelea na PHQ-9 wiki ijayo. Anza zoezi la kupumua dakika 5 kila asubuhi.')}
+              placeholder={t('wataalam.complete.patient_summary_ph', 'Example: we discussed moderate depression. Continue PHQ-9 next week. Start a 5-minute breathing exercise each morning.')}
               style={{
                 width: '100%', background: CREAM.milk, color: TEXT.body,
                 border: '1px solid rgba(11,9,8,0.22)', borderRadius: RADII.card,
@@ -271,7 +271,7 @@ export default function CompleteSession() {
               }}
             />
             <p style={{ fontSize: 11, color: TEXT.muted, marginTop: 4 }}>
-              {t('wataalam.complete.patient_summary_hint', 'Hii inahifadhiwa kwenye miadi na inaonekana kwa mteja. SOAP note kamili haionekani — ni ya wahudumu tu.')}
+              {t('wataalam.complete.patient_summary_hint', 'Saved to the appointment and visible to the client. The full SOAP note stays clinician-only.')}
             </p>
           </div>
 

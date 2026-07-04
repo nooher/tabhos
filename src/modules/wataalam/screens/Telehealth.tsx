@@ -14,8 +14,8 @@ export default function Telehealth() {
   const [cameraOn, setCameraOn] = useState(false)
   const [micOn, setMicOn] = useState(true)
   const [streamErr, setStreamErr] = useState<string | null>(null)
-  const [messages, setMessages] = useState<{ who: 'mtaalamu' | 'mteja'; text: string }[]>([
-    { who: 'mteja', text: 'Habari za asubuhi.' },
+  const [messages, setMessages] = useState<{ who: 'mtaalamu' | 'client'; text: string }[]>([
+    { who: 'client', text: 'Habari za asubuhi.' },
   ])
   const [draft, setDraft] = useState('')
   const [notes, setNotes] = useState('')
@@ -35,7 +35,7 @@ export default function Telehealth() {
           await localRef.current.play().catch(() => {})
         }
       } catch (e) {
-        setStreamErr(t('wataalam.telehealth.camera_err', 'Hatuwezi kufikia kamera. Hakikisha umetoa idhini ya kivinjari.'))
+        setStreamErr(t('wataalam.telehealth.camera_err', 'Cannot access the camera. Check your browser permissions.'))
         setCameraOn(false)
       }
     })()
@@ -57,7 +57,7 @@ export default function Telehealth() {
 
   return (
     <div>
-      <H1 english="Telehealth">{t('wataalam.telehealth.title', 'Kipindi cha video')}</H1>
+      <H1 english="Telehealth">{t('wataalam.telehealth.title', 'Video session')}</H1>
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 14 }}>
         <Card title={`Mteja A · ${formatElapsed(elapsed)}`}>
@@ -120,7 +120,7 @@ export default function Telehealth() {
                   color: TEXT.onJewel,
                 }}
               >
-                {t('wataalam.telehealth.camera_off', 'Kamera imezimwa')}
+                {t('wataalam.telehealth.camera_off', 'Camera off')}
               </div>
             )}
           </div>
@@ -145,7 +145,7 @@ export default function Telehealth() {
               style={buttonStyle(cameraOn ? JEWEL.tealRoho : JEWEL.tealDeep, cameraOn)}
               aria-pressed={cameraOn}
             >
-              {cameraOn ? t('wataalam.telehealth.cam_on', '📹 Kamera ON') : t('wataalam.telehealth.cam_start', '📹 Anza kamera')}
+              {cameraOn ? t('wataalam.telehealth.cam_on', 'Camera on') : t('wataalam.telehealth.cam_start', 'Start camera')}
             </button>
             <button
               onClick={() => setMicOn((v) => !v)}
@@ -165,7 +165,7 @@ export default function Telehealth() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={8}
-              placeholder={t('wataalam.telehealth.notes_ph', 'Andika maelezo yako…')}
+              placeholder={t('wataalam.telehealth.notes_ph', 'Write your notes…')}
               style={{
                 width: '100%',
                 background: CREAM.milk,
@@ -221,7 +221,7 @@ export default function Telehealth() {
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && send()}
-                placeholder={t('wataalam.telehealth.msg_ph', 'Andika ujumbe…')}
+                placeholder={t('wataalam.telehealth.msg_ph', 'Type a message…')}
                 style={{
                   flex: 1,
                   padding: '8px 12px',

@@ -28,7 +28,7 @@ const COURSES: Course[] = [
     titleEn: 'MI for clinical work',
     hours: 4,
     source: 'WHO',
-    descSw: 'Mbinu za kuongeza motisha ya mteja kwa mabadiliko.',
+    descSw: 'Techniques to build client motivation for change.',
   },
   {
     id: 'pmplus-cert',
@@ -36,11 +36,11 @@ const COURSES: Course[] = [
     titleEn: 'PM+ Lay Counsellor Certification',
     hours: 20,
     source: 'WHO',
-    descSw: 'Cheti rasmi cha kutoa PM+ chini ya usimamizi.',
+    descSw: 'Formal certificate to deliver PM+ under supervision.',
   },
   {
     id: 'crisis-1',
-    titleSw: 'Kushughulika na mteja anayetaka kujiua',
+    titleSw: 'Working with a client who is suicidal',
     titleEn: 'Managing the suicidal patient',
     hours: 3,
     source: 'Lifeline 0800 110014',
@@ -85,14 +85,14 @@ export default function Education() {
 
   return (
     <div>
-      <H1 english="CEU library">{t('wataalam.edu.title', 'Maktaba ya elimu endelevu')}</H1>
+      <H1 english="CEU library">{t('wataalam.edu.title', 'Continuing-education library')}</H1>
 
-      <Card title={t('wataalam.edu.progress', 'Maendeleo yako')} accent={JEWEL.goldHope}>
+      <Card title={t('wataalam.edu.progress', 'Your progress')} accent={JEWEL.goldHope}>
         <p style={{ margin: '0 0 8px', fontFamily: TYPE.serif, fontSize: 18 }}>
           <strong>{total}</strong> {t('wataalam.edu.of_hours', 'ya saa')} <strong>{goal}</strong> {t('wataalam.edu.this_year', 'kwa mwaka huu')}
         </p>
         <div
-          aria-label={t('wataalam.edu.progress', 'Maendeleo yako')}
+          aria-label={t('wataalam.edu.progress', 'Your progress')}
           style={{
             height: 12,
             borderRadius: 999,
@@ -150,7 +150,7 @@ export default function Education() {
       </h2>
       <Card>
         {earned.length === 0 ? (
-          <p style={{ color: TEXT.muted, margin: 0 }}>{t('wataalam.edu.none', 'Hakuna kozi bado.')}</p>
+          <p style={{ color: TEXT.muted, margin: 0 }}>{t('wataalam.edu.none', 'No courses yet.')}</p>
         ) : (
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 6 }}>
             {earned.map((e) => (

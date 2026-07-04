@@ -37,7 +37,7 @@ export default function Supervision() {
 
   return (
     <div>
-      <H1 english="Supervision">{t('wataalam.supervision.title', 'Usimamizi wa washauri wa kijamii')}</H1>
+      <H1 english="Supervision">{t('wataalam.supervision.title', 'Community counsellor supervision')}</H1>
 
       {(['pending', 'reviewed', 'signed_off'] as const).map((g) => (
         <Card
@@ -47,7 +47,7 @@ export default function Supervision() {
               ? `${t('wataalam.supervision.pending', 'Zinazongoja')} (${groups[g].length})`
               : g === 'reviewed'
                 ? `${t('wataalam.supervision.reviewed', 'Zilizopitiwa')} (${groups[g].length})`
-                : `${t('wataalam.supervision.signed', 'Zilizosainiwa')} (${groups[g].length})`
+                : `${t('wataalam.supervision.signed', 'Signed')} (${groups[g].length})`
           }
           accent={
             g === 'pending' ? JEWEL.maroonCrisis : g === 'reviewed' ? JEWEL.indigoWisdom : JEWEL.tealRoho
@@ -55,7 +55,7 @@ export default function Supervision() {
           style={{ marginBottom: 12 }}
         >
           {groups[g].length === 0 ? (
-            <p style={{ color: TEXT.muted, margin: 0 }}>{t('wataalam.supervision.none', 'Hakuna kesi.')}</p>
+            <p style={{ color: TEXT.muted, margin: 0 }}>{t('wataalam.supervision.none', 'No cases.')}</p>
           ) : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 10 }}>
               {groups[g].map((c) => (
@@ -115,14 +115,14 @@ export default function Supervision() {
                         {t('wataalam.supervision.feedback_label', 'Maoni:')} {c.feedbackSw}
                       </p>
                       <button onClick={() => signOff(c.id)} style={buttonStyle(JEWEL.goldHope, true)}>
-                        {t('wataalam.supervision.sign', '✓ Saini')}
+                        {t('wataalam.supervision.sign', '✓ Sign')}
                       </button>
                     </>
                   )}
 
                   {c.status === 'signed_off' && (
                     <p style={{ color: TEXT.link, fontWeight: 600, fontSize: 13 }}>
-                      {t('wataalam.supervision.signed_msg', '✓ Imesainiwa — kesi imekamilika.')}
+                      {t('wataalam.supervision.signed_msg', '✓ Signed — case complete.')}
                     </p>
                   )}
                 </li>
