@@ -167,7 +167,7 @@ export function MoodCheck({ onSaved }: { onSaved?: () => void }) {
             fontSize: 13,
           }}
         >
-          {listening ? t('mimi.mood.listening', '● Inasikiliza…') : t('mimi.mood.speak', '🎤 Sema')}
+          {listening ? t('mimi.mood.listening', '● Listening…') : t('mimi.mood.speak', 'Speak')}
         </button>
         <button
           type="button"

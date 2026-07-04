@@ -26,7 +26,7 @@ const NAV: NavEntry[] = [
 ]
 
 export function WorkspaceShell() {
-  const { t } = useLang()
+  const { t, lang } = useLang()
   return (
     <div
       style={{
@@ -91,8 +91,7 @@ export function WorkspaceShell() {
                   end={n.to === ''}
                   style={({ isActive }) => navItemStyle(isActive)}
                 >
-                  <span>{n.label}</span>
-                  <span style={{ fontSize: 10, color: TEXT.muted, fontWeight: 500 }}>{n.english}</span>
+                  <span>{lang === 'sw' ? n.label : n.english}</span>
                 </NavLink>
               </li>
             ))}
