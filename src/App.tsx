@@ -40,6 +40,7 @@ const Press        = lazy(() => import('./modules/welcome/screens/Press'))
 const Investor     = lazy(() => import('./modules/welcome/screens/Investor'))
 const NotFound     = lazy(() => import('./modules/NotFound'))
 const AdminV2      = lazy(() => import('./modules/AdminV2'))
+const PublicProvider = lazy(() => import('./modules/PublicProvider'))
 
 function PageFallback() {
   const { t } = useLang()
@@ -72,7 +73,7 @@ function KaribuGate() {
 
 export default function App() {
   const loc = useLocation()
-  const chromeless = CHROMELESS_PATHS.has(loc.pathname)
+  const chromeless = CHROMELESS_PATHS.has(loc.pathname) || loc.pathname.startsWith('/p/')
   return (
     <>
       <div style={{ minHeight: '100vh' }}>
@@ -83,6 +84,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<WelcomeHome />} />
             <Route path="/admin/v2" element={<AdminV2 />} />
+            <Route path="/p/:slug" element={<PublicProvider />} />
             <Route path="/dashibodi" element={<Landing />} />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/chagua-akaunti" element={<WelcomeHome />} />
