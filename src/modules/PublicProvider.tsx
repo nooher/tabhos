@@ -1,6 +1,10 @@
+import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { BRAND, CREAM, NEUTRAL, RADII, TEXT, TYPE, hexToRgba } from '../lib/glass'
 import { findProvider } from '../lib/providers'
+
+const FOLLOW_KEY = 'tabhos.follows'
+function readFollows(): string[] { try { return JSON.parse(localStorage.getItem(FOLLOW_KEY) || '[]') as string[] } catch { return [] } }
 
 /**
  * Public provider page — the shareable link a practitioner posts to Instagram,
@@ -40,6 +44,12 @@ export default function PublicProvider() {
   const nav = useNavigate()
   const p = findProvider(slug)
   const book = () => nav(`/book/${p.slug}`)
+  const [following, setFollowing] = useState(() => readFollows().includes(p.slug))
+  const toggleFollow = () => setFollowing((f) => {
+    const next = !f
+    try { const set = new Set(readFollows()); next ? set.add(p.slug) : set.delete(p.slug); localStorage.setItem(FOLLOW_KEY, JSON.stringify([...set])) } catch { /* noop */ }
+    return next
+  })
   const initials = p.name.split(' ').filter(Boolean).slice(0, 2).map((x) => x[0]).join('')
 
   const btn = (bg: string, color: string): React.CSSProperties => ({
@@ -74,8 +84,8 @@ export default function PublicProvider() {
 
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 18 }}>
           <button onClick={book} style={btn(GREEN, CREAM.cream)}>Book appointment</button>
-          <a href="#book" style={btn('transparent', INK)}>Message</a>
-          <a href="#book" style={btn('transparent', INK)}>Follow</a>
+          <button onClick={book} style={btn('transparent', INK)}>Message</button>
+          <button onClick={toggleFollow} style={btn(following ? GREEN : 'transparent', following ? CREAM.cream : INK)}>{following ? 'Following' : 'Follow'}</button>
           <button onClick={() => alert('Use your browser menu → “Add to Home Screen” to save this practice.')} style={btn(hexToRgba(ORANGE, 0.16), '#9A5B24')}>Save to home</button>
         </div>
         <div style={{ fontSize: 11.5, color: TEXT.muted, marginTop: 8 }}>{p.registration}</div>

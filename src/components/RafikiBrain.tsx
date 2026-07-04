@@ -28,10 +28,10 @@ const SMALL_BREAKPOINT_PX = 380
 
 interface Pos { x: number; y: number }
 
-const CONTAINER_W_DEFAULT = 220 // brain + outermost orbit + subtitle box
-const CONTAINER_H_DEFAULT = 240
-const CONTAINER_W_SMALL = 190
-const CONTAINER_H_SMALL = 210
+const CONTAINER_W_DEFAULT = 96 // compact floating mark — brain + quiet ring
+const CONTAINER_H_DEFAULT = 96
+const CONTAINER_W_SMALL = 84
+const CONTAINER_H_SMALL = 84
 
 function safeViewportW(): number {
   if (typeof window === 'undefined') return 320
@@ -269,24 +269,6 @@ export function RafikiBrain() {
           <BrainSVG size={BRAIN_DIAMETER - 4} />
         </div>
 
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 22,
-            left: 0,
-            right: 0,
-            textAlign: 'center',
-            fontSize: 11,
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: JEWEL.tealMwenza,
-            fontWeight: 800,
-            fontStyle: 'normal',
-            textShadow: '0 1px 2px rgba(250,245,229,0.85)',
-          }}
-        >
-          Rafiki
-        </div>
       </div>
 
       {open && <RafikiChatModal onClose={() => setOpen(false)} />}
