@@ -186,32 +186,18 @@ export default function WelcomeHome() {
                 lineHeight: 1.15,
               }}
             >
-              {t('welcome.h_sw', 'Karibu kwenye jukwaa la afya ya tabia.')}
+              {t('welcome.h', 'Behavioral health, for all of Tanzania.')}
             </h1>
             <p
               style={{
-                margin: '8px 0 0',
+                margin: '10px 0 0',
                 fontSize: 13.5,
                 lineHeight: 1.55,
                 color: TEXT.body,
               }}
             >
               {t(
-                'welcome.lede_sw',
-                'Bure milele · de-identified · IRB-gated · ushahidi (EBM) · faragha imara · interoperable na EHR yoyote.',
-              )}
-            </p>
-            <p
-              style={{
-                margin: '6px 0 0',
-                fontSize: 12,
-                lineHeight: 1.55,
-                color: TEXT.muted,
-                fontStyle: 'normal',
-              }}
-            >
-              {t(
-                'welcome.lede_en',
+                'welcome.lede',
                 'Free forever · de-identified · IRB-gated · evidence-based · privacy-first · interoperable with any EHR.',
               )}
             </p>
@@ -220,7 +206,7 @@ export default function WelcomeHome() {
           {/* Tabs */}
           <div
             role="tablist"
-            aria-label={t('welcome.mode', 'Hali ya kuingia')}
+            aria-label={t('welcome.mode', 'Sign-in mode')}
             style={{
               display: 'inline-flex',
               gap: 4,
@@ -251,8 +237,8 @@ export default function WelcomeHome() {
                 }}
               >
                 {m === 'ingia'
-                  ? t('welcome.tab_signin', 'Ingia')
-                  : t('welcome.tab_signup', 'Jisajili')}
+                  ? t('welcome.tab_signin', 'Sign in')
+                  : t('welcome.tab_signup', 'Sign up')}
               </button>
             ))}
           </div>
@@ -263,7 +249,6 @@ export default function WelcomeHome() {
               id="welcome-email"
               type="email"
               autoComplete="email"
-              labelSw="Barua pepe"
               labelEn="Email"
               value={authEmail}
               onChange={setAuthEmail}
@@ -272,7 +257,6 @@ export default function WelcomeHome() {
               id="welcome-pwd"
               type="password"
               autoComplete={mode === 'ingia' ? 'current-password' : 'new-password'}
-              labelSw="Nenosiri"
               labelEn="Password"
               value={authPwd}
               onChange={setAuthPwd}
@@ -295,7 +279,7 @@ export default function WelcomeHome() {
             <button
               type="submit"
               disabled={!hasBackend || busy !== null || !authEmail || !authPwd}
-              title={hasBackend ? '' : t('welcome.backend_soon', 'Backend bado haijasanidiwa')}
+              title={hasBackend ? '' : t('welcome.backend_soon', 'Backend not configured yet')}
               style={{
                 marginTop: 4,
                 padding: '12px 16px',
@@ -311,10 +295,10 @@ export default function WelcomeHome() {
               }}
             >
               {busy === 'mpya'
-                ? t('welcome.busy', 'Inaingia…')
+                ? t('welcome.busy', 'Signing in…')
                 : mode === 'ingia'
-                  ? t('welcome.cta_signin', 'Ingia')
-                  : t('welcome.cta_signup', 'Jisajili')}
+                  ? t('welcome.cta_signin', 'Sign in')
+                  : t('welcome.cta_signup', 'Sign up')}
             </button>
           </form>
 
@@ -331,7 +315,7 @@ export default function WelcomeHome() {
             }}
           >
             <span style={{ height: 1, flex: 1, background: hexToRgba(NEUTRAL.ink, 0.12) }} />
-            {t('welcome.or_demo', 'Au ingia kama')}
+            {t('welcome.or_demo', 'Or sign in as')}
             <span style={{ height: 1, flex: 1, background: hexToRgba(NEUTRAL.ink, 0.12) }} />
           </div>
 
@@ -347,7 +331,7 @@ export default function WelcomeHome() {
               <button
                 key={p.id}
                 onClick={() => onPick(p)}
-                aria-label={`Ingia kama ${p.name}`}
+                aria-label={`Sign in as ${p.name}`}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -412,7 +396,7 @@ export default function WelcomeHome() {
                 paddingBottom: 2,
               }}
             >
-              {t('welcome.provider_signup', 'Wewe ni mtaalam? Jisajili hapa →')}
+              {t('welcome.provider_signup', 'Are you a clinician? Register here →')}
             </a>
           </div>
 
@@ -457,13 +441,12 @@ interface FloatingFieldProps {
   id: string
   type: string
   autoComplete: string
-  labelSw: string
   labelEn: string
   value: string
   onChange: (v: string) => void
 }
 
-function FloatingField({ id, type, autoComplete, labelSw, labelEn, value, onChange }: FloatingFieldProps) {
+function FloatingField({ id, type, autoComplete, labelEn, value, onChange }: FloatingFieldProps) {
   return (
     <label
       htmlFor={id}
@@ -486,7 +469,7 @@ function FloatingField({ id, type, autoComplete, labelSw, labelEn, value, onChan
           marginBottom: 4,
         }}
       >
-        {labelSw} · {labelEn}
+        {labelEn}
       </span>
       <input
         id={id}

@@ -128,13 +128,13 @@ export function LangProvider({ children }: { children: ReactNode }) {
 export function useLang(): LangContextShape {
   const ctx = useContext(LangContext)
   if (!ctx) {
-    // Fallback so components used outside a provider still get sw.
+    // Fallback so components used outside a provider still render — English-primary.
     return {
-      lang: 'sw',
+      lang: 'en',
       setLang: () => { /* noop */ },
       t: (k: string, f?: string) => {
         const e = CATALOG[k]
-        return e?.sw ?? f ?? k
+        return e?.en ?? e?.sw ?? f ?? k
       },
       langs: LANGS,
     }
