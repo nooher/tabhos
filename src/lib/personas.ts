@@ -155,10 +155,10 @@ export const PERSONAS: readonly Persona[] = [
   },
   {
     id: 'mpya',
-    name: 'Mtumiaji Mpya',
+    name: 'New user',
     role: 'Cold start',
     english: 'New user',
-    description: 'Hakuna data — anza kwa Karibu wizard kutoka hatua ya 1.',
+    description: 'No data yet — starts from the Welcome wizard at step 1.',
     initials: 'MP',
     accent: BRAND.creamOrange,
     startRoute: '/karibu',
