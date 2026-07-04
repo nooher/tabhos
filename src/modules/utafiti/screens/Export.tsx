@@ -38,7 +38,7 @@ function downloadCsv(): void {
 }
 
 function downloadSps(): void {
-  const syntax = `* SPSS syntax — Tumaini TR-001 cohort.\n\n` +
+  const syntax = `* SPSS syntax — TABHOS TR-001 cohort.\n\n` +
 `GET DATA /TYPE=TXT /FILE='tumaini_long_format.csv' /DELIMITERS="," /FIRSTCASE=2\n` +
 `  /VARIABLES = pid A10 protocol A8 week F2 phq9_score F2 gad7_score F2 site_id A10 remission_12wk A1.\n` +
 `EXECUTE.\n\nMIXED phq9_score BY week protocol\n  /FIXED week protocol week*protocol\n  /RANDOM INTERCEPT | SUBJECT(pid) COVTYPE(VC)\n  /METHOD = REML.\n`
@@ -46,7 +46,7 @@ function downloadSps(): void {
 }
 
 function downloadStata(): void {
-  const code = `* Stata syntax — Tumaini TR-001.\n\n` +
+  const code = `* Stata syntax — TABHOS TR-001.\n\n` +
 `import delimited using "tumaini_long_format.csv", clear\n` +
 `encode protocol, gen(protocol_n)\n` +
 `xtmixed phq9_score week##protocol_n || pid: , reml\n` +
@@ -55,7 +55,7 @@ function downloadStata(): void {
 }
 
 function downloadSas(): void {
-  const code = `/* SAS syntax — Tumaini TR-001. */\n\n` +
+  const code = `/* SAS syntax — TABHOS TR-001. */\n\n` +
 `proc import datafile="tumaini_long_format.csv" out=tum dbms=csv replace; getnames=yes; run;\n` +
 `proc mixed data=tum; class pid site_id protocol; model phq9_score = week protocol week*protocol / solution;\n  random intercept / subject=pid; run;\n` +
 `proc logistic data=tum; class protocol(ref='TR-001'); model remission_12wk(event='Y') = protocol; run;\n`
