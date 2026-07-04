@@ -33,7 +33,7 @@ export default function Outcomes() {
     <div>
       <H1 english="Outcomes">{t('wataalam.outcomes.title', 'Matokeo kwa muda')}</H1>
 
-      <Card title={t('wataalam.outcomes.choose_patient', 'Chagua mteja')}>
+      <Card title={t('wataalam.outcomes.choose_patient', 'Select client')}>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {patients.map((p) => (
             <button
@@ -85,7 +85,7 @@ export default function Outcomes() {
           </Card>
         ))}
         {Object.keys(series).length === 0 && (
-          <p style={{ color: TEXT.muted }}>{t('wataalam.outcomes.none', 'Hakuna matokeo kwa mteja huyu bado.')}</p>
+          <p style={{ color: TEXT.muted }}>{t('wataalam.outcomes.none', 'No results for this client yet.')}</p>
         )}
       </div>
     </div>

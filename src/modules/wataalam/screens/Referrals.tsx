@@ -61,7 +61,7 @@ export default function Referrals() {
           </div>
 
           {list.length === 0 ? (
-            <p style={{ color: TEXT.muted, margin: 0 }}>{t('wataalam.referrals.none', 'Hakuna rufaa.')}</p>
+            <p style={{ color: TEXT.muted, margin: 0 }}>{t('wataalam.referrals.none', 'No referrals.')}</p>
           ) : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 10 }}>
               {list.map((r) => (
@@ -127,7 +127,7 @@ export default function Referrals() {
         </Card>
 
         <Card title={t('wataalam.referrals.send_card', 'Tuma rufaa')}>
-          <FieldLabel>{t('wataalam.referrals.patient_code', 'Mteja (kificho)')}</FieldLabel>
+          <FieldLabel>{t('wataalam.referrals.patient_code', 'Client (pseudonym)')}</FieldLabel>
           <input
             style={fieldStyle()}
             value={draft.patientPseudonym}

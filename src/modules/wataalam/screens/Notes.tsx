@@ -23,13 +23,13 @@ const ROHO_HINTS = [
   '“Eleza zaidi unachomaanisha kwa ‘kuchoka roho’.”',
   'Kumbuka kuthibitisha hisia kabla ya kuingia kwenye CBT.',
   'Fikiria kupima ulalaji na hamu ya chakula leo.',
-  'Hatari ya kujiua: ulipima C-SSRS?',
+  'Suicide risk: did you assess C-SSRS?',
 ]
 
 export default function Notes() {
   const { t } = useLang()
   const [template, setTemplate] = useState<'SOAP' | 'DAP'>('SOAP')
-  const [pseudonym, setPseudonym] = useState('Mteja A')
+  const [pseudonym, setPseudonym] = useState('Client A')
   const [fields, setFields] = useState<Record<string, string>>({})
   const [saved, setSaved] = useState<SessionNote[]>(() => loadNotes())
 
@@ -55,7 +55,7 @@ export default function Notes() {
       <H1 english="Session notes">{t('wataalam.notes.title', 'Kumbukumbu za kipindi')}</H1>
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 14 }}>
-        <Card title={`${t('wataalam.notes.write', 'Andika kumbukumbu')} — ${template}`}>
+        <Card title={`${t('wataalam.notes.write', 'Write a note')} — ${template}`}>
           <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
             {(['SOAP', 'DAP'] as const).map((t) => (
               <button
@@ -71,7 +71,7 @@ export default function Notes() {
             <input
               value={pseudonym}
               onChange={(e) => setPseudonym(e.target.value)}
-              placeholder={t('wataalam.notes.patient_ph', 'Mteja')}
+              placeholder={t('wataalam.notes.patient_ph', 'Client')}
               style={{
                 padding: '8px 12px',
                 borderRadius: 999,
@@ -145,7 +145,7 @@ export default function Notes() {
 
       <Card title={`${t('wataalam.notes.saved', 'Kumbukumbu zilizohifadhiwa')} (${saved.length})`} style={{ marginTop: 14 }}>
         {saved.length === 0 ? (
-          <p style={{ color: TEXT.muted, margin: 0 }}>{t('wataalam.notes.empty', 'Bado hakuna kumbukumbu.')}</p>
+          <p style={{ color: TEXT.muted, margin: 0 }}>{t('wataalam.notes.empty', 'No notes yet.')}</p>
         ) : (
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 8 }}>
             {saved.slice(0, 5).map((n) => (
