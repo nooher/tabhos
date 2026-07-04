@@ -3,7 +3,7 @@ import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLang } from '../lib/i18n/Provider'
 import { BRAND, CREAM, NEUTRAL, TEXT, TYPE, hexToRgba } from '../lib/glass'
-import CinematicIntro, { introAlreadyPlayed } from '../components/CinematicIntro'
+import CinematicIntro from '../components/CinematicIntro'
 import EntranceBrain from '../components/EntranceBrain'
 import { clearPersona, DEMO_PASSWORD, PERSONAS, personaEmail, setPersona, type Persona, type PersonaId } from '../lib/personas'
 import { hasBackend, supabase } from '../lib/supabase'
@@ -21,8 +21,11 @@ import { hasBackend, supabase } from '../lib/supabase'
 export default function WelcomeHome() {
   const nav = useNavigate()
   const { t } = useLang()
-  const [introDone, setIntroDone] = useState<boolean>(() => introAlreadyPlayed())
-  const [revealed, setRevealed] = useState<boolean>(() => introAlreadyPlayed())
+  // Mature-platform entrance: the sign-in panel is immediate — no cinematic
+  // splash gating access. (The CinematicIntro asset is retained but no longer
+  // forced; a real platform lets you sign in the moment you land.)
+  const [introDone, setIntroDone] = useState<boolean>(true)
+  const [revealed, setRevealed] = useState<boolean>(true)
   const [mode, setMode] = useState<'ingia' | 'jisajili'>('ingia')
   const [busy, setBusy] = useState<PersonaId | null>(null)
   const [err, setErr] = useState<string | null>(null)

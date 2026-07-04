@@ -1,5 +1,5 @@
-import { lazy, Suspense, useEffect } from 'react'
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import { TanzaniaFlagBar } from './components/TanzaniaFlagBar'
 import { TopNav } from './components/TopNav'
 import { RafikiBrain } from './components/RafikiBrain'
@@ -61,20 +61,13 @@ function PageFallback() {
   )
 }
 
+/**
+ * Onboarding is available at /karibu but never forced — a mature platform
+ * lets you reach features immediately after sign-in. (Previously this gate
+ * hard-redirected first-time users into a multi-step tour before any module,
+ * which added clicks between sign-in and value.)
+ */
 function KaribuGate() {
-  const nav = useNavigate()
-  const loc = useLocation()
-  useEffect(() => {
-    try {
-      const done = localStorage.getItem('tumaini.karibu.v1.complete') === 'true'
-      const publicPaths = ['/', '/karibu', '/welcome', '/chagua-akaunti', '/press', '/investor', '/dashibodi']
-      if (!done && !publicPaths.includes(loc.pathname)) {
-        nav('/karibu', { replace: true })
-      }
-    } catch {
-      /* noop */
-    }
-  }, [loc.pathname, nav])
   return null
 }
 
