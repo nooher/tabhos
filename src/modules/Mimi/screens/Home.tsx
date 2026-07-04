@@ -46,6 +46,19 @@ export default function Home() {
           <MoodCheck onSaved={() => setTick((t) => t + 1)} />
         </div>
 
+        <div style={{ gridColumn: '1 / -1' }}>
+          <Link to="/find" style={{ textDecoration: 'none', display: 'block' }}>
+            <div style={{ background: `linear-gradient(120deg, ${JEWEL.tealRoho} 0%, ${hexToRgba(JEWEL.tealRoho, 0.85)} 100%)`, color: '#FAF5E5', borderRadius: RADII.card, padding: '20px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', opacity: 0.85, fontWeight: 700, marginBottom: 4 }}>{t('mimi.home.find-care.kicker', 'Ready when you are')}</div>
+                <h3 style={{ margin: '0 0 4px', fontFamily: TYPE.serif, fontSize: 22, fontWeight: 800, letterSpacing: TYPE.tighterTrack }}>{t('mimi.home.find-care.title', 'Talk to someone who can help')}</h3>
+                <p style={{ margin: 0, fontSize: 13.5, opacity: 0.92 }}>{t('mimi.home.find-care.sub', 'Find a verified therapist, psychiatrist or counsellor — book chat, video or in person.')}</p>
+              </div>
+              <span style={{ background: '#FAF5E5', color: JEWEL.tealRoho, fontWeight: 800, fontSize: 14, padding: '11px 20px', borderRadius: 999, whiteSpace: 'nowrap' }}>Find care →</span>
+            </div>
+          </Link>
+        </div>
+
         <Card jewel={JEWEL.indigoWisdom}>
           <Pill tone="indigo">{t('mimi.pill.assessments', 'Vipimo')}</Pill>
           <h3 style={{ fontFamily: TYPE.serif, fontSize: 22, margin: '8px 0 4px', letterSpacing: TYPE.tighterTrack }}>{t('mimi.home.assessments-done', 'Vipimo vilivyokamilika')}</h3>
