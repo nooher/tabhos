@@ -1,6 +1,6 @@
 import type { TamaaReading } from './schema';
 export function summarize(list: TamaaReading[]): string {
-  if (!list.length) return 'Andika tamaa, hata kama hujatumia. Hii ni stadi ya MI.';
+  if (!list.length) return 'Log cravings, even if you didn’t use. This is an MI skill.';
   const sober = list.filter((r) => r.episodes === 0).length;
-  return `Siku ${sober}/${list.length} hukutumia. Kila siku ni ushindi. Tafakari thamani inayokuongoza.`;
+  return `${sober}/${list.length} days you didn’t use. Every day is a win. Reflect on the value guiding you.`;
 }

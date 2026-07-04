@@ -1,7 +1,7 @@
 import type { PumziReading } from './schema';
 export function summarize(list: PumziReading[]): string {
-  if (!list.length) return 'Pumzi 5 dakika kila siku inajenga ukinzani wa kihisia.';
+  if (!list.length) return 'Five minutes of breathing a day builds emotional resilience.';
   const min = list.reduce((s, r) => s + r.minutes, 0);
-  if (min >= 35) return `Umefanya pumzi ${min} dakika wiki hii — bora.`;
-  return `Pumzi ${min} dakika wiki hii — lenga 5 dakika kwa siku.`;
+  if (min >= 35) return `You’ve done ${min} minutes of breathing this week — great.`;
+  return `${min} minutes of breathing this week — aim for 5 minutes a day.`;
 }
