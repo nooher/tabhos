@@ -1,6 +1,10 @@
 .vercel
 node_modules
 dist
+
+# TypeScript's incremental build cache. It was tracked, so every build dirtied
+# the working tree and made real changes harder to see.
+*.tsbuildinfo
 .DS_Store
 *.log
 
