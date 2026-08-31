@@ -416,7 +416,7 @@ export default function WelcomeHome() {
               Laetoli (T) Ltd
             </a>
             <span style={{ margin: '0 6px' }}>·</span>
-            <a href="https://thos-laetoli.vercel.app/ecosystem" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>Part of the THOS network →</a>
+            <a href="https://tibaecosystem.co.tz/ecosystem" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }}>Part of the THOS network →</a>
           </footer>
         </section>
       </div>

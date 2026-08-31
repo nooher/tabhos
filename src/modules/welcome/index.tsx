@@ -471,7 +471,7 @@ export default function Welcome() {
             laetoli.tz
           </a>
           <a
-            href="https://kasuku-laetoli.vercel.app"
+            href="https://kasuku.tz"
             style={{ color: NEUTRAL.ink, textDecoration: 'none' }}
           >
             Kasuku
