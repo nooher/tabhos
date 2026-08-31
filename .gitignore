@@ -13,3 +13,8 @@ dist
 .env.local
 .env.production.local
 tmp-kb/
+
+# Supabase CLI scratch state: project ref, pooler URL, and the exact patch
+# versions of the running stack. No credential, but nothing here is source and
+# the version numbers are free reconnaissance.
+supabase/.temp/

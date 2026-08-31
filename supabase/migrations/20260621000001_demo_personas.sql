@@ -1,17 +1,26 @@
--- Tumaini demo personas — 10 real auth.users so the persona chips on the
+-- Tumaini demo personas: 10 real auth.users so the persona chips on the
 -- entrance perform a real signInWithPassword and end up with a genuine
--- Supabase session. Password is shared across all demo accounts:
---   Tumaini2026!
+-- Supabase session.
+--
+-- This file used to carry the shared password as a literal, in a public
+-- repository, which made it a published credential for as long as it stood.
+-- It now seeds a random one that nobody records, so a clean `db reset` creates
+-- accounts that exist and cannot be signed into. An operator who wants working
+-- demo chips sets the password deliberately, out of band, and puts the same
+-- value in VITE_DEMO_PASSWORD. A demo that cannot be entered is a smaller
+-- failure than one anybody can enter.
+--
 -- Idempotent: skips rows that already exist (email is unique in auth.users).
 
 do $$
 declare
-  demo_password text := 'Tumaini2026!';
+  demo_password text := encode(extensions.gen_random_bytes(24), 'base64');
   demo_hash     text;
   rec record;
   new_auth_id uuid;
 begin
-  -- bcrypt hash of the shared demo password.
+  -- bcrypt hash of the seeded password. Deliberately unrecoverable: it is
+  -- generated here, hashed, and never printed or stored in clear.
   demo_hash := extensions.crypt(demo_password, extensions.gen_salt('bf'));
 
   for rec in

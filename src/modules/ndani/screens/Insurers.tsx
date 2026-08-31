@@ -19,13 +19,17 @@ interface Insurer {
   copay: { inPersonPct: number; teleHealthPct: number; selfPayCap: number }
 }
 
+// Illustrative only. No insurer has issued THOS an API key, and these
+// values are written so that nobody can mistake them for one: a string
+// shaped like `nhif_live_<hex>` in a public repository gets reported as a
+// leaked credential, and the report would be right to be filed.
 const SEED: Insurer[] = [
-  { id: 'i-nhif',    name: 'National Health Insurance Fund', shortName: 'NHIF',       settlement: 'current', claimsOpen: 184, claimsPaid30d: 921, recon: 'reconciled', apiKey: 'nhif_live_3f29c0fa8a07b7e1', copay: { inPersonPct: 10, teleHealthPct: 5,  selfPayCap: 30000 } },
-  { id: 'i-aar',     name: 'AAR Insurance Tanzania',         shortName: 'AAR',        settlement: 'current', claimsOpen:  41, claimsPaid30d: 277, recon: 'partial',    apiKey: 'aar_live_77d12c4b6e8a1d80',  copay: { inPersonPct: 20, teleHealthPct: 10, selfPayCap: 25000 } },
-  { id: 'i-jubilee', name: 'Jubilee Insurance',              shortName: 'Jubilee',    settlement: 'delayed', claimsOpen: 112, claimsPaid30d: 318, recon: 'open',       apiKey: 'jub_live_5e0a9c4f2b3187dd',   copay: { inPersonPct: 15, teleHealthPct: 10, selfPayCap: 35000 } },
-  { id: 'i-reso',    name: 'Resolution Insurance Tanzania',  shortName: 'Resolution', settlement: 'current', claimsOpen:  27, claimsPaid30d: 162, recon: 'reconciled', apiKey: 'res_live_1c79bb09f4ce2a48',  copay: { inPersonPct: 20, teleHealthPct: 10, selfPayCap: 22000 } },
-  { id: 'i-strg',    name: 'Strategis Insurance',            shortName: 'Strategis',  settlement: 'current', claimsOpen:  19, claimsPaid30d:  88, recon: 'partial',    apiKey: 'str_live_402dd1f6b9eebd11',  copay: { inPersonPct: 25, teleHealthPct: 12, selfPayCap: 20000 } },
-  { id: 'i-britam',  name: 'Britam Insurance Tanzania',      shortName: 'Britam',     settlement: 'paused',  claimsOpen:   8, claimsPaid30d:  44, recon: 'open',       apiKey: 'bri_live_98b2d7e3c44a9170',  copay: { inPersonPct: 30, teleHealthPct: 15, selfPayCap: 18000 } },
+  { id: 'i-nhif',    name: 'National Health Insurance Fund', shortName: 'NHIF',       settlement: 'current', claimsOpen: 184, claimsPaid30d: 921, recon: 'reconciled', apiKey: 'nhif_sample_not_a_real_key', copay: { inPersonPct: 10, teleHealthPct: 5,  selfPayCap: 30000 } },
+  { id: 'i-aar',     name: 'AAR Insurance Tanzania',         shortName: 'AAR',        settlement: 'current', claimsOpen:  41, claimsPaid30d: 277, recon: 'partial',    apiKey: 'aar_sample_not_a_real_key',  copay: { inPersonPct: 20, teleHealthPct: 10, selfPayCap: 25000 } },
+  { id: 'i-jubilee', name: 'Jubilee Insurance',              shortName: 'Jubilee',    settlement: 'delayed', claimsOpen: 112, claimsPaid30d: 318, recon: 'open',       apiKey: 'jub_sample_not_a_real_key',   copay: { inPersonPct: 15, teleHealthPct: 10, selfPayCap: 35000 } },
+  { id: 'i-reso',    name: 'Resolution Insurance Tanzania',  shortName: 'Resolution', settlement: 'current', claimsOpen:  27, claimsPaid30d: 162, recon: 'reconciled', apiKey: 'res_sample_not_a_real_key',  copay: { inPersonPct: 20, teleHealthPct: 10, selfPayCap: 22000 } },
+  { id: 'i-strg',    name: 'Strategis Insurance',            shortName: 'Strategis',  settlement: 'current', claimsOpen:  19, claimsPaid30d:  88, recon: 'partial',    apiKey: 'str_sample_not_a_real_key',  copay: { inPersonPct: 25, teleHealthPct: 12, selfPayCap: 20000 } },
+  { id: 'i-britam',  name: 'Britam Insurance Tanzania',      shortName: 'Britam',     settlement: 'paused',  claimsOpen:   8, claimsPaid30d:  44, recon: 'open',       apiKey: 'bri_sample_not_a_real_key',  copay: { inPersonPct: 30, teleHealthPct: 15, selfPayCap: 18000 } },
 ]
 
 function maskKey(k: string): string {

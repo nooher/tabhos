@@ -35,7 +35,10 @@ export default function WelcomeHome() {
   const onPick = async (p: Persona) => {
     setErr(null)
     setPersona(p.id)
-    if (hasBackend && supabase) {
+    // No password configured means no backend session. The persona still
+    // switches, because it is a local view state; it simply does not pretend to
+    // be signed in. See src/lib/personas.ts for why the password is not here.
+    if (hasBackend && supabase && DEMO_PASSWORD) {
       setBusy(p.id)
       try {
         const { error } = await supabase.auth.signInWithPassword({

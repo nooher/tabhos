@@ -25,13 +25,30 @@ export type PersonaId =
   | 'mpya'
 
 /**
- * Demo persona credentials. All chips use the same shared password —
- * Tumaini2026! — and email-confirmed accounts were seeded in
- * supabase/migrations/20260621000001_demo_personas.sql. Clicking a chip
- * performs a real signInWithPassword and lands the user inside their
- * persona's home with a full Supabase session.
+ * Demo persona credentials.
+ *
+ * The password used to live here as a literal, and this repository is public,
+ * so it was readable by anyone for as long as it was committed. It is now read
+ * from the environment and the accounts behind it have been rotated and their
+ * sessions revoked.
+ *
+ * Be clear about what that does and does not buy. Vite inlines `VITE_*` at
+ * build time, so whatever is set here still ships inside the JavaScript the
+ * browser downloads: a determined reader can find it. What changes is that the
+ * value is no longer in the permanent public history of this repository, and it
+ * can be rotated by redeploying rather than by rewriting commits.
+ *
+ * The fix that would actually hide it is a server-side demo session: an edge
+ * function that holds the password, checks a rate limit, and returns a session.
+ * Until that exists, treat these accounts as public read-only demonstrations
+ * and never give them a role above `citizen` or any real patient data.
+ *
+ * Unset means the chips still work as a local persona switcher; they simply do
+ * not sign in to the backend. That is the honest failure mode: a demo that
+ * cannot authenticate should say so rather than pretend.
  */
-export const DEMO_PASSWORD = 'Tumaini2026!'
+export const DEMO_PASSWORD: string | undefined =
+  (import.meta.env.VITE_DEMO_PASSWORD as string | undefined)?.trim() || undefined
 
 export const personaEmail: Record<PersonaId, string> = {
   maria:    'maria@tumaini.demo',
