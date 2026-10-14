@@ -1,8 +1,10 @@
 // karibu/lib/risk.ts — risk classification from scores + flags + conditions.
 // Source: PHQ-9 (Kroenke 2001), GAD-7 (Spitzer 2006), AUDIT (WHO 2001),
-// C-SSRS (Posner 2011), EPDS (Cox 1987), CRAFFT (Knight 2002).
+// C-SSRS (Posner 2011), EPDS (Cox 1987), CRAFFT (Knight 2002),
+// ASSIST (WHO, Humeniuk 2010).
 
 import type { KaribuProfile } from './storage';
+import { ASSIST_SUBSTANCES, assistRead } from './assist';
 
 export type RiskTier = 'chini' | 'wastani' | 'juu' | 'dharura';
 
@@ -44,6 +46,52 @@ export function classifyRisk(p: KaribuProfile): RiskAssessment {
     if (a.epds && a.epds.items[9] >= 1) { reasons_sw.push('EPDS swali 10: mawazo ya kujidhuru'); reasons_en.push('EPDS #10 self-harm'); tier = 'juu'; }
 
     if (a.crafft && a.crafft.total >= 2) { reasons_sw.push('CRAFFT chanya — utumiaji wa vileo unahitaji tathmini'); reasons_en.push('CRAFFT positive — substance use needs assessment'); if (tier === 'chini') tier = 'wastani'; }
+
+    /*
+     * ASSIST, per substance.
+     *
+     * AUDIT above reads alcohol and CRAFFT reads adolescents. Until ASSIST was
+     * built, an adult using heroin, bangi or mirungi produced no reason here at
+     * all: the tier came back `chini` and the care plan offered a mood tracker.
+     *
+     * Each substance is named rather than summed. "Hatari kubwa ya dawa" tells
+     * a counsellor nothing; "hatari kubwa — heroini" tells them which clinic to
+     * ring, and the four MAT centres exist for exactly that substance.
+     */
+    const assist = assistRead(a.assist);
+    if (assist.state === 'imesomwa') {
+      const nameOf = (id: string) => ASSIST_SUBSTANCES.find((s) => s.id === id);
+      for (const c of assist.concerns) {
+        const sub = nameOf(c.id);
+        if (!sub) continue;
+        if (c.band === 'juu') {
+          reasons_sw.push(`Utegemezi unaowezekana — ${sub.name_sw} (ASSIST ${c.score})`);
+          reasons_en.push(`Likely dependence — ${sub.name_en} (ASSIST ${c.score})`);
+          tier = tier === 'dharura' ? tier : 'juu';
+        } else {
+          reasons_sw.push(`Matumizi ya hatari — ${sub.name_sw} (ASSIST ${c.score})`);
+          reasons_en.push(`Harmful use — ${sub.name_en} (ASSIST ${c.score})`);
+          if (tier === 'chini') tier = 'wastani';
+        }
+      }
+      /*
+       * Injecting raises the tier whatever the scores are, and recent
+       * injecting raises it further. Somebody who injects monthly can score
+       * below the moderate cut-off on every question about control and still
+       * be at risk of HIV and hepatitis, which is a different question from
+       * dependence and is not answered by the same number.
+       */
+      if (assist.injected) {
+        reasons_sw.push(assist.injectedRecently
+          ? 'Kujichoma na sindano katika miezi 3 iliyopita'
+          : 'Amewahi kujichoma na sindano');
+        reasons_en.push(assist.injectedRecently
+          ? 'Injected in the past 3 months'
+          : 'Has injected a drug');
+        if (assist.injectedRecently) tier = tier === 'dharura' ? tier : 'juu';
+        else if (tier === 'chini') tier = 'wastani';
+      }
+    }
   }
 
   const c = p.step3?.conditions ?? [];
@@ -59,6 +107,6 @@ export function classifyRisk(p: KaribuProfile): RiskAssessment {
     reasons_sw,
     reasons_en,
     ercRequired: erc,
-    source: 'PHQ-9 + GAD-7 + AUDIT + C-SSRS + EPDS + CRAFFT (validated thresholds)',
+    source: 'PHQ-9 + GAD-7 + AUDIT + C-SSRS + EPDS + CRAFFT + ASSIST (validated thresholds)',
   };
 }

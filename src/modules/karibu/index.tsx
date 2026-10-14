@@ -9,12 +9,23 @@ import Step1Watajulianaye from './screens/Step1Watajulianaye';
 import Step2Sababu from './screens/Step2Sababu';
 import Step3Hali from './screens/Step3Hali';
 import Step4Vipimo from './screens/Step4Vipimo';
+import Step4bUraibu from './screens/Step4bUraibu';
 import Step5Maisha from './screens/Step5Maisha';
 import Step6Mapendeleo from './screens/Step6Mapendeleo';
 import Step7Malengo from './screens/Step7Malengo';
 import Done from './screens/Done';
 
-const TOTAL = 8;
+/*
+ * Nine, not eight.
+ *
+ * Step 4b is ASSIST, the substance screen. It sits after the battery and
+ * before the life questions because it belongs with the other instruments and
+ * because the life questions are gentler ground to finish on. It is its own
+ * step rather than part of 4 for the reason `Step4bUraibu.tsx` gives: ASSIST
+ * asks eight questions about each of ten substance classes and scores each
+ * separately, and the battery's loop assumes a flat list with one total.
+ */
+const TOTAL = 9;
 
 export default function Karibu() {
   const nav = useNavigate();
@@ -89,10 +100,11 @@ export default function Karibu() {
         {step === 2 && <Step2Sababu profile={profile} update={update} next={next} back={back} />}
         {step === 3 && <Step3Hali profile={profile} update={update} next={next} back={back} />}
         {step === 4 && <Step4Vipimo profile={profile} update={update} next={next} back={back} />}
-        {step === 5 && <Step5Maisha profile={profile} update={update} next={next} back={back} />}
-        {step === 6 && <Step6Mapendeleo profile={profile} update={update} next={next} back={back} />}
-        {step === 7 && <Step7Malengo profile={profile} update={update} next={next} back={back} />}
-        {step === 8 && <Done profile={profile} finish={finish} />}
+        {step === 5 && <Step4bUraibu profile={profile} update={update} next={next} back={back} />}
+        {step === 6 && <Step5Maisha profile={profile} update={update} next={next} back={back} />}
+        {step === 7 && <Step6Mapendeleo profile={profile} update={update} next={next} back={back} />}
+        {step === 8 && <Step7Malengo profile={profile} update={update} next={next} back={back} />}
+        {step === 9 && <Done profile={profile} finish={finish} />}
 
         <div style={{ marginTop: 32, textAlign: 'center' }}>
           {!confirmSkip ? (

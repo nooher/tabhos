@@ -14,6 +14,7 @@ import MoodEntry from './mood/Entry'; import MoodViews from './mood/Views';
 import PumziEntry from './pumzi/Entry'; import PumziViews from './pumzi/Views';
 import MaumivuEntry from './maumivu/Entry'; import MaumivuViews from './maumivu/Views';
 import TamaaEntry from './tamaa/Entry'; import TamaaViews from './tamaa/Views';
+import MatEntry from './mat/Entry'; import MatViews from './mat/Views';
 import MimbaEntry from './mimba/Entry'; import MimbaViews from './mimba/Views';
 import MtotoEntry from './mtoto/Entry'; import MtotoViews from './mtoto/Views';
 import BidiiEntry from './bidii/Entry'; import BidiiViews from './bidii/Views';
@@ -34,6 +35,7 @@ const TRACKERS: Spec[] = [
   { id: 'pumzi', name_sw: 'Pumzi', for_sw: 'Wasiwasi / pumu', Entry: PumziEntry, Views: PumziViews, source: 'WHO mhGAP + GINA' },
   { id: 'maumivu', name_sw: 'Maumivu', for_sw: 'Maumivu sugu', Entry: MaumivuEntry, Views: MaumivuViews, source: 'WHO Pain Ladder' },
   { id: 'tamaa', name_sw: 'Tamaa', for_sw: 'Mapambano ya vileo', Entry: TamaaEntry, Views: TamaaViews, source: 'Miller & Rollnick MI' },
+  { id: 'mat', name_sw: 'Methadone (MAT)', for_sw: 'Watu kwenye matibabu ya afyuni', Entry: MatEntry, Views: MatViews, source: 'WHO MAT · Tanzania MAT programme' },
   { id: 'mimba', name_sw: 'Mimba', for_sw: 'Mama mjamzito', Entry: MimbaEntry, Views: MimbaViews, source: 'WHO ANC 2016' },
   { id: 'mtoto', name_sw: 'Mtoto', for_sw: 'Walezi wa watoto', Entry: MtotoEntry, Views: MtotoViews, source: 'EPI Tanzania' },
   { id: 'bidii', name_sw: 'Bidii', for_sw: 'Bidii ya mwili', Entry: BidiiEntry, Views: BidiiViews, source: 'WHO PA Guidelines' },

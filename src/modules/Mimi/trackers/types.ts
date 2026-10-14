@@ -7,7 +7,17 @@ import { getMeId } from '../../../lib/me';
 
 export type TrackerId =
   | 'dawa' | 'dialysis' | 'hiv' | 'sukari' | 'shinikizo' | 'saratani'
-  | 'mood' | 'pumzi' | 'maumivu' | 'tamaa' | 'mimba' | 'mtoto' | 'bidii';
+  | 'mood' | 'pumzi' | 'maumivu' | 'tamaa' | 'mimba' | 'mtoto' | 'bidii'
+  /*
+   * `mat` is medication-assisted treatment: the daily methadone dose, where it
+   * was taken and whether it was. `tamaa` beside it is the craving diary, and
+   * the two are not the same thing — one is relapse prevention and the other
+   * is the treatment. Until 14 October 2026 only the first existed, so
+   * somebody sent to the Muhimbili methadone clinic came back to a system that
+   * could hold how much they wanted to use and nothing about what they were
+   * being given.
+   */
+  | 'mat';
 
 export interface Tracker<R = Reading> {
   id: TrackerId;

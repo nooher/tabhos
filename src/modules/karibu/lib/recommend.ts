@@ -2,6 +2,7 @@
 
 import type { KaribuProfile, KaribuTone } from './storage';
 import { classifyRisk, type RiskTier } from './risk';
+import { ASSIST_SUBSTANCES, assistRead } from './assist';
 
 export interface CarePlanItem {
   id: string;
@@ -100,6 +101,75 @@ export function recommend(p: KaribuProfile): Recommendation {
     trackers.add('tamaa');
     plan.push({ id: 'mi', title_sw: 'Motivational Interviewing', body_sw: 'Tafakari thamani zako: pombe inakuwezesha au inakuzuia?',
       source: 'Miller & Rollnick 2013' });
+  }
+  /*
+   * Alcohol withdrawal, where AUDIT says daily dependence.
+   *
+   * The craving tracker above is relapse prevention and it is the right answer
+   * at 8 to 19. At 20 and over the person is probably physically dependent,
+   * and the one thing they must not do is what an application would otherwise
+   * encourage: stop on their own. Alcohol withdrawal has a mortality and
+   * opioid withdrawal does not, which is the most counter-intuitive fact in
+   * this whole module and the reason it is stated rather than implied.
+   */
+  if (audit >= 20) {
+    plan.push({
+      id: 'pombe-kuacha',
+      title_sw: 'Kuacha pombe kwa usalama',
+      body_sw: 'Usiache ghafla mwenyewe. Kukosa pombe kunaweza kusababisha kifafa na delirium tremens, na kuna hatari ya kifo. Nenda kituo cha afya kwanza — wanaweza kukusaidia kuacha kwa usalama.',
+      source: 'WHO mhGAP · CIWA-Ar (Sullivan 1989)',
+    });
+  }
+
+  /*
+   * ASSIST, per substance, and this is where a screen becomes treatment.
+   *
+   * Before this the pathway ended at a craving diary for everybody: somebody
+   * whose ASSIST came back at likely opioid dependence was offered the same
+   * thing as somebody drinking a little too much on Fridays. The methadone
+   * programme is the treatment for the first of those and it is free at four
+   * centres, and nothing in this file knew the centres existed.
+   */
+  const assist = assistRead(p.step4?.assist);
+  if (assist.state === 'imesomwa') {
+    const name = (id: string) => ASSIST_SUBSTANCES.find((s) => s.id === id)?.name_sw ?? id;
+    const worstOf = (id: string) => assist.concerns.find((c) => c.id === id);
+
+    /* Anything at moderate or above earns the craving diary and the MI work,
+       whatever the substance: that is the brief intervention of SBIRT. */
+    if (assist.concerns.length > 0) {
+      trackers.add('tamaa');
+      plan.push({
+        id: 'assist-mi',
+        title_sw: 'Mazungumzo mafupi',
+        body_sw: `Majibu yako yanaonyesha hatari kwenye: ${assist.concerns.map((c) => name(c.id)).join(', ')}. Vipindi vichache vya mahojiano ya kuhamasisha (MI) ni hatua ya kwanza, na yanafanya kazi.`,
+        source: 'WHO ASSIST-linked brief intervention',
+      });
+    }
+
+    /* Opioids at the high band: this is the MAT referral, named. */
+    const opioid = worstOf('heroini');
+    if (opioid?.band === 'juu') {
+      trackers.add('mat');
+      plan.push({
+        id: 'mat',
+        title_sw: 'Matibabu ya methadone (MAT)',
+        body_sw: 'Utegemezi wa afyuni hutibiwa kwa methadone, na ni bure. Vituo: Muhimbili na Mwananyamala (Dar), Hospitali ya Rufaa Mbeya, na KCMC (Moshi). Ni huduma ya afya, sio polisi — hakuna ripoti inayotolewa kwa sababu umeomba msaada.',
+        source: 'Tanzania MAT programme · WHO',
+      });
+    }
+
+    /* And injecting, which is a transmission question rather than a
+       dependence one and needs its own line whatever the scores were. */
+    if (assist.injected) {
+      trackers.add('mat');
+      plan.push({
+        id: 'sindano',
+        title_sw: 'Sindano salama na upimaji',
+        body_sw: 'Kujichoma na sindano ni hatari ya VVU na homa ya ini zaidi ya hatari ya dawa yenyewe. Kliniki za MAT zinatoa sindano safi, upimaji wa VVU na matibabu, bure. Usichangie sindano kamwe.',
+        source: 'WHO harm reduction · NACP Tanzania',
+      });
+    }
   }
 
   // Reasons-driven extras

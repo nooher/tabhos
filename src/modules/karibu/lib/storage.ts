@@ -3,6 +3,8 @@
 // user's lang/region/faith preferences. The wizard itself stays sync against
 // localStorage so step-to-step transitions don't await network.
 
+import type { AssistAnswers } from './assist';
+
 import { db } from '../../../lib/db'
 import { hasBackend, supabase } from '../../../lib/supabase'
 import { getMeId } from '../../../lib/me'
@@ -41,6 +43,21 @@ export interface KaribuStep4 {
   cssrs: { items: number[]; total: number };
   epds?: { items: number[]; total: number };   // only if pregnant
   crafft?: { items: number[]; total: number }; // only if 12-21
+  /**
+   * ASSIST, and it is shaped unlike the six above on purpose.
+   *
+   * The others are a flat list of items with one total. ASSIST asks the same
+   * eight questions about each of ten substance classes and scores each class
+   * separately, because a person is not "a user": they have a relationship
+   * with each thing they use, and those relationships differ. Somebody may
+   * drink within the guidance and be in trouble with mirungi, and one total
+   * would hide exactly that.
+   *
+   * Absent means nobody was asked, which `assistRead` reports as its own
+   * state. An empty object would mean asked and nothing used, and the two must
+   * not look alike.
+   */
+  assist?: AssistAnswers;
 }
 
 export interface KaribuStep5 {

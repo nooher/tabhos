@@ -1,0 +1,16 @@
+{
+  "note": "Every instrument a /maalum population page advertises that the library does not hold, named one at a time. tools/check-assessments.mjs keeps this and `--write` is the only way it is edited, so a new one appears in the diff by name rather than as a number that went up. The count may only fall, and it falls by the instrument being built or by the page stopping advertising it.",
+  "why": "The page and the library grew separately and no code connected them, so a claim and a capability drifted quietly for as long as both files existed. ASSIST was the one that mattered: the WHO screen for substances other than alcohol, named on /maalum/uponyaji where the four methadone clinics are listed, and never built. AUDIT covers alcohol and CRAFFT covers adolescents, so an adult using heroin, bangi or mirungi had no screen at all on the addiction recovery page. Built on 14 October 2026, with its own module because its shape is per substance rather than a flat list with one total.",
+  "generated": "2026-10-14",
+  "owed": [
+    "GDS-15 (Geriatric Depression Scale)  ·  wazee",
+    "K10  ·  mimi-na-kansa, wakimbizi, wazazi",
+    "Mini-Cog  ·  wazee",
+    "PCL-5  ·  magereza, wakimbizi",
+    "PHQ-A  ·  wanafunzi",
+    "PHQ-A (vijana)  ·  mimi-na-mtoto",
+    "Parental Stress Scale  ·  wazazi",
+    "SDQ  ·  wanafunzi",
+    "SDQ (mzazi/mwalimu/mtoto)  ·  mimi-na-mtoto"
+  ]
+}

@@ -101,9 +101,9 @@ const POPULATIONS: Population[] = [
     ],
   },
   { slug: 'uponyaji', label: 'Uponyaji', titleSw: 'UPONYAJI', titleEn: 'Addiction recovery',
-    overview: 'Uponyaji ni safari, sio tukio. TABHOS inashirikiana na NGO za Tanzania za uponyaji (TASUWA, Sober Houses) na hutoa MI + relapse prevention + jumuiya ya rika.',
+    overview: 'Uponyaji ni safari, sio tukio. TABHOS inashirikiana na NGO za Tanzania za uponyaji (TASUWA, Sober Houses) na hutoa MI + relapse prevention + jumuiya ya rika. Utegemezi wa afyuni hutibiwa kwa methadone, bure, kwenye vituo vilivyo hapa chini — na ni huduma ya afya, sio polisi.',
     assessments: ['AUDIT', 'ASSIST', 'CRAFFT', 'PHQ-9', 'GAD-7'],
-    programs: ['MI — mahojiano ya kuhamasisha', 'Faith-informed (opt-in)', 'DBT — uvumilivu wa dhiki'],
+    programs: ['MI — mahojiano ya kuhamasisha', 'MAT — methadone kwa afyuni', 'Kufuatilia dozi na tamaa (tracker)', 'Faith-informed (opt-in)', 'DBT — uvumilivu wa dhiki'],
     providers: 'Sober Houses Tanzania, TASUWA, MEWATA (kwa wanawake).',
     rohoMode: 'mfunzi', hotlines: [{ name: 'Sober Houses', number: '0688000000' }, ...NATIONAL],
     network: [
@@ -117,6 +117,16 @@ const POPULATIONS: Population[] = [
         title: 'Moduli ya Familia',
         body:
           'Uponyaji wa mtu mmoja ni uponyaji wa familia nzima. Vipindi 6 vya familia: kuelewa uraibu, kuepuka kuwezesha (enabling), kujenga mipaka kwa upendo, kushughulikia majeraha ya zamani, kupanga rejea, na kuendelea pamoja.',
+      },
+      {
+        title: 'Usiache pombe ghafla mwenyewe',
+        body:
+          'Hili ni jambo linaloshangaza watu wengi: kukosa afyuni ni maumivu makali lakini hakuui, na kukosa pombe kunaweza kuua. Pombe na dawa za usingizi zinaweza kusababisha kifafa na delirium tremens. Kama unatumia pombe kila siku na unataka kuacha, nenda kituo cha afya kwanza — wanaweza kukusaidia kuacha kwa usalama.',
+      },
+      {
+        title: 'Methadone: kinachotarajiwa',
+        body:
+          'Methadone inachukuliwa kila siku, mwanzoni kliniki mbele ya mtaalam. Wiki mbili za mwanzo ni hatari zaidi kwa sababu dawa inajikusanya mwilini — dalili za hatari ni usingizi mkubwa usio wa kawaida, kupumua taratibu sana, na kushindwa kuamshwa; hiyo ni dharura, piga 112. Ukikosa siku tatu mfululizo, usijirudishie dozi: uvumilivu wa mwili umepungua, na dozi uliyokuwa ukitumia inaweza kukuzidi. Nenda kliniki wakupange upya. Na methadone sio "kubadilisha uraibu mmoja kwa mwingine": kwa dozi iliyopangwa vizuri haileti high, inaondoa dalili za kukosa ili uweze kufanya kazi na kulea.',
       },
     ],
   },
